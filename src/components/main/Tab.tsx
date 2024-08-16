@@ -17,13 +17,28 @@ import {
     TabsTrigger,
 } from "@/components/ui/tabs"
 import { IconCashRegister, IconLogin, IconLogin2, IconRegistered } from "@tabler/icons-react"
+import { useState } from "react"
+import { FileUploadDemo } from "./FileUploadDemo"
 
-export default function Tab() {
+export default function Tab({
+    theme
+}:{
+    theme:{
+        isDark:boolean
+    }
+}) {
     return (
-        <Tabs defaultValue="account" className="w-[400px]">
-        <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="login">login</TabsTrigger>
-            <TabsTrigger value="signup">signup</TabsTrigger>
+        <Tabs defaultValue="login" className="w-[400px]">
+        <TabsList 
+            className="grid w-full grid-cols-2"
+            style={{backgroundColor:(theme.isDark && localStorage.getItem("isDark")!==null || JSON.parse(localStorage.getItem("isLoggedIn")??"false"))?"#17153B" : "#FEFEFE"}}
+            >
+            <TabsTrigger 
+                value="login" 
+                style={{backgroundColor:(theme.isDark && localStorage.getItem("isDark")!==null || JSON.parse(localStorage.getItem("isLoggedIn")??"false"))?"#17153B" : "#FEFEFE"}}>login</TabsTrigger>
+            <TabsTrigger 
+                value="signup" 
+                style={{backgroundColor:(theme.isDark && localStorage.getItem("isDark")!==null || JSON.parse(localStorage.getItem("isLoggedIn")??"false"))?"#17153B" : "#FEFEFE"}}>signup</TabsTrigger>
         </TabsList>
         <TabsContent value="login">
             <Card>
@@ -71,7 +86,7 @@ export default function Tab() {
                 </div>
                 <div className="space-y-1">
                     <Label htmlFor="file">Choose avatar</Label>
-                    <Input id="file" type="file" />
+                    <FileUploadDemo/>
                 </div>
                 <div className="space-y-1">
                     <Label htmlFor="new">New password</Label>

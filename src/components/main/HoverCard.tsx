@@ -1,33 +1,40 @@
+"use client"
 import { CardSpotlight } from "../ui/card-spotlight";
-
-export function CardSpotlightDemo() {
+export function CardSpotlightDemo({theme}:{theme:boolean}) {
   return (
-    <CardSpotlight className="h-[350px] w-[350px] border-r-2 flex-col justify-center align-middle">
-      <p className="text-xl font-bold relative z-20 mt-2 text-white">
-        Authentication steps
-      </p>
-      <div className="text-neutral-200 mt-4 relative z-20">
-        Follow these steps to secure your account:
-        <ul className="list-none  mt-2">
-          <Step title="Enter your email address" />
-          <Step title="Create a strong password" />
-          <Step title="Set up two-factor authentication" />
-          <Step title="Verify your identity" />
-        </ul>
+    <CardSpotlight className="h-[350px] w-[350px] border-r-2 flex-col justify-center align-middle"
+      style={{
+        backgroundColor:theme?"rgba(32, 30, 67, 0.75)":"rgba(235, 244, 246, 0.75)"
+      }}
+    >
+      <div 
+        className="w-full h-full flex flex-col justify-center items-center">
+        <p className="text-xl font-bold relative z-20 mt-2" style={{color:theme?"#77E4C8":"#17153B"}}>
+          Authentication steps
+        </p>
+        <div className="mt-4 relative z-20">
+          Follow these steps to secure your account:
+          <ul className="list-none  mt-2">
+            <Step theme={theme} title="Enter your email address" />
+            <Step theme={theme} title="Create a strong password" />
+            <Step theme={theme} title="Set up two-factor authentication" />
+            <Step theme={theme} title="Verify your identity" />
+          </ul>
+        </div>
+        <p className="mt-4 relative z-20 text-sm" style={{color:theme?"#77E4C8":"#17153B"}}>
+          Ensuring your account is properly secured helps protect your personal
+          information and data.
+        </p>
       </div>
-      <p className="text-neutral-300 mt-4 relative z-20 text-sm">
-        Ensuring your account is properly secured helps protect your personal
-        information and data.
-      </p>
     </CardSpotlight>
   );
 }
 
-const Step = ({ title }: { title: string }) => {
+const Step = ({ title,theme }: { title: string,theme:boolean }) => {
   return (
     <li className="flex gap-2 items-start">
       <CheckIcon />
-      <p className="text-white">{title}</p>
+      <p style={{color:theme ? "#FEFEFE" : "rgba(164, 159, 255, 0.75)"}}>{title}</p>
     </li>
   );
 };
