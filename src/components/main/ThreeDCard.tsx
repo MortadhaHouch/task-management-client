@@ -7,11 +7,13 @@ import Link from "next/link";
 export default function ThreeDCardDemo({
     title,
     description,
+    href,
     imageURL
 }:{
     title:string
     description:string
     imageURL:string
+    href:string
 }) {
     return (
         <CardContainer className="inter-var">
@@ -33,9 +35,8 @@ export default function ThreeDCardDemo({
             <Image
                 src={imageURL}
                 loading="lazy"
-                placeholder="empty"
-                height="1000"
-                width="1000"
+                width={"400"}
+                height={"400"}
                 className="h-60 w-full object-cover rounded-xl group-hover/card:shadow-xl"
                 alt="thumbnail"
             />
@@ -44,7 +45,7 @@ export default function ThreeDCardDemo({
             <CardItem
                 translateZ={20}
                 as={Link}
-                href="http://localhost:3000/features"
+                href={href}
                 target="__blank"
                 className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white"
             >
@@ -52,7 +53,7 @@ export default function ThreeDCardDemo({
             </CardItem>
             <CardItem
                 translateZ={20}
-                as="button"
+                as={Link}
                 href="http://localhost:3000/dashboard"
                 className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold"
             >

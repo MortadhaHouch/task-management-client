@@ -3,18 +3,17 @@ import { CardSpotlightDemo } from "../../components/main/HoverCard";
 import { InfiniteMovingCardsDemo } from "../../components/main/InfiniteMovingCardsDemo";
 import GoogleGeminiEffectDemo from "../../components/main/PathAnimation";
 import { TypewriterEffectSmoothDemo } from "../../components/main/TypewriterEffectSmoothDemo";
-import SVG1 from "/src/app/assets/icons/Accept tasks-bro.svg"
-import SVG2 from "/src/app/assets/icons/Accept tasks-rafiki.svg"
-import SVG3 from "/src/app/assets/icons/Collaboration-amico.svg"
-import SVG4 from "/src/app/assets/icons/Customer relationship management-rafiki.svg"
-import SVG5 from "/src/app/assets/icons/Time management-amico.svg"
-import SVG6 from "/src/app/assets/icons/Office management-pana.svg"
 import { Suspense, useContext, useEffect, useRef, useState } from "react";
 import { GlobeDemo } from "@/components/main/Globe";
-import { ThemeContext } from "../../../providers/ThemeContextProvider";
 import { useAnimation, useInView,motion } from "framer-motion";
 import Loader from "@/components/main/Loader";
 import ThreeDCardDemo from "@/components/main/ThreeDCard";
+import SVG1 from "../assets/icons/undraw_task_list_6x9d.svg"
+import SVG2 from "../assets/icons/undraw_push_notifications_re_t84m.svg"
+import SVG3 from "../assets/icons/task-management.svg"
+import SVG4 from "../assets/icons/undraw_accept_tasks_re_09mv.svg"
+import SVG5 from "../assets/icons/undraw_throw_away_re_x60k.svg"
+import SVG6 from "../assets/icons/Inbox cleanup-rafiki.svg"
 export default function Home() {
     let itemRef = useRef<HTMLDivElement|null>(null)
     let [isLoading,setIsLoading] = useState<boolean>(true);
@@ -29,43 +28,42 @@ export default function Home() {
             animationControls.start("initial")
         }
     },[animationControls, isInView])
-    let themeContext = useContext(ThemeContext);
     const services: { title: string; href: string; description: string;imageURL:string }[] = [
         {
             title: "Creating and editing tasks",
             href: "/features",
             description:"A user can create and edit daily tasks whenever they want to",
-            imageURl:""
+            imageURL:SVG1
         },
         {
             title: "Notifications",
             href: "/features",
             description:"Never worry about forgetting or omitting task processing and be up-to-date with the latest information about daily chores",
-            imageURl:""
+            imageURL:SVG2
         },
         {
             title: "Unlimited tasks management features",
             href: "/features",
             description:"Forget about the complexity and the diversity of your tasks and fall in love with the incredibly powerful and easy workflow of tasks management",
-            imageURl:""
+            imageURL:SVG3
         },
         {
             title: "Unlimited number of tasks",
             href: "/features",
             description: "Never worry about limitations of tasks management and create as many tasks as you need",
-            imageURl:""
+            imageURL:SVG4
         },
         {
             title: "Deleting and canceling tasks",
             href: "/features",
             description:"You can also cancel or delete tasks whenever you want",
-            imageURl:""
+            imageURL:SVG5
         },
         {
             title: "Easy task recovery and deletion",
             href: "/features",
             description:"You can also recover deleted tasks whenever you want",
-            imageURl:""
+            imageURL:SVG6
         },
     ]
     useEffect(()=>{
@@ -104,13 +102,13 @@ export default function Home() {
                                 }}
                                 key={index} 
                                 ref={itemRef}>
-                                <ThreeDCardDemo title={item.title} description={item.description} imageURL={imageURL}/>
+                                <ThreeDCardDemo title={item.title} description={item.description} href={item.href} imageURL={item.imageURL}/>
                             </motion.div>
                         ))
                     }
                 </Suspense>
             </div>
-            <InfiniteMovingCardsDemo theme={(themeContext.isDark && localStorage.getItem("isDark")!==null || JSON.parse(localStorage.getItem("isLoggedIn")??"false"))}/>
+            <InfiniteMovingCardsDemo/>
             <TypewriterEffectSmoothDemo/>
             {
                 isLoading && (
