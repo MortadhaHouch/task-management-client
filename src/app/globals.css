@@ -1,3 +1,8 @@
+*{
+  margin: 0;
+  padding:0;
+  box-sizing:border-box;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -85,4 +90,27 @@
 body{
   overflow-x: hidden;
   position: relative;
+}
+div.dashboard-item:hover{
+  padding-left: 15px;
+  background-color:slategray;
+}
+button.read-more-btn:hover > svg{
+  transform: translateX(10px);
+}
+div.animation-div{
+  background-color: aqua;
+  clip-path: rect(0% 0%, 100% 0%, 0% 100%, 0% 100%);
+  z-index: 10000;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+div.animation-div:not(.animating){
+  clip-path: rect(0% 0%, 100% 0%, 0% 100%, 0% 100%);
+}
+div.animation-div.animating{
+  clip-path: rect(50% 0%, 50% 0%, 50% 0%, 50% 0%);
 }
