@@ -1,8 +1,7 @@
 "use client"
-import React from 'react';
-import ImageURL1 from "../app/assets/404-error-with-landscape-concept-illustration_114360-7898.jpg"
+import React, { useEffect, useRef } from 'react';
+import ImageURL1 from "../app/assets/icons/2020759_270055-P5KT2E-97-cropped.svg"
 import ImageURL2 from "../app/assets/6333074.jpg"
-import CarouselComponent from '@/components/main/CarouselComponent';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';

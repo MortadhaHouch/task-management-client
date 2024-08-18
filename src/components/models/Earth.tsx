@@ -14,7 +14,7 @@ import { Group, Object3DEventMap } from 'three'
 
 export default function Earth(props: React.JSX.IntrinsicAttributes & Omit<ExtendedColors<Overwrite<Partial<Group<Object3DEventMap>>, NodeProps<Group<Object3DEventMap>, Group>>>, NonFunctionKeys<{ position?: Vector3; up?: Vector3; scale?: Vector3; rotation?: Euler; matrix?: Matrix4; quaternion?: Quaternion; layers?: Layers; dispose?: (() => void) | null }>> & { position?: Vector3; up?: Vector3; scale?: Vector3; rotation?: Euler; matrix?: Matrix4; quaternion?: Quaternion; layers?: Layers; dispose?: (() => void) | null } & EventHandlers) {
     const group = useRef()
-    const { nodes, materials, animations } = useGLTF("/client/src/app/assets/3d/earth_cartoon.glb")
+    const { nodes, materials, animations } = useGLTF("../../../public/earth_cartoon.glb")
     const { actions } = useAnimations(animations, group)
     return (
         <group ref={group} {...props} dispose={null}>
@@ -391,4 +391,4 @@ export default function Earth(props: React.JSX.IntrinsicAttributes & Omit<Extend
     )
 }
 
-useGLTF.preload("/client/src/app/assets/3d/earth_cartoon.glb")
+useGLTF.preload("../../../public/earth_cartoon.glb")

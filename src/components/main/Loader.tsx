@@ -20,7 +20,9 @@ export default function Loader({type}:LoadingProps) {
             }
             {
                 type == "loading" && (
-                    <Lottie animationData={LoadingAnimation}/>
+                    <>
+                        <Lottie animationData={LoadingAnimation}/>
+                    </>
 
                 )
             }

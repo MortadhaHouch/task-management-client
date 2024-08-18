@@ -15,4 +15,4 @@ export default function LoginContextProvider({children}:any) {
         <LoginContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>{children}</LoginContext.Provider>
     )
 }
-export {LoginContext}
+export {LoginContext,LoginContextProvider}

@@ -20,25 +20,16 @@ import { IconCashRegister, IconLogin, IconLogin2, IconRegistered } from "@tabler
 import { useState } from "react"
 import { FileUploadDemo } from "./FileUploadDemo"
 
-export default function Tab({
-    theme
-}:{
-    theme:{
-        isDark:boolean
-    }
-}) {
+export default function Tab() {
     return (
         <Tabs defaultValue="login" className="w-[400px]">
         <TabsList 
             className="grid w-full grid-cols-2"
-            style={{backgroundColor:(theme.isDark && localStorage.getItem("isDark")!==null || JSON.parse(localStorage.getItem("isLoggedIn")??"false"))?"#17153B" : "#FEFEFE"}}
             >
             <TabsTrigger 
-                value="login" 
-                style={{backgroundColor:(theme.isDark && localStorage.getItem("isDark")!==null || JSON.parse(localStorage.getItem("isLoggedIn")??"false"))?"#17153B" : "#FEFEFE"}}>login</TabsTrigger>
+                value="login">login</TabsTrigger>
             <TabsTrigger 
-                value="signup" 
-                style={{backgroundColor:(theme.isDark && localStorage.getItem("isDark")!==null || JSON.parse(localStorage.getItem("isLoggedIn")??"false"))?"#17153B" : "#FEFEFE"}}>signup</TabsTrigger>
+                value="signup">signup</TabsTrigger>
         </TabsList>
         <TabsContent value="login">
             <Card>

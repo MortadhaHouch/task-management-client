@@ -66,13 +66,13 @@ let gettingStartedSteps:{title:string,href:string,description:string}[] = [
         description:"Our application is optimized for efficient task handling and user interactions, ensuring swift and reliable performance, even during peak usage, ensuring a seamless experience.",
     }
 ] 
-export function NavigationMenuDemo({ theme }: { theme: boolean }) {
+export function NavigationMenuDemo() {
     return (
         <NavigationMenu>
             <NavigationMenuList>
                 <NavigationMenuItem>
-                    <NavigationMenuTrigger style={{backgroundColor:theme?"#2E073F":"#F7F7F8"}}><h5 style={{color:theme ? "#77E4C8" : "#17153B"}}>Getting started</h5></NavigationMenuTrigger>
-                    <NavigationMenuContent style={{backgroundColor:theme?"#2E073F":"#F7F7F8"}}>
+                    <NavigationMenuTrigger><h5>Getting started</h5></NavigationMenuTrigger>
+                    <NavigationMenuContent>
                         <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                             <li className="row-span-3">
                                 <NavigationMenuLink asChild>
@@ -92,11 +92,8 @@ export function NavigationMenuDemo({ theme }: { theme: boolean }) {
                                 <ListItem
                                     key={item.title}
                                     href={item.href}
-                                    color={{
-                                        primaryColor: theme ? "#77E4C8" : "#17153B",
-                                        mainColor: theme ? "#FEFEFE" : "#4535C1",
-                                    }}
                                     title={item.title}
+                                    description={item.description}
                                 >
                                 {item.description}
                                 </ListItem>
@@ -105,20 +102,17 @@ export function NavigationMenuDemo({ theme }: { theme: boolean }) {
                     </NavigationMenuContent>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                <NavigationMenuTrigger style={{backgroundColor:theme?"#2E073F":"#F7F7F8"}}>
-                    <Link href="/services" style={{color:theme ? "#77E4C8" : "#17153B"}}>Services</Link>
+                <NavigationMenuTrigger>
+                    <Link href="/services">Services</Link>
                 </NavigationMenuTrigger>
-                <NavigationMenuContent style={{backgroundColor:theme?"#2E073F":"#F7F7F8"}}>
+                <NavigationMenuContent>
                     <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                     {services.map((item) => (
                         <ListItem
                             key={item.title}
                             href={item.href}
-                            color={{
-                                primaryColor: theme ? "#77E4C8" : "#17153B",
-                                mainColor: theme ? "#FEFEFE" : "#4535C1",
-                            }}
                             title={item.title}
+                            description={item.description}
                         >
                         {item.description}
                         </ListItem>
@@ -128,14 +122,14 @@ export function NavigationMenuDemo({ theme }: { theme: boolean }) {
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                 <Link href="/login">
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()} style={{backgroundColor:theme?"#2E073F":"#F7F7F8",color:theme ? "#77E4C8" : "#17153B"}}>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                         <IoMdLogIn size={20}/> Login
                     </NavigationMenuLink>
                 </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                     <Link href="/feedbacks">
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()} style={{backgroundColor:theme?"#2E073F":"#F7F7F8",color:theme ? "#77E4C8" : "#17153B"}}>
+                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             <FaComment size={20}/> feedbacks
                         </NavigationMenuLink>
                     </Link>
@@ -150,10 +144,6 @@ type ListItemProps = {
     title: string;
     description:string
     children: React.ReactNode;
-    color: {
-        primaryColor: string;
-        mainColor: string;
-    };
     } & React.ComponentPropsWithoutRef<"a">;
 
 const ListItem = React.forwardRef<HTMLAnchorElement, ListItemProps>(
@@ -167,19 +157,17 @@ const ListItem = React.forwardRef<HTMLAnchorElement, ListItemProps>(
                     "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
                         className
                     )}
-                    style={{ color: color.primaryColor }}
                         {...props}
                 >
-                    <div className="text-sm font-medium leading-none" style={{ color: color.primaryColor }}>
+                    <div className="text-sm font-medium leading-none">
                         {title}
                     </div>
-                    <p
-                        style={{ color: color.mainColor }}
+                    <path
                         className="line-clamp-2 text-sm leading-snug text-muted-foreground"
                     >
                         {description}
                         {children}
-                    </p>
+                    </path>
                 </a>
                 </NavigationMenuLink>
             </li>
