@@ -3,10 +3,13 @@ import React, { useContext } from 'react'
 import { CookiesProvider } from 'react-cookie'
 import Header from '@/components/main/Header'
 import Footer from '@/components/main/Footer'
+import LoginContextProvider from '../../providers/LoginContextProvider'
+import { type ThemeProviderProps } from "next-themes/dist/types"
+import { ThemeProvider } from '@/components/theme-provider'
 export default function HomeLayout({children}:any) {
     return (
-        <body className={`${(theme.isDark && localStorage.getItem("isDark")!==null || JSON.parse(localStorage.getItem("isLoggedIn")??"false"))?"dark":"light"} w-screen h-screen`}>
-            <ThemeContextProvider>
+        <body className={`w-screen h-screen`}>
+            <ThemeProvider>
                 <CookiesProvider>
                     <LoginContextProvider>
                         <Header/>
@@ -14,7 +17,7 @@ export default function HomeLayout({children}:any) {
                         <Footer/>
                     </LoginContextProvider>
                 </CookiesProvider>
-            </ThemeContextProvider>
+            </ThemeProvider>
         </body>
     )
 }
