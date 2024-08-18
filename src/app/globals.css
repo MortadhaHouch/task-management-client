@@ -1,18 +1,12 @@
-*{
-  margin: 0;
-  padding:0;
-  box-sizing:border-box;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 *{
   padding: 0;
   margin: 0;
   box-sizing: border-box;
   transition: .25s;
 }
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 
 
 
@@ -70,6 +64,17 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+  }
+}
+
+
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }
 body{
