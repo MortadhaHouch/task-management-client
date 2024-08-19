@@ -61,5 +61,20 @@ type Reaction = {
     likes:number[]
     dislikes:number[]
 }
-export type {User,Task,Bin,Feedback,Reaction,Event}
+type LoginRequest = {
+    email:string
+    password:string
+}
+type SignupRequest = {
+    firstName:string, 
+    lastName:string
+    birthDate:string
+    avatarUrl:string
+    email:string
+    password:string
+}
+type Response = {
+    token:string
+}
+export type {User,Task,Bin,Feedback,Reaction,Event,LoginRequest,SignupRequest,Response}
 export {Status}

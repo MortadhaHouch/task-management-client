@@ -5,7 +5,7 @@ import { FaHome } from "react-icons/fa";
 import { FcTodoList } from "react-icons/fc";
 import { FaSearch,FaTrash,FaCalendarDay } from "react-icons/fa";
 import { IoIosNotifications } from "react-icons/io";
-import { MdGroups } from "react-icons/md";
+import { MdAdd, MdGroups } from "react-icons/md";
 import { useState } from "react";
 import Home from "../../components/dashboardComponents/Home"
 import Calendar from "../../components/dashboardComponents/Calendar"
@@ -15,6 +15,7 @@ import Tasks from "../../components/dashboardComponents/Tasks"
 import Search from "../../components/dashboardComponents/Search"
 import Trash from "../../components/dashboardComponents/Trash"
 import CreateTask from "@/components/main/CreateTask";
+import Image from "next/image";
 export default function Dashboard() {
     let [dashboardItem,setDashboardItem] = useState<string>("home")
     return (
@@ -25,10 +26,18 @@ export default function Dashboard() {
                 </SheetTrigger>
                 <SheetContent side="left">
                     <SheetHeader>
-                    <SheetTitle>dashboard</SheetTitle>
-                    <SheetDescription>
-                        Make changes to your profile here. Click save
-                    </SheetDescription>
+                    <SheetTitle>Dashboard</SheetTitle>
+                    {
+                        JSON.parse(localStorage.getItem("isLoggedIn")??"false") &&
+                        (
+                            <div className="w-full h-full flex flex-col justify-start items-center gap-3 pt-4 pb-4">
+                                <Image src={localStorage.getItem("avatar")??""} alt="avatar" width={150} height={150} style={{borderRadius:"50%"}}/>
+                                <h2>{localStorage.getItem("firstName")??""}</h2>
+                                <h2>{localStorage.getItem("lastName")??""}</h2>
+                                <h2>{localStorage.getItem("email")??""}</h2>
+                            </div>
+                        )
+                    }
                     </SheetHeader>
                     <div className="flex flex-col justify-start items-center gap-2">
                         <div 
@@ -44,7 +53,7 @@ export default function Dashboard() {
                         <div 
                             onClick={()=>setDashboardItem("Create")}
                             className={`flex flex-row justify-start items-center w-[100%] gap-2 cursor-pointer active:bg-slate-400 p-1 rounded-md ${dashboardItem.toLowerCase() =="search" && "bg-slate-400"}`}>
-                            <FaSearch size={20}/> Create
+                            <MdAdd size={20}/> Create
                         </div>
                         <div 
                             onClick={()=>setDashboardItem("search")}

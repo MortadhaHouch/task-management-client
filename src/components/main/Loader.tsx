@@ -1,8 +1,8 @@
 import Lottie from 'lottie-react'
 import React from 'react'
-import ErrorAnimation from "../../app/assets/Animation - error.json"
-import LoadingAnimation from "../../app/assets/Animation - loading.json"
-import LoginAnimation from "../../app/assets/Animation - login.json"
+import ErrorAnimation from "../../app/assets/animations/Animation - error.json"
+import LoadingAnimation from "../../app/assets/animations/Animation - loading.json"
+import LoginAnimation from "../../app/assets/animations/Animation - login.json"
 export default function Loader({type}:LoadingProps) {
     return (
         <div 

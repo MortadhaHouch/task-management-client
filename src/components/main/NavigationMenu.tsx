@@ -13,10 +13,11 @@ import {
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import Lottie from "lottie-react";
-import AnimationData from "../../app/assets/market-research.json";
+import AnimationData from "../../app/assets/animations/market-research.json";
 import {motion,useInView,useAnimate, useAnimation} from "framer-motion"
 import { FaComment } from "react-icons/fa";
 import { IoMdLogIn } from "react-icons/io";
+import { Button } from "../ui/button";
 const services: { title: string; href: string; description: string }[] = [
     {
         title: "Creating and editing tasks",
@@ -78,7 +79,7 @@ export function NavigationMenuDemo() {
                                 <NavigationMenuLink asChild>
                                 <Link
                                     className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                                    href="/"
+                                    href="/home"
                                 >
                                     <Lottie animationData={AnimationData} loop />
                                     <div className="mb-2 mt-4 text-lg font-medium">Taskia</div>
@@ -103,7 +104,7 @@ export function NavigationMenuDemo() {
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                 <NavigationMenuTrigger>
-                    <Link href="/services">Services</Link>
+                    <Link href="/features">features</Link>
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
                     <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">

@@ -1,6 +1,20 @@
 "use client"
+import moment from "moment";
+import { Event, Task } from "../../../utils/types";
 import { CardSpotlight } from "../ui/card-spotlight";
-export function CardSpotlightDemo({theme}:{theme:boolean}) {
+import { Button } from "../ui/button";
+import { FaTimes } from "react-icons/fa";
+import { MdCheck, MdClose, MdEdit, MdTimer } from "react-icons/md";
+export function CardSpotlightDemo({
+  theme,
+  data
+}:{
+  theme:boolean,
+  data:Task|Event,
+}) {
+  let formattedDate = moment(data.createdAt).format("YYYY-MM-DD")
+  let formattedDueDate = moment(data.dueDate).format("YYYY-MM-DD")
+  let formattedModifiedAtDate = moment(data.modifiedAt).format("YYYY-MM-DD")
   return (
     <CardSpotlight className="h-[350px] w-[350px] border-r-2 flex-col justify-center align-middle"
       style={{
@@ -8,53 +22,34 @@ export function CardSpotlightDemo({theme}:{theme:boolean}) {
       }}
     >
       <div 
-        className="w-full h-full flex flex-col justify-center items-center">
+        className="w-full h-full flex flex-col justify-center items-center z-50">
         <p className="text-xl font-bold relative z-20 mt-2" style={{color:theme?"#77E4C8":"#17153B"}}>
-          Authentication steps
+          {data.title}
         </p>
         <div className="mt-4 relative z-20">
-          Follow these steps to secure your account:
+          <p className={`${theme?"text-slate-200":"text-slate-800"}`}>{data.description}</p>
           <ul className="list-none  mt-2">
-            <Step theme={theme} title="Enter your email address" />
-            <Step theme={theme} title="Create a strong password" />
-            <Step theme={theme} title="Set up two-factor authentication" />
-            <Step theme={theme} title="Verify your identity" />
+            <Step theme={theme} title={data.isCompleted?"task done":"task not completed yet"} component={data.isCompleted?<MdCheck color="green" strokeWidth={5}/>:<MdTimer color="blue" size={20}/>}/>
+            <Step theme={theme} title={data.isCancelled?"task still active":"task cancelled"} component={data.isCancelled?<MdClose color="yellow"/>:<MdTimer color="green" size={20}/>}/>
+            <Step theme={theme} title={`created at ${formattedDate}`} component={<MdTimer size={20} color="rgba(0,100,255,.5)"/>}/>
+            <Step theme={theme} title={`due date ${formattedDueDate}`} component={<MdTimer color={data.dueDate<Date.now().toString()?"red":"green"} size={20}/>}/>
+            <Step theme={theme} title={`modified at ${formattedModifiedAtDate}`} component={<MdEdit size={20}/>}/>
           </ul>
         </div>
-        <p className="mt-4 relative z-20 text-sm" style={{color:theme?"#77E4C8":"#17153B"}}>
-          Ensuring your account is properly secured helps protect your personal
-          information and data.
-        </p>
+        <div className="w-100 flex flex-row justify-between items-center z-50">
+          <Button className={`${data.isCompleted?"text-green-600":"text-red-600"} ${data.isCompleted?"bg-green-300":"bg-red-300"} hover:${data.isCompleted?"bg-green-300 text-green-600":"bg-red-300 text-red-600"}`}>{data.isCompleted?"task done":"task incomplete"}</Button>
+          <Button className={`${data.isCancelled?"text-red-600":"text-green-600"} ${data.isCancelled?"bg-red-300":"bg-green-300"} hover:${data.isCancelled?"bg-red-300 text-red-600":"bg-green-300 text-green-600"}`}>{data.isCancelled?"task cancelled":"task still active"}</Button>
+        </div>
       </div>
     </CardSpotlight>
   );
 }
 
-const Step = ({ title,theme }: { title: string,theme:boolean }) => {
+const Step = ({ title,theme,component }: { title: string,theme:boolean,component:React.ReactNode }) => {
   return (
-    <li className="flex gap-2 items-start">
-      <CheckIcon />
+    <li className="flex flex-row justify-start items-center gap-2">
+      {component}
       <p style={{color:theme ? "#FEFEFE" : "rgba(164, 159, 255, 0.75)"}}>{title}</p>
     </li>
-  );
-};
-
-const CheckIcon = () => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      className="h-4 w-4 text-blue-500 mt-1 flex-shrink-0"
-    >
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path
-        d="M12 2c-.218 0 -.432 .002 -.642 .005l-.616 .017l-.299 .013l-.579 .034l-.553 .046c-4.785 .464 -6.732 2.411 -7.196 7.196l-.046 .553l-.034 .579c-.005 .098 -.01 .198 -.013 .299l-.017 .616l-.004 .318l-.001 .324c0 .218 .002 .432 .005 .642l.017 .616l.013 .299l.034 .579l.046 .553c.464 4.785 2.411 6.732 7.196 7.196l.553 .046l.579 .034c.098 .005 .198 .01 .299 .013l.616 .017l.642 .005l.642 -.005l.616 -.017l.299 -.013l.579 -.034l.553 -.046c4.785 -.464 6.732 -2.411 7.196 -7.196l.046 -.553l.034 -.579c.005 -.098 .01 -.198 .013 -.299l.017 -.616l.005 -.642l-.005 -.642l-.017 -.616l-.013 -.299l-.034 -.579l-.046 -.553c-.464 -4.785 -2.411 -6.732 -7.196 -7.196l-.553 -.046l-.579 -.034a28.058 28.058 0 0 0 -.299 -.013l-.616 -.017l-.318 -.004l-.324 -.001zm2.293 7.293a1 1 0 0 1 1.497 1.32l-.083 .094l-4 4a1 1 0 0 1 -1.32 .083l-.094 -.083l-2 -2a1 1 0 0 1 1.32 -1.497l.094 .083l1.293 1.292l3.293 -3.292z"
-        fill="currentColor"
-        strokeWidth="0"
-      />
-    </svg>
   );
 };

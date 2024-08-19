@@ -55,8 +55,9 @@ import {
     StrikethroughEditing,
     FindAndReplace,
     Autosave,
+    ContextWatchdog,
+    Context,
 } from 'ckeditor5';
-
 import 'ckeditor5/ckeditor5.css';
 import { CKEditor, CKEditorContext } from '@ckeditor/ckeditor5-react';
 // import { EditorState } from 'prosemirror-state';
@@ -86,10 +87,12 @@ import "quill/dist/quill.core.css";
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { Strikethrough, Subscript, Superscript } from 'lucide-react';
+import { Button } from '../ui/button';
+import { DialogComponent } from './Dialog';
 export default function CreateTask() {
-    const [content, setContent] = useState('');
-    const [value, setValue] = useState('');
+    const [content, setContent] = useState<string>('');
+    const [value, setValue] = useState<string>('');
+    let [isVisible,setIsVisible] = useState<boolean>(true);
     const formats = [
         'header', 'fontfamily', "lineheight",'fontsize',"align","background","blockquote","code","color",
         'bold', 'italic', 'underline', 'strike',"direction","script",'list', 'bullet', 'indent','link', 'image',"video","media","table",'clean',"undo","redo","search","replace","addcomment", "showcomments","emoticons"
@@ -214,7 +217,7 @@ export default function CreateTask() {
     }
     const editorToolbarRef = useRef<HTMLDivElement|null>( null );
     const [ isMounted, setMounted ] = useState( false );
-    
+    const editorRef = useRef<Editor|null>(null);
     useEffect( () => {
         setMounted( true );
 
@@ -222,26 +225,99 @@ export default function CreateTask() {
             setMounted( false );
         };
     }, [] );
+    const log = () => {
+        if (editorRef.current) {
+            console.log(editorRef.current.props.plugins);
+        }
+    };
+    const handleEditorChange = (content:any, editor:any) => {
+        console.log("Content was updated:", content);
+    };
+    function showCommandMenu(editor:any) {
+        const suggestions = [
+            { title: 'Heading 1', content: '<h1>Heading 1</h1>' },
+            { title: 'Heading 2', content: '<h2>Heading 2</h2>' },
+            { title: 'Bold Text', content: '<strong>Bold Text</strong>' },
+            { title: 'Italic Text', content: '<em>Italic Text</em>' },
+        ];
+        // Display a prompt or custom menu to select an option
+        const choice = prompt('Select an option:\n' + suggestions.map(s => s.title).join('\n'));
+        const selectedOption = suggestions.find(s => s.title === choice);
+        if (selectedOption) {
+            editor.insertContent(selectedOption.content);
+        }
+    }
+      // Function to insert content at caret position
+    function insertElementAtCaret(editor:any) {
+        // Example HTML element to insert at caret
+        const htmlContent = '<div style="border: 1px solid #ddd; padding: 10px;">Inserted Element</div>';
+        // Insert the content at the caret position
+        editor.insertContent(htmlContent);
+    }
     return (
-        <div className="w-full h-full flex flex-col justify-center items-center p-28">
+        <div className="w-full h-min-[150vh] flex flex-col justify-center items-center p-28">
             <Editor
-                    apiKey={process.env.NEXT_PUBLIC_TINY_MCE_API_KEY}
-                    licenseKey={process.env.NEXT_PUBLIC_TINY_MCE_API_KEY}
-                    // tinymceScriptSrc="/client/public/tinymce.min.js"
-                    init={{
-                        plugins: 'anchor autolink charmap codesample emoticons image link lists media search replace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
-                        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-                        tinycomments_mode: 'embedded',
-                        tinycomments_author: 'Author name',
-                        mergetags_list: [
-                            { value: 'First.Name', title: 'First Name' },
-                            { value: 'Email', title: 'Email' },
-                        ],
-                        ai_request: (request:any, respondWith:any) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
-                    }}
-                    initialValue="Welcome to TinyMCE!"
-                    />
-            <ReactQuill value={value} onChange={setValue}modules={{toolbar: [
+                ref={editorRef}
+                apiKey={process.env.NEXT_PUBLIC_TINY_MCE_API_KEY}
+                licenseKey={process.env.NEXT_PUBLIC_TINY_MCE_API_KEY}
+                tinymceScriptSrc="tinymce/tinymce.min.js"
+                onFocus={(e)=>console.log(e)}
+                init={{
+                    plugins: ["removeformat","anchor","autolink","charmap","codesample","emoticons","image","link","lists","media","search","replace","table","visualblocks","wordcount","checklist","mediaembed","casechange","export","formatpainter","pageembed","linkchecker","a11ychecker","tinymcespellchecker","permanentpen","powerpaste","advtable","advcode","editimage","advtemplate","ai","mentions","tinycomments","tableofcontents","footnotes","mergetags","autocorrect","typography","inlinecss","markdown,toolbar:","'undo","redo","blocks","fontfamily","fontsize","bold","italic","underline","strikethrough","link","image","media","table","mergetags","addcomment","showcomments","spellcheckdialog","a11ycheck","typography","align","lineheight","checklist","numlist","bullist","indent","outdent","emoticons","charmap","removeformat","paste"],
+                    forced_plugins:["anchor","autolink","charmap","codesample","emoticons","image","link","lists","media","search","replace","table","visualblocks","wordcount","checklist","mediaembed","casechange","export","formatpainter","pageembed","linkchecker","a11ychecker","tinymcespellchecker","permanentpen","powerpaste","advtable","advcode","editimage","advtemplate","ai","mentions","tinycomments","tableofcontents","footnotes","mergetags","autocorrect","typography","inlinecss","markdown,toolbar:","'undo","redo","blocks","fontfamily","fontsize","bold","italic","underline","strikethrough","link","image","media","table","mergetags","addcomment","showcomments","spellcheckdialog","a11ycheck","typography","align","lineheight","checklist","numlist","bullist","indent","outdent","emoticons","charmap","removeformat","paste"],
+                    width:"100%",
+                    min_height:1000,
+                    setup: function (editor) {
+                        editor.on('keydown', function (event) {
+                            if (event.key === '/') {
+                                event.preventDefault(); // Prevent the default forward slash behavior
+                                showCommandMenu(editor); // Show the command menu
+                                setIsVisible(true)
+                            }
+                        });
+                          // Adding a custom button to test the insertion
+                        editor.ui.registry.addButton('customInsert', {
+                            text: 'Insert Element',
+                            onAction: function () {
+                                insertElementAtCaret(editor); // Call the function to insert at caret position
+                            }
+                        });
+                    },
+                    file_picker_callback: function (callback, value, meta) {
+                        // Create an input element to choose files
+                        const input = document.createElement("input");
+                        input.setAttribute("type", "file");
+                        input.setAttribute("accept", "image/*");
+                        
+                        // Add an event listener to handle the file when it's selected
+                        input.onchange = function () {
+                          const file = input.files?.[0]; // Get the selected file
+                            if (file) {
+                                const reader = new FileReader();
+                                reader.onload = function (e) {
+                                if (e.target) {
+                                    const imgSrc = e.target.result as string; // Get base64 encoded image
+                                    callback(imgSrc, { alt: file.name }); // Insert the image into TinyMCE
+                                }
+                                };
+                                reader.readAsDataURL(file); // Convert file to base64 for display in the editor
+                            }
+                        };
+                        // Trigger the file picker
+                        input.click();
+                    },
+                    image_title: true, // Allow image titles
+                    automatic_uploads: true,
+                    file_picker_types: 'file image media',
+                    paste_block_drop:false,
+                    paste_data_images: true, // Allow pasting images as base64
+                    ai_request: (request:any, respondWith:any) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+                }}
+                onEditorChange={handleEditorChange}
+                initialValue="<h1>Hello world</h1>"
+                />
+                <Button onClick={log}>show editor data</Button>
+                <ReactQuill value={value} onChange={setValue}modules={{toolbar: [
                     ['bold', 'italic', 'underline', 'strike'],        // toggledbuttons
                     ['blockquote', 'code-block'],
                     ['link', 'image', 'video', 'formula'],
@@ -261,103 +337,38 @@ export default function CreateTask() {
         />
         <div ref={ editorToolbarRef }></div>
                 <div ref={editorToolbarRef} style={{width:"800px",height:"1000px"}} id='editor'>
-                <CKEditor
+                <CKEditorContext context={ Context } contextWatchdog={ ContextWatchdog }>
+                    <CKEditor
                         editor={ ClassicEditor }
                         config={ {
-                            plugins: [
-                                Bold, Essentials, Italic, Paragraph, Paragraph, Undo,Autosave,FindAndReplace,Undo,Heading,FontColor,FontFamily,FontSize,FontColor,FontColorEditing,FontBackgroundColor,Strikethrough,StrikethroughEditing,Subscript,Superscript,CodeBlock,MediaEmbed,Link,LinkEditing,Table,TableEditing,TableToolbar,TablePropertiesEditing,TableColumnResize,TableCellProperties,Indent,TodoList,TodoListEditing,TodoListUI,ImageUploadUI
-                            ],
-                            toolbar: [
-                                'undo', 'redo',
-                                '|',
-                                'heading',
-                                '|',
-                                'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor',
-                                '|',
-                                'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
-                                '|',
-                                'link', 'uploadImage', 'blockQuote', 'codeBlock',
-                                '|',
-                                'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent',
-                            ],
-                            autosave:{
-                                save( editor ) {
-                                    return saveData( editor.getData() );
-                                },
-                                waitingTime: 5000,
-                            }
+                        plugins: [ Essentials, Bold, Italic, Paragraph ],
+                        toolbar: [ 'undo', 'redo', '|', 'bold', 'italic' ],
                         } }
                         data='<p>Hello from the first editor working with the context!</p>'
                         onReady={ ( editor ) => {
                         // You can store the "editor" and use when it is needed.
                         console.log( 'Editor 1 is ready to use!', editor );
-                        }}
+                        } }
                     />
                     <CKEditor
                         editor={ ClassicEditor }
                         config={ {
-                            toolbar: {
-                                items: [ 'undo', 'redo', '|', 'bold', 'italic' ],
-                            },
-                            plugins: [
-                                Bold, Essentials, Italic, Mention, Paragraph, Undo
-                            ],
-                            initialData: '<p>Hello from CKEditor 5 in React!</p>'
+                        plugins: [ Essentials, Bold, Italic, Paragraph ],
+                        toolbar: [ 'undo', 'redo', '|', 'bold', 'italic' ],
+                        } }
+                        data='<p>Hello from the second editor working with the context!</p>'
+                        onReady={ ( editor ) => {
+                        // You can store the "editor" and use when it is needed.
+                        console.log( 'Editor 2 is ready to use!', editor );
                         } }
                     />
-                    { isMounted && (
-                    <CKEditor
-                        editor={ DecoupledEditor }
-                        data='<p>Hello from CKEditor 5 decoupled editor!</p>'
-                        config={ {
-                            plugins: [ Bold, Italic, Paragraph, Essentials ],
-                            toolbar: [ 'undo', 'redo', '|', 'bold', 'italic' ]
-                        } }
-                        onReady={ ( editor:any ) => {
-                            if ( editorToolbarRef.current ) { 
-                                editorToolbarRef.current.appendChild( editor.ui.view.toolbar.element );
-                            }
-                        }}
-                        onAfterDestroy={ ( editor ) => {
-                            if ( editorToolbarRef.current ) {
-                                Array.from( editorToolbarRef.current.children ).forEach( (child:any) => child.remove() );
-                            }
-                        }}
-                    />
-                ) }
+                    </CKEditorContext>
+                {
+                    isVisible && (
+                        <DialogComponent/>
+                    )
+                }
             </div>
         </div>
     );
 }
-
-// Import your custom buildimportCustomBalloonEditorfrom'path-to-your-custom-build'; // Adjust this path to where your custom build is located 
-// export default function CreateTask() {
-//     return (
-//         <div className="h-[100vh] w-[100vw] flex flex-col justify-center items-center"><CKEditor
-//                 editor={BalloonEditor}  // Use the custom build
-//                 config={{
-//                     toolbar: [
-//                         'heading', 'bold', 'italic', 'link', 'blockQuote',
-//                         'insertTable', 'undo', 'redo', 'numberedList', 'bulletedList',
-//                         'uploadImage', 'mediaEmbed'
-//                     ],
-//                     image: {
-//                         toolbar: ['imageStyle:inline', 'imageStyle:block', 'imageTextAlternative'],
-//                     },
-//                     table: {
-//                         contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells'],
-//                     },
-//                     ckfinder: {
-//                         // CKFinder configuration (if needed)
-//                         uploadUrl: '/uploads',
-//                     },
-//                 }}
-//                 data="<p>Custom toolbar for Balloon Block Editor with plugins!</p>"
-//                 onChange={(event, editor) => {
-//                     const data = editor.getData();
-//                     console.log('Editor data:', data);
-//                 }}
-//             />
-//         </div>
-//     );
-// }
