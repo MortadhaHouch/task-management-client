@@ -35,8 +35,10 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "server.ts" // Include your Fastify server file
-, "postinstall.mjs"  ],
+    "server.ts", // Include your Fastify server file
+    "postinstall.mjs",
+    "src/**/*",
+    "src/types/**/*"  ],
   "exclude": [
     "node_modules"
   ]

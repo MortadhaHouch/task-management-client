@@ -12,22 +12,17 @@ type User = {
     bin:Bin
 }
 type Task = {
-    id:string
     title:string
     description:string
+    content?:string
     status:Status
-    createdAt:string
-    dueDate:string
+    createdAt:string 
+    start:Date
+    end:Date
     modifiedAt:string
-    owner:User
     isDeleted:boolean
     isCancelled:boolean
     isCompleted:boolean
-    deletedBy:string
-    remover:User
-    cancelledBy:string
-    canceller:User
-    bin:Bin
 }
 type Event = {
     isDeleted:boolean
@@ -37,8 +32,9 @@ type Event = {
     title:string
     description:string
     status:Status
-    createdAt:string
-    dueDate:string
+    createdAt:string 
+    start:string
+    end:string
     modifiedAt:string
 }
 type Bin = {

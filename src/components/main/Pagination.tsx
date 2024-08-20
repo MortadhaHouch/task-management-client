@@ -14,10 +14,9 @@ export default function NavigationMenu() {
                 <PaginationEllipsis />
                 </PaginationItem>
                 <PaginationItem>
-                <PaginationNext href="#" />
+                <PaginationNext href="#"/>
                 </PaginationItem>
             </PaginationContent>
         </Pagination>
-
     )
 }

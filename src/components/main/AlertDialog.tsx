@@ -11,23 +11,37 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
-export function AlertDialogDemo() {
+import React, { Dispatch } from "react";
+export function AlertDialogDemo({
+    isShown,
+    setIsShown,
+    title,
+    description,
+    setTitle,
+    setDescription
+}:{
+    isShown:boolean,
+    setIsShown:Dispatch<React.SetStateAction<boolean>>,
+    title:string,
+    description:string,
+    setTitle:Dispatch<React.SetStateAction<string>>
+    setDescription:Dispatch<React.SetStateAction<string>>
+}) {
     return (
-        <AlertDialog>
-            <AlertDialogTrigger asChild>
-            <Button variant="outline">Show Dialog</Button>
-            </AlertDialogTrigger>
+        <AlertDialog open={isShown}>
             <AlertDialogContent>
             <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogTitle>{title}</AlertDialogTitle>
                 <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
+                {description}
                 </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction>Continue</AlertDialogAction>
+                <AlertDialogAction onClick={()=>{
+                    setIsShown(false);
+                    setTitle("");
+                    setDescription("");
+                }}>Continue</AlertDialogAction>
             </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

@@ -1,6 +1,6 @@
 import { LoginRequest,SignupRequest, Response } from "./types";
 import sign from "jwt-encode"
-export default async function fetchData(url:string,method:"GET"|"POST"|"PUT"|"DELETE",body:LoginRequest|SignupRequest|any|null,isLoading:Function){
+export default async function fetchData(url:string,method:"GET"|"POST"|"PUT"|"DELETE",body:LoginRequest|SignupRequest|object|null,isLoading:Function){
     let requestBody = null
     switch (method) {
         case "GET":

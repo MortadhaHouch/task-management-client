@@ -8,13 +8,19 @@ AlertTitle,
 } from "@/components/ui/alert"
 import React from 'react'
 
-export default function AlertComponent() {
+export default function AlertComponent({
+    title,
+    description
+}:{
+    title:string
+    description:string
+}) {
     return (
         <Alert>
-            <Terminal className="h-4 w-4" />
-            <AlertTitle>Heads up!</AlertTitle>
+            <Terminal className="h-4 w-4" onClick={()=>console.log("clicked")}/>
+            <AlertTitle>{title}</AlertTitle>
             <AlertDescription>
-                You can add components to your app using the cli.
+                {description}
             </AlertDescription>
         </Alert>
     )

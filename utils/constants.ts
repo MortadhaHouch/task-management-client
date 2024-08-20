@@ -67,96 +67,67 @@ const users: User[] = [
         bin: { id: "bin102", owner: {} as User, tasks: [] }
     }
 ];
+
 const tasks: Task[] = [
     {
-        id: "task001",
         title: "Complete project report",
         description: "Write and submit the final project report",
         status: Status.PENDING,
-        createdAt: "2024-08-10T08:00:00.000Z",
-        dueDate: "2024-08-31T23:59:59.999Z",
+        start: new Date("2024-08-10T08:00:00.000Z"),
+        end: new Date("2024-08-31T23:59:59.999Z"),
         modifiedAt: "2024-08-15T08:00:00.000Z",
-        owner: users[0],
         isDeleted: false,
         isCancelled: false,
         isCompleted: false,
-        deletedBy: "",
-        remover: {} as User,
-        cancelledBy: "",
-        canceller: {} as User,
-        bin: { id: "bin001", owner: users[0], tasks: [] }
+        createdAt: ""
     },
     {
-        id: "task002",
         title: "Review team meeting notes",
         description: "Review the notes from last week’s team meeting",
         status: Status.DONE,
-        createdAt: "2024-07-22T09:00:00.000Z",
-        dueDate: "2024-07-25T09:00:00.000Z",
+        start: new Date("2024-07-22T09:00:00.000Z"),
+        end: new Date("2024-07-25T09:00:00.000Z"),
         modifiedAt: "2024-07-24T09:00:00.000Z",
-        owner: users[1],
         isDeleted: false,
         isCancelled: false,
         isCompleted: true,
-        deletedBy: "",
-        remover: {} as User,
-        cancelledBy: "",
-        canceller: {} as User,
-        bin: { id: "bin002", owner: users[1], tasks: [] }
+        createdAt: ""
     },
     {
-        id: "task003",
         title: "Plan marketing campaign",
         description: "Create a marketing plan for the new product launch",
         status: Status.PENDING,
-        createdAt: "2024-08-01T08:00:00.000Z",
-        dueDate: "2024-09-01T12:00:00.000Z",
+        start: new Date("2024-08-01T08:00:00.000Z"),
+        end: new Date("2024-09-01T12:00:00.000Z"),
         modifiedAt: "2024-08-15T08:00:00.000Z",
-        owner: users[2],
         isDeleted: false,
         isCancelled: false,
         isCompleted: false,
-        deletedBy: "",
-        remover: {} as User,
-        cancelledBy: "",
-        canceller: {} as User,
-        bin: { id: "bin003", owner: users[2], tasks: [] }
+        createdAt: ""
     },
     {
-        id: "task004",
         title: "Develop new feature",
         description: "Develop and deploy the new feature in the app",
         status: Status.PENDING,
-        createdAt: "2024-08-05T08:00:00.000Z",
-        dueDate: "2024-08-30T08:00:00.000Z",
+        start: new Date("2024-08-05T08:00:00.000Z"),
+        end: new Date("2024-08-30T08:00:00.000Z"),
         modifiedAt: "2024-08-16T08:00:00.000Z",
-        owner: users[3],
         isDeleted: false,
         isCancelled: false,
         isCompleted: false,
-        deletedBy: "",
-        remover: {} as User,
-        cancelledBy: "",
-        canceller: {} as User,
-        bin: { id: "bin004", owner: users[3], tasks: [] }
+        createdAt: ""
     },
     {
-        id: "task005",
         title: "Client feedback analysis",
         description: "Analyze client feedback for the latest release",
         status: Status.DONE,
-        createdAt: "2024-07-20T08:00:00.000Z",
-        dueDate: "2024-07-30T08:00:00.000Z",
+        start: new Date("2024-07-20T08:00:00.000Z"),
+        end: new Date("2024-07-30T08:00:00.000Z"),
         modifiedAt: "2024-07-25T08:00:00.000Z",
-        owner: users[4],
         isDeleted: false,
         isCancelled: false,
         isCompleted: true,
-        deletedBy: "",
-        remover: {} as User,
-        cancelledBy: "",
-        canceller: {} as User,
-        bin: { id: "bin005", owner: users[4], tasks: [] }
+        createdAt: ""
     }
 ];
 const events: Event[] = [
@@ -168,9 +139,10 @@ const events: Event[] = [
         title: "Team Standup",
         description: "Daily team standup meeting",
         status: Status.PENDING,
-        createdAt: "2024-08-20T09:00:00.000Z",
-        dueDate: "2024-08-21T09:00:00.000Z",
-        modifiedAt: "2024-08-20T09:00:00.000Z"
+        start: "2024-08-20T09:00:00.000Z",
+        end: "2024-08-21T09:00:00.000Z",
+        modifiedAt: "2024-08-20T09:00:00.000Z",
+        createdAt: ""
     },
     {
         isDeleted: false,
@@ -180,9 +152,10 @@ const events: Event[] = [
         title: "Project Kickoff",
         description: "Kickoff meeting for the new project",
         status: Status.PENDING,
-        createdAt: "2024-08-22T10:00:00.000Z",
-        dueDate: "2024-08-23T10:00:00.000Z",
-        modifiedAt: "2024-08-22T10:00:00.000Z"
+        start: "2024-08-22T10:00:00.000Z",
+        end: "2024-08-23T10:00:00.000Z",
+        modifiedAt: "2024-08-22T10:00:00.000Z",
+        createdAt: ""
     },
     {
         isDeleted: false,
@@ -192,9 +165,10 @@ const events: Event[] = [
         title: "Sprint Review",
         description: "Review of the current sprint",
         status: Status.DONE,
-        createdAt: "2024-08-10T10:00:00.000Z",
-        dueDate: "2024-08-12T10:00:00.000Z",
-        modifiedAt: "2024-08-11T10:00:00.000Z"
+        start: "2024-08-10T10:00:00.000Z",
+        end: "2024-08-12T10:00:00.000Z",
+        modifiedAt: "2024-08-11T10:00:00.000Z",
+        createdAt: ""
     },
     {
         isDeleted: false,
@@ -204,9 +178,10 @@ const events: Event[] = [
         title: "Product Demo",
         description: "Demo of the new product feature",
         status: Status.DONE,
-        createdAt: "2024-08-15T10:00:00.000Z",
-        dueDate: "2024-08-16T10:00:00.000Z",
-        modifiedAt: "2024-08-15T10:00:00.000Z"
+        start: "2024-08-15T10:00:00.000Z",
+        end: "2024-08-16T10:00:00.000Z",
+        modifiedAt: "2024-08-15T10:00:00.000Z",
+        createdAt: ""
     }
 ];
 const feedbacks: Feedback[] = [

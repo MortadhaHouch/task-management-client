@@ -1,11 +1,5 @@
 import React, { Suspense, useState } from 'react'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
-import {users,feedbacks,tasks,events} from "../../../utils/constants"
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import moment from 'moment';
-import { HoverCardDemo } from '../main/HoverCardComponent';
-import { HoverCard } from '../ui/hover-card';
-import { ExpandableCardDemo } from '../main/ExpandableCardDemo';
+import {tasks} from "../../../utils/constants"
 import { CardSpotlightDemo } from '../main/HoverCard';
 import { Skeleton } from '../ui/skeleton';
 import { Input } from '../ui/input';

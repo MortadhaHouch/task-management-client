@@ -85,3 +85,17 @@ div.dashboard-item:hover{
   padding-left: 15px;
   background-color:slategray;
 }
+textarea{
+  width: 80%;
+  height: 400px;
+  resize: none;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1.5px solid slategray;
+  background-color: transparent;
+  backdrop-filter: blur(10px);
+}
+textarea:focus{
+  outline: 3px solid rgb(77, 77, 255);
+  border:none;
+}

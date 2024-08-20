@@ -14,10 +14,12 @@ import Teams from "../../components/dashboardComponents/Teams"
 import Tasks from "../../components/dashboardComponents/Tasks"
 import Search from "../../components/dashboardComponents/Search"
 import Trash from "../../components/dashboardComponents/Trash"
-import CreateTask from "@/components/main/CreateTask";
+import CreateTask from "@/components/dashboardComponents/CreateTask";
 import Image from "next/image";
+import { Task } from "../../../utils/types";
 export default function Dashboard() {
-    let [dashboardItem,setDashboardItem] = useState<string>("home")
+    let [dashboardItem,setDashboardItem] = useState<string>("create");
+    let [tasks,setTasks] = useState<Task[]|[]>([]);
     return (
         <div className="w-full min-h-[150vh] flex flex-col justify-center items-center">
             <Sheet>
@@ -120,7 +122,7 @@ export default function Dashboard() {
             }
             {
                 dashboardItem.toLowerCase() == "calendar" && (
-                    <Calendar/>
+                    <Calendar events={tasks} setEvents={setTasks}/>
                 )
             }
             {

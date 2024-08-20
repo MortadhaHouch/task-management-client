@@ -1,28 +1,37 @@
-let templates:string[] = [
-    '/client/src/app/assets/task-templates/T1/MFF PHASE 1 9a3192a5de2b4a4582abb60d0107da4f.html', 
-    '/client/src/app/assets/task-templates/T2/New Apartment Move-In 17249cdddce84ef892a692fd35762d8e.html', 
-    '/client/src/app/assets/task-templates/T3/CopiedeSimpleTodoListWithChecklist.html',
-    '/client/src/app/assets/task-templates/T4/CopiedeEntrepreneurMonthlyToDoListWithGoals.html', 
-    '/client/src/app/assets/task-templates/T5/CopiedeWorkScheduleToDoList.html', 
-    '/client/src/app/assets/task-templates/T6/CopiedeProjectToDoList.html',
-    '/client/src/app/assets/task-templates/T7/CopiedeTodayThisWeekThisMonth_version2_.html', 
-    '/client/src/app/assets/task-templates/T8/CopiedeDailyToDoListMoodandWaterTracker.html', 
-    '/client/src/app/assets/task-templates/T9/CopiedeInaPinchToDoList.html',
-    '/client/src/app/assets/task-templates/T10/CopiedeGetThingsDoneToDoList.html', 
-    '/client/src/app/assets/task-templates/T11/CopiedeDailyScheduleToDoList.html', 
-    '/client/src/app/assets/task-templates/T12/CopiedeStepbyStepToDoList.html',
-    '/client/src/app/assets/task-templates/T13/CopiedeTodaysToDoList.html', 
-    '/client/src/app/assets/task-templates/T14/CopiedePriorityTodoChecklist.html', 
-    '/client/src/app/assets/task-templates/T15/CopiedeTodoListWithStopwatch.html',
-    '/client/src/app/assets/task-templates/T16/CopiedeTodoListWithDeadlines.html', 
-    '/client/src/app/assets/task-templates/T17/CopiedeWeeklyTaskHabitTracker_Week_.html', 
-    '/client/src/app/assets/task-templates/T18/CopiedeTodayThisWeekThisMonth.html',
-    '/client/src/app/assets/task-templates/T19/CopiedeWeeklyTodoList.html', 
-    '/client/src/app/assets/task-templates/T20/CopiedeSimpleWeeklyToDoListWithNotes.html'
-]
-export default function TaskTemplates() {
+// "use server"
+import DocViewer, { PDFRenderer, PNGRenderer } from "react-doc-viewer";
+const templates = [
+    "/templates/Beige Clean and Trendy Daily To Do List.pdf",
+    "/templates/Beige Minimalist To Do List Planner.pdf",
+    "/templates/Black and Beige Simple Lined To-Do Planner.pdf",
+    "/templates/Black and White Minimalist Lines To-Do List.pdf",
+    "/templates/Black and White Simple Minimalist To do list Planner Flyer.pdf",
+    "/templates/Black To-Do List Instagram Post.pdf",
+    "/templates/Cream and Pink Modern To-Do List Checklist.pdf",
+    "/templates/Cute Minimalist To Do List.pdf",
+    "/templates/Green and Champagne Simple Floral To-Do List Planner.pdf",
+    "/templates/Grey Minimalistic To Do List Instagram Post.pdf",
+    "/templates/Minimal To Do List Planner.pdf",
+    "/templates/Minimalist AI To Do List Instagram Post.pdf",
+    "/templates/Modern Black and White Creative To-Do List.pdf",
+    "/templates/Pastel Beige Aesthetic Reminder and To Do List Instagram Story.pdf",
+    "/templates/To Do List Planning Whiteboard in Blue Green Spaced Color Blocks Style.pdf",
+    "/templates/To-do List Doc .pdf",
+    "/templates/White and Beige Minimalist To Do List Planner.pdf",
+    "/templates/White Grey Simple To Do List Instagram Post.pdf",
+];
+
+export default async function TaskTemplates() {
     return (
-        <div>
+        <div className="flex flex-row justify-center items-center flex-wrap gap-2">
+            {templates.map((item, index) => (
+                <div key={index} style={{ marginBottom: '20px',height:"500px",width:"250px" }}>
+                    <DocViewer
+                        documents={[{uri:require(item),fileType:"application/pdf"}]}
+                        pluginRenderers={[PDFRenderer, PNGRenderer]}
+                    />
+                </div>
+            ))}
         </div>
-    )
+    );
 }

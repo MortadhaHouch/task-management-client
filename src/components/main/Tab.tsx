@@ -26,6 +26,9 @@ import {jwtDecode} from "jwt-decode"
 import { DatePickerDemo } from "./DatePicker"
 import { useToast } from "../ui/use-toast"
 import Loader from "./Loader"
+import {useCookies} from "react-cookie"
+import sign from "jwt-encode"
+import { redirect } from "next/navigation"
 export default function Tab() {
     let [avatar,setAvatar] = useState<string>("")
     let [files,setFiles] = useState<File[]|[]>([])
@@ -36,7 +39,8 @@ export default function Tab() {
     let [loginPassword,setLoginPassword] = useState<string>("")
     let [loginEmail,setLoginEmail] = useState<string>("")
     let [password,setPassword] = useState<string>("")
-    let [isLoading,setIsLoading] = useState<boolean>(false)
+    let [isLoading,setIsLoading] = useState<boolean>(false);
+    let [cookies,setCookie,removeCookie] = useCookies(["jwt_token"])
     async function handleLogin(url:string,body:{email:string,password:string}){
         try {
             let request = await fetchData(url,"POST",body,setIsLoading)
@@ -48,6 +52,17 @@ export default function Tab() {
                 localStorage.setItem("lastName",jwtDecode<any>(request.token).lastName);
                 localStorage.setItem("birthday",jwtDecode<any>(request.token).birthday);
                 localStorage.setItem("avatar",jwtDecode<any>(request.token).avatar);
+                setCookie("jwt_token",sign({
+                    email:localStorage.getItem("email"),
+                    password:localStorage.getItem("password"),
+                    firstName:localStorage.getItem("firstName"),
+                    lastName:localStorage.getItem("lastName"),
+                },process.env.NEXT_PUBLIC_SECRET_KEY??""),{
+                    path:"/",
+                    maxAge:60 * 60 * 24 * 3,
+                }
+            )
+                redirect("/home")
             }else{
                 toast({
                     title: "Error",
@@ -69,6 +84,18 @@ export default function Tab() {
                 localStorage.setItem("lastName",jwtDecode<any>(request.token).lastName);
                 localStorage.setItem("birthday",jwtDecode<any>(request.token).birthday);
                 localStorage.setItem("avatar",jwtDecode<any>(request.token).avatar);
+                localStorage.setItem("password",jwtDecode<any>(request.token).password);
+                setCookie("jwt_token",sign({
+                        email:localStorage.getItem("email"),
+                        password:localStorage.getItem("password"),
+                        firstName:localStorage.getItem("firstName"),
+                        lastName:localStorage.getItem("lastName"),
+                    },process.env.NEXT_PUBLIC_SECRET_KEY??""),{
+                        path:"/",
+                        maxAge:60 * 60 * 24 * 3,
+                    }
+                )
+                redirect("/home")
             }else{
                 toast({
                     title: "Error",
