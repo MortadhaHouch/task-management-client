@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@ckeditor/ckeditor5-react": "^9.0.0",
+    "@cyntler/react-doc-viewer": "^1.16.6",
     "@fastify/cookie": "^9.3.1",
     "@fastify/cors": "^9.0.1",
     "@fastify/formbody": "^7.4.0",
@@ -90,7 +91,6 @@
     "react-big-calendar": "^1.13.2",
     "react-cookie": "^7.2.0",
     "react-day-picker": "^8.10.1",
-    "react-doc-viewer": "^0.1.14",
     "react-dom": "^18",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.52.2",

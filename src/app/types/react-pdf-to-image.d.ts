@@ -1,12 +1,7 @@
-declare module 'react-pdf-to-image' {
-    import { FC } from 'react';
+declare module "react-pdf-to-image" {
     interface PDFtoIMGProps {
         file: string;
-        page?: number;
-        scale?: number;
-        children:React.ReactNode
-        onLoad?: () => void;
-        onError?: (error: Error) => void;
+        children: (props: { pages: string[] }) => React.ReactNode;
     }
-    export const PDFtoIMG: FC<PDFtoIMGProps>;
+    export const PDFtoIMG: React.FC<PDFtoIMGProps>;
 }

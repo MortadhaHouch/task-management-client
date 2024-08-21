@@ -38,7 +38,9 @@
     "server.ts", // Include your Fastify server file
     "postinstall.mjs",
     "src/**/*",
-    "src/types/**/*"  ],
+    "src/types/**/*",
+    "**/*.pdf"
+  ],
   "exclude": [
     "node_modules"
   ]

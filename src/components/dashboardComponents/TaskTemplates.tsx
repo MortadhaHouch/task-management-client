@@ -1,6 +1,8 @@
-// "use server"
-import DocViewer, { PDFRenderer, PNGRenderer } from "react-doc-viewer";
-const templates = [
+"use client"
+
+import { CardHoverEffectDemo } from "../main/CardHoverEffectDemo";
+
+const templates:string[] = [
     "/templates/Beige Clean and Trendy Daily To Do List.pdf",
     "/templates/Beige Minimalist To Do List Planner.pdf",
     "/templates/Black and Beige Simple Lined To-Do Planner.pdf",
@@ -20,18 +22,10 @@ const templates = [
     "/templates/White and Beige Minimalist To Do List Planner.pdf",
     "/templates/White Grey Simple To Do List Instagram Post.pdf",
 ];
-
-export default async function TaskTemplates() {
+export default function TaskTemplates() {
     return (
-        <div className="flex flex-row justify-center items-center flex-wrap gap-2">
-            {templates.map((item, index) => (
-                <div key={index} style={{ marginBottom: '20px',height:"500px",width:"250px" }}>
-                    <DocViewer
-                        documents={[{uri:require(item),fileType:"application/pdf"}]}
-                        pluginRenderers={[PDFRenderer, PNGRenderer]}
-                    />
-                </div>
-            ))}
-        </div>
+        <section className="relative w-[80vw] h-auto overflow-hidden flex flex-row justify-center items-start pt-6 pb-6">
+            <CardHoverEffectDemo items={templates} />
+        </section>
     );
 }

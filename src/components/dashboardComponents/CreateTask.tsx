@@ -67,28 +67,28 @@ export default function CreateTask() {
     }
     return (
         <main className="w-full h-[150vh] flex flex-col justify-center items-center p-28">
-            <Carousel style={{position:"relative"}} className='w-full h-full flex flex-col justify-center items-center gap-4'>
+            <Carousel style={{position:"relative",scrollSnapType:"x mandatory"}} className='w-full h-full flex flex-col justify-center items-center gap-4'>
                 <CarouselContent className='w-full h-full flex flex-row justify-evenly items-start gap-4'>
-                    <CarouselItem>
-                    <form action="" onSubmit={handleSubmit} method="post" className='w-full h-full flex flex-col justify-center items-center gap-4'>
-                        <div className='lg:w-[60%] md:w-[70%] sm:w-[80%] flex flex-col justify-center items-start gap-3'>
-                            <Label htmlFor='title' className='text-xl'>Enter a Task Title</Label>
-                            <Input value={taskName} id='title' type='text' placeholder='Task Title' style={{width:"80%"}} onChange={(e:React.ChangeEvent<HTMLInputElement>)=>setTaskName(e.target.value)}/>
-                        </div>
-                        <div className='lg:w-[60%] md:w-[70%] sm:w-[80%] flex flex-col justify-center items-start gap-3'>
-                            <Label htmlFor='description' className='text-xl'>Give it a description task description</Label>
-                            <textarea value={taskDescription} id='description' onChange={(e:React.ChangeEvent<HTMLTextAreaElement>)=>setTaskDescription(e.target.value)}></textarea>
-                        </div>
-                        <Button>validate task</Button>
-                    </form>
+                    <CarouselItem style={{scrollSnapAlign:"center"}} className='w-[100vw] min-h-[100vh] flex flex-col justify-center items-center'>
+                        <form action="" onSubmit={handleSubmit} method="post" className='w-[60vw] h-full flex flex-col justify-center items-center gap-4'>
+                            <div className='lg:w-[60%] md:w-[70%] sm:w-[80%] flex flex-col justify-center items-center gap-3'>
+                                <Label htmlFor='title' className='text-xl w-full text-start'>Enter a Task Title</Label>
+                                <Input value={taskName} id='title' type='text' placeholder='Task Title' style={{width:"100%"}} onChange={(e:React.ChangeEvent<HTMLInputElement>)=>setTaskName(e.target.value)}/>
+                            </div>
+                            <div className='lg:w-[60%] md:w-[70%] sm:w-[80%] flex flex-col justify-center items-center gap-3'>
+                                <Label htmlFor='description' className='text-xl w-full text-start'>Give it a description task description</Label>
+                                <textarea value={taskDescription} id='description' style={{width:"100%"}} onChange={(e:React.ChangeEvent<HTMLTextAreaElement>)=>setTaskDescription(e.target.value)}></textarea>
+                            </div>
+                            <Button>validate task</Button>
+                        </form>
                     </CarouselItem>
-                    <CarouselItem>
+                    <CarouselItem style={{scrollSnapAlign:"center"}} className='w-[100vw] min-h-[100vh] flex flex-col justify-center items-center p-5'>
                         <Calendar events={events} setEvents={setEvents}/>
                     </CarouselItem>
-                    <CarouselItem>
+                    <CarouselItem style={{scrollSnapAlign:"center"}} className='w-[100vw] min-h-[100vh] flex flex-col justify-center items-center p-5 overflow-y-visible'>
                         <TaskTemplates/>
                     </CarouselItem>
-                    <CarouselItem>
+                    <CarouselItem style={{scrollSnapAlign:"center"}} className='w-[100vw] min-h-[100vh] flex flex-col justify-center items-center p-5'>
                         <Editor/>
                     </CarouselItem>
                 </CarouselContent>
