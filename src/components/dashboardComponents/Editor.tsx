@@ -1,9 +1,11 @@
 import { Editor as TaskEditor } from'@tinymce/tinymce-react';
 import { DialogComponent } from '../main/Dialog';
 import { useRef, useState } from 'react';
+import { useTheme } from 'next-themes';
 export default function Editor() {
     const editorRef = useRef<TaskEditor|null>(null);
     let [isVisible,setIsVisible] = useState<boolean>(true);
+    let {theme} = useTheme()
     const handleEditorChange = (content:any, editor:any) => {
         console.log("Content was updated:", content);
     };
@@ -32,12 +34,10 @@ export default function Editor() {
                 licenseKey={process.env.NEXT_PUBLIC_TINY_MCE_API_KEY}
                 tinymceScriptSrc="tinymce/tinymce.min.js"
                 init={{
-                    plugins: ["removeformat","anchor","autolink","charmap","codesample","emoticons","image","link","lists","media","search","replace","table","visualblocks","wordcount","checklist","mediaembed","casechange","export","formatpainter","pageembed","linkchecker","a11ychecker","tinymcespellchecker","permanentpen","powerpaste","advtable","advcode","editimage","advtemplate","ai","mentions","tinycomments","tableofcontents","footnotes","mergetags","autocorrect","typography","inlinecss","markdown,toolbar:","'undo","redo","blocks","fontfamily","fontsize","bold","italic","underline","strikethrough","link","image","media","table","mergetags","addcomment","showcomments","spellcheckdialog","a11ycheck","typography","align","lineheight","checklist","numlist","bullist","indent","outdent","emoticons","charmap","removeformat","paste"],
-                    forced_plugins:["anchor","autolink","charmap","codesample","emoticons","image","link","lists","media","search","replace","table","visualblocks","wordcount","checklist","mediaembed","casechange","export","formatpainter","pageembed","linkchecker","a11ychecker","tinymcespellchecker","permanentpen","powerpaste","advtable","advcode","editimage","advtemplate","ai","mentions","tinycomments","tableofcontents","footnotes","mergetags","autocorrect","typography","inlinecss","markdown,toolbar:","'undo","redo","blocks","fontfamily","fontsize","bold","italic","underline","strikethrough","link","image","media","table","mergetags","addcomment","showcomments","spellcheckdialog","a11ycheck","typography","align","lineheight","checklist","numlist","bullist","indent","outdent","emoticons","charmap","removeformat","paste"],
-                    width:"100%",
+                    width:"100vw",
                     min_height:1000,
-                    skin: "oxide-dark",
-                    content_css: "dark",
+                    height:"100vh",
+                    contextmenu_never_use_native:false,
                     setup: function (editor) {
                         editor.on('keydown', function (event) {
                             if (event.key === '/') {

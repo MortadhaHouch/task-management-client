@@ -143,7 +143,7 @@ div#pdf-controls{
   transform: translateY(-100px);
   width: 100%;
 }
-div#pdf-renderer:hover div#pdf-controls{
+div#react-doc-viewer:hover div#pdf-controls{
   opacity: 1;
   transform: translateY(0);
 }

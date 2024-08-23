@@ -1,106 +1,95 @@
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { useState } from "react";
+import { SetStateAction, useEffect, useRef, useState } from "react";
 import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
 import "@cyntler/react-doc-viewer/dist/index.css";
 import { useTheme } from "next-themes";
 import { Button } from "./button";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious,CarouselApi } from "./carousel";
+import DropdownMenuDemo from "../main/DropDown"
+import ContextMenuComponent from "../main/ContextMenu";
 export const HoverEffect = ({
-    items,
-    className
+    className,
 }: {
-    items:string[];
     className?: string;
 }) => {
     let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-    let {theme} = useTheme()
+    let {theme} = useTheme();
+    const [api, setApi] = useState<CarouselApi>()
+    const [current, setCurrent] = useState(0)
+    const [count, setCount] = useState(0)
+    useEffect(() => {
+      if (!api) {
+        return
+      }
+      setCount(api.scrollSnapList().length)
+      setCurrent(api.selectedScrollSnap() + 1)
+      api.on("select", () => {
+        setCurrent(api.selectedScrollSnap() + 1)
+      })
+    }, [api])
+    let items = []
     return (
         <div
-            className={cn(
-                "grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3  py-10",
-                className
-            )}
+          className={cn(
+            "grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3  py-10",
+            className
+          )}
         >
-        {items.map((item, idx) => (
-            <Button
-                key={idx}
-                className="relative group  block p-2 h-full w-full"
-                onMouseEnter={() => setHoveredIndex(idx)}
-                onMouseLeave={() => setHoveredIndex(null)}
-            >
-            <AnimatePresence>
-                {hoveredIndex === idx && (
-                    <motion.span
-                        className="absolute inset-0 h-full w-full bg-neutral-200 dark:bg-slate-800/[0.8] block  rounded-3xl"
-                        layoutId="hoverBackground"
-                        initial={{ opacity: 0 }}
-                        animate={{
-                            opacity: 1,
-                            transition: { duration: 0.15 },
-                        }}
-                        exit={{
-                            opacity: 0,
-                            transition: { duration: 0.15, delay: 0.2 },
-                        }}
-                    />
-                )}
-            </AnimatePresence>
+          <Carousel setApi={setApi} className="w-[80vw] h-[100vh] flex flex-row justify-center items-center relative">
+            <CarouselContent className="flex flex-row justify-center items-center gap-2">
             {items.map((item, idx) => (
-                <AnimatePresence key={idx}>
-                    {hoveredIndex === idx && (
-                        <motion.span
-                            className="absolute inset-0 h-full w-full bg-neutral-200 dark:bg-slate-800/[0.8] block  rounded-3xl"
-                            layoutId="hoverBackground"
-                            initial={{ opacity: 0 }}
-                            animate={{
-                                opacity: 1,
-                                transition: { duration: 0.15 },
-                            }}
-                            exit={{
-                                opacity: 0,
-                                transition: { duration: 0.15, delay: 0.2 },
-                            }}
-                        />
-                    )}
-                    {
-                        <div 
-                            style={{
-                                borderRadius:10,
-                                margin:"10px",
-                                display:"flex",
-                                flexDirection:"column",
-                                justifyContent:"center",
-                                alignItems:"center",
-                                cursor:"pointer",
-                                overflow:"hidden",
-                            }}>
-                            <DocViewer
-                                documents={[{uri:item,fileType:"application/pdf"}]}
-                                pluginRenderers={DocViewerRenderers}
-                                style={{
-                                    width:"300px",
-                                    height:"500px",
-                                    backgroundColor: `${theme=="light"?"#C8ACD6":"#021526"}`,
-                                }}
-                                theme={{
-                                    primary: "#5296d8",
-                                    secondary: "#ffffff",
-                                    tertiary: "#5296d899",
-                                    textPrimary: "#ffffff",
-                                    textSecondary: "#5296d8",
-                                    textTertiary: "#00000099",
-                                    disableThemeScrollbar: false,
-                                }}
-                            />
-                        </div>
-                    }
+            <AnimatePresence key={idx}>
+            {hoveredIndex === idx && (
+              <motion.span
+                className="absolute inset-0 h-full w-full bg-neutral-200 dark:bg-slate-300/[0.8] block -z-10 rounded-3xl"
+                layoutId="hoverBackground"
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: 1,
+                  transition: { duration: 0.15 },
+                }}
+                exit={{
+                  opacity: 0,
+                  transition: { duration: 0.15, delay: 0.2 },
+                }}
+              />
+            )}
+            <CarouselItem key={idx} className="lg:basis-1/3 md:basis-1/3 sm:basis-2/3">
+                <AnimatePresence>
+                  {hoveredIndex === idx && (
+                    <motion.span
+                      className="absolute inset-0 h-full w-full bg-neutral-200 dark:bg-slate-800/[0.8] block  rounded-3xl"
+                      layoutId="hoverBackground"
+                      initial={{ opacity: 0 }}
+                      animate={{
+                        opacity: 1,
+                        transition: { duration: 0.15 },
+                      }}
+                      exit={{
+                        opacity: 0,
+                        transition: { duration: 0.15, delay: 0.2 },
+                      }}
+                    />
+                  )}
                 </AnimatePresence>
-            ))}
-            </Button>
-        ))}
+              </CarouselItem>
+            </AnimatePresence>
+          ))}
+        </CarouselContent>
+        <div 
+          style={{
+            backgroundColor:"rgba(255,255,255,0.25)",
+            backdropFilter:"blur(10px)"
+          }}
+          className="w-[clamp(300px,50vw,1000px)] height-[30px] absolute bottom-[25%] left-auto right-auto">
+          <CarouselNext/>
+          <CarouselPrevious />
         </div>
-    );
+      </Carousel>
+    </div>
+  );
 };
 
 export const Card = ({

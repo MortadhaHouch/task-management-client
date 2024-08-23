@@ -1,5 +1,6 @@
 "use client"
 
+import { SetStateAction } from "react";
 import { CardHoverEffectDemo } from "../main/CardHoverEffectDemo";
 
 const templates:string[] = [
@@ -22,10 +23,16 @@ const templates:string[] = [
     "/templates/White and Beige Minimalist To Do List Planner.pdf",
     "/templates/White Grey Simple To Do List Instagram Post.pdf",
 ];
-export default function TaskTemplates() {
+export default function TaskTemplates({
+    setSelectedTemplate,
+    selectedTemplate
+}:{
+    setSelectedTemplate:React.Dispatch<SetStateAction<string>>,
+    selectedTemplate:string
+}) {
     return (
-        <section className="relative w-[80vw] h-auto overflow-hidden flex flex-row justify-center items-start pt-6 pb-6">
-            <CardHoverEffectDemo items={templates} />
+        <section className="relative w-[80vw] h-[fit-content] overflow-y-hidden-scroll flex flex-row justify-center items-start pt-6 pb-6">
+            <CardHoverEffectDemo items={templates} selectedTemplate={selectedTemplate} setSelectedTemplate={setSelectedTemplate}/>
         </section>
     );
 }

@@ -5,71 +5,63 @@ import {
     DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuLabel,
-    DropdownMenuPortal,
     DropdownMenuSeparator,
-    DropdownMenuShortcut,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-
-export default function DropDown() {
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { FaCheckCircle, FaDownload } from "react-icons/fa";
+import { FaBookmark } from "react-icons/fa";
+import { SiAwselasticloadbalancing } from "react-icons/si";
+import pdf2html from "pdf2html"
+import { useState } from "react";
+export default function DropDown({
+    className,
+    path
+}:{
+    className:string
+    path:string
+}) {
+    let [isShown,setIsShown] = useState<boolean>(false);
     return (
-        <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-            <Button variant="outline">Open</Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-            <DropdownMenuItem>
-                Profile
-                <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-                Billing
-                <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-                Settings
-                <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-                Keyboard shortcuts
-                <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
-            </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-            <DropdownMenuItem>Team</DropdownMenuItem>
-            <DropdownMenuSub>
-                <DropdownMenuSubTrigger>Invite users</DropdownMenuSubTrigger>
-                <DropdownMenuPortal>
-                <DropdownMenuSubContent>
-                    <DropdownMenuItem>Email</DropdownMenuItem>
-                    <DropdownMenuItem>Message</DropdownMenuItem>
+        <div className={className}>
+            <DropdownMenu open={isShown}>
+                <DropdownMenuTrigger asChild onClick={()=>setIsShown((prev)=>!prev)}>
+                    <Button variant="outline"><BsThreeDotsVertical size={20}/></Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                    <DropdownMenuLabel>Template Actions</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>More...</DropdownMenuItem>
-                </DropdownMenuSubContent>
-                </DropdownMenuPortal>
-            </DropdownMenuSub>
-            <DropdownMenuItem>
-                New Team
-                <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
-            </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>GitHub</DropdownMenuItem>
-            <DropdownMenuItem>Support</DropdownMenuItem>
-            <DropdownMenuItem disabled>API</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-            Log out
-            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-            </DropdownMenuItem>
-        </DropdownMenuContent>
-        </DropdownMenu>
+                    <DropdownMenuGroup>
+                        <DropdownMenuItem>
+                            <FaCheckCircle 
+                            onClick={async()=>{
+                                // try {
+                                //     let htmlContent = await pdf2html.html(path)
+                                // } catch (error) {
+                                //     console.log(error);
+                                // }
+                            }}
+                            size={15} 
+                            style={{marginRight:10}}/><span>Use this template</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <FaDownload
+                            size={15} 
+                            style={{marginRight:10}}/><span>download as pdf</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <FaBookmark 
+                            size={15} 
+                            style={{marginRight:10}}/><span>Save to your workspace</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <SiAwselasticloadbalancing 
+                            size={15} 
+                            style={{marginRight:10}}/><span>Load from your workspace</span>
+                        </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                </DropdownMenuContent>
+            </DropdownMenu>
+        </div>
     )
 }

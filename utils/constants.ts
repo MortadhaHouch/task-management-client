@@ -1,5 +1,10 @@
 import { Event, Feedback, Status, Task, User } from "./types";
-
+import SVG1 from "../src/app/assets/icons/undraw_task_list_6x9d.svg"
+import SVG2 from "../src/app/assets/icons/undraw_push_notifications_re_t84m.svg"
+import SVG3 from "../src/app/assets/icons/task-management.svg"
+import SVG4 from "../src/app/assets/icons/undraw_accept_tasks_re_09mv.svg"
+import SVG5 from "../src/app/assets/icons/undraw_throw_away_re_x60k.svg"
+import SVG6 from "../src/app/assets/icons/Inbox cleanup-rafiki.svg"
 const users: User[] = [
     {
         avatar: "https://example.com/avatar1.png",
@@ -195,4 +200,42 @@ const feedbacks: Feedback[] = [
         }
     }
 ]
-export {users,tasks,events,feedbacks}
+const services: { title: string; href: string; description: string;imageURL:string }[] = [
+    {
+        title: "Creating and editing tasks",
+        href: "/features",
+        description:"A user can create and edit daily tasks whenever they want to",
+        imageURL:SVG1
+    },
+    {
+        title: "Notifications",
+        href: "/features",
+        description:"Never worry about forgetting or omitting task processing and be up-to-date with the latest information about daily chores",
+        imageURL:SVG2
+    },
+    {
+        title: "Unlimited tasks management features",
+        href: "/features",
+        description:"Forget about the complexity and the diversity of your tasks and fall in love with the incredibly powerful and easy workflow of tasks management",
+        imageURL:SVG3
+    },
+    {
+        title: "Unlimited number of tasks",
+        href: "/features",
+        description: "Never worry about limitations of tasks management and create as many tasks as you need",
+        imageURL:SVG4
+    },
+    {
+        title: "Deleting and canceling tasks",
+        href: "/features",
+        description:"You can also cancel or delete tasks whenever you want",
+        imageURL:SVG5
+    },
+    {
+        title: "Easy task recovery and deletion",
+        href: "/features",
+        description:"You can also recover deleted tasks whenever you want",
+        imageURL:SVG6
+    },
+]
+export {users,tasks,events,feedbacks,services}

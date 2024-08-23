@@ -8,64 +8,17 @@ import { GlobeDemo } from "@/components/main/Globe";
 import { useAnimation, useInView,motion } from "framer-motion";
 import Loader from "@/components/main/Loader";
 import ThreeDCardDemo from "@/components/main/ThreeDCard";
-import SVG1 from "../assets/icons/undraw_task_list_6x9d.svg"
-import SVG2 from "../assets/icons/undraw_push_notifications_re_t84m.svg"
-import SVG3 from "../assets/icons/task-management.svg"
-import SVG4 from "../assets/icons/undraw_accept_tasks_re_09mv.svg"
-import SVG5 from "../assets/icons/undraw_throw_away_re_x60k.svg"
-import SVG6 from "../assets/icons/Inbox cleanup-rafiki.svg"
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, ScrollControls } from "@react-three/drei";
+import dynamic from "next/dynamic";
+import SkeletonComponent from "@/components/main/SkeletonComponent";
+import { Button } from "@/components/ui/button";
+import { services } from "../../../utils/constants";
+import Link from "next/link";
+const Robot = dynamic(()=>import("../../../public/models/dom/Robot"),{ssr:false})
 export default function Home() {
-    let itemRef = useRef<HTMLDivElement|null>(null)
     let [isLoading,setIsLoading] = useState<boolean>(true);
-    let isInView = useInView(itemRef,{
-        once: true,
-    });
     let animationControls = useAnimation();
-    useEffect(()=>{
-        if(isInView) {
-            animationControls.start("final")
-        }else{
-            animationControls.start("initial")
-        }
-    },[animationControls, isInView])
-    const services: { title: string; href: string; description: string;imageURL:string }[] = [
-        {
-            title: "Creating and editing tasks",
-            href: "/features",
-            description:"A user can create and edit daily tasks whenever they want to",
-            imageURL:SVG1
-        },
-        {
-            title: "Notifications",
-            href: "/features",
-            description:"Never worry about forgetting or omitting task processing and be up-to-date with the latest information about daily chores",
-            imageURL:SVG2
-        },
-        {
-            title: "Unlimited tasks management features",
-            href: "/features",
-            description:"Forget about the complexity and the diversity of your tasks and fall in love with the incredibly powerful and easy workflow of tasks management",
-            imageURL:SVG3
-        },
-        {
-            title: "Unlimited number of tasks",
-            href: "/features",
-            description: "Never worry about limitations of tasks management and create as many tasks as you need",
-            imageURL:SVG4
-        },
-        {
-            title: "Deleting and canceling tasks",
-            href: "/features",
-            description:"You can also cancel or delete tasks whenever you want",
-            imageURL:SVG5
-        },
-        {
-            title: "Easy task recovery and deletion",
-            href: "/features",
-            description:"You can also recover deleted tasks whenever you want",
-            imageURL:SVG6
-        },
-    ]
     useEffect(()=>{
         setTimeout(()=>{
             setIsLoading(false);
@@ -73,41 +26,54 @@ export default function Home() {
     },[])
     return (
         <main 
-            className="w-full h-full flex-col justify-start align-top">
-            <GlobeDemo/>
-            <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center",flexWrap:"wrap",gap:15}}>
-                <Suspense>
+            className="w-[100vw] h-full flex-col justify-start align-top pt-14">
+                <section className="w-[100vw] min-h-[100vh] flex flex-row justify-center items-center flex-wrap">
+                    <div 
+                        className="flex flex-col justify-center items-center p-3" 
+                        style={{
+                            borderRadius:"10px",
+                            backgroundColor: "rgba(255, 255, 255, 0.03)",
+                            boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+                            backdropFilter: "blur(7.7px)",
+                            border: "1px solid rgba(255, 255, 255, 0.48)",
+                            width:"clamp(300px, 60%, 500px)",
+                        }}>
+                        <p 
+                            className="w-[80%] h-[100%] p-3">
+                            Stay Organized, Achieve More
+                            Welcome to Taskia, the ultimate task management solution designed to help you stay on top of your work. Whether you&apos;re managing personal to-dos or collaborating with a team, our intuitive interface and powerful features make it easy to organize, prioritize, and track your tasks. Say goodbye to missed deadlines and hello to increased productivity!
+                        </p>
+                        <Button><Link href={"/dashboard"}>Get started</Link></Button>
+                    </div>
+                    <Canvas 
+                        style={{
+                            width:"400px",
+                            height:"400px",
+                            borderRadius:"10px",
+                            backgroundColor: "rgba(255, 255, 255, 0.03)",
+                            boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+                        }}
+                        frameloop="always"
+                        shadows>
+                        <Suspense fallback={<SkeletonComponent/>}>
+                            <Robot/>
+                        </Suspense>
+                        <ambientLight intensity={0.5} />
+                        <directionalLight position={[0, 10, 5]} intensity={1} />
+                        <OrbitControls enableZoom={false} enableDamping={true}/>
+                    </Canvas>
+                </section>
+            <section style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center",flexWrap:"wrap",gap:15}}>
+                <Suspense fallback={<SkeletonComponent/>}>
                     {
                         services.map((item,index)=>(
-                            <motion.div
-                                initial="initial"
-                                animate="final"
-                                variants={{
-                                    initial:{
-                                        opacity: 0,
-                                        filter:"blur(10px)",
-                                        x:50
-                                    },
-                                    final:{
-                                        opacity: 1,
-                                        filter:"blur(0px)",
-                                        x:0
-                                    },
-                                }}
-                                transition={{
-                                    duration:.5,
-                                    delay:.25,
-                                    staggerChildren:.25,
-                                    ease:"easeInOut"
-                                }}
-                                key={index} 
-                                ref={itemRef}>
+                            <div key={index}>
                                 <ThreeDCardDemo title={item.title} description={item.description} href={item.href} imageURL={item.imageURL}/>
-                            </motion.div>
+                            </div>
                         ))
                     }
                 </Suspense>
-            </div>
+            </section>
             <InfiniteMovingCardsDemo/>
             <TypewriterEffectSmoothDemo/>
             {
