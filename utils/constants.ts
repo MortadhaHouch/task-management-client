@@ -5,6 +5,7 @@ import SVG3 from "../src/app/assets/icons/task-management.svg"
 import SVG4 from "../src/app/assets/icons/undraw_accept_tasks_re_09mv.svg"
 import SVG5 from "../src/app/assets/icons/undraw_throw_away_re_x60k.svg"
 import SVG6 from "../src/app/assets/icons/Inbox cleanup-rafiki.svg"
+import {v4} from "uuid"
 const users: User[] = [
     {
         avatar: "https://example.com/avatar1.png",
@@ -78,115 +79,61 @@ const tasks: Task[] = [
         title: "Complete project report",
         description: "Write and submit the final project report",
         status: Status.PENDING,
-        start: new Date("2024-08-10T08:00:00.000Z"),
-        end: new Date("2024-08-31T23:59:59.999Z"),
+        startingDate: new Date("2024-08-10T08:00:00.000Z").toString(),
+        dueDate: new Date("2024-08-31T23:59:59.999Z").toString(),
         modifiedAt: "2024-08-15T08:00:00.000Z",
         isDeleted: false,
         isCancelled: false,
-        isCompleted: false,
-        createdAt: ""
+        createdAt: "",
+        id:v4()
     },
     {
         title: "Review team meeting notes",
         description: "Review the notes from last week’s team meeting",
         status: Status.DONE,
-        start: new Date("2024-07-22T09:00:00.000Z"),
-        end: new Date("2024-07-25T09:00:00.000Z"),
+        startingDate: new Date("2024-07-22T09:00:00.000Z").toString(),
+        dueDate: new Date("2024-07-25T09:00:00.000Z").toString(),
         modifiedAt: "2024-07-24T09:00:00.000Z",
         isDeleted: false,
         isCancelled: false,
-        isCompleted: true,
-        createdAt: ""
+        createdAt: "",
+        id:v4()
     },
     {
         title: "Plan marketing campaign",
         description: "Create a marketing plan for the new product launch",
         status: Status.PENDING,
-        start: new Date("2024-08-01T08:00:00.000Z"),
-        end: new Date("2024-09-01T12:00:00.000Z"),
+        startingDate: new Date("2024-08-01T08:00:00.000Z").toString(),
+        dueDate: new Date("2024-09-01T12:00:00.000Z").toString(),
         modifiedAt: "2024-08-15T08:00:00.000Z",
         isDeleted: false,
         isCancelled: false,
-        isCompleted: false,
-        createdAt: ""
+        createdAt: "",
+        id:v4()
     },
     {
         title: "Develop new feature",
         description: "Develop and deploy the new feature in the app",
         status: Status.PENDING,
-        start: new Date("2024-08-05T08:00:00.000Z"),
-        end: new Date("2024-08-30T08:00:00.000Z"),
+        startingDate: new Date("2024-08-05T08:00:00.000Z").toString(),
+        dueDate: new Date("2024-08-30T08:00:00.000Z").toString(),
         modifiedAt: "2024-08-16T08:00:00.000Z",
         isDeleted: false,
         isCancelled: false,
-        isCompleted: false,
-        createdAt: ""
+        createdAt: "",
+        id:v4()
     },
     {
         title: "Client feedback analysis",
         description: "Analyze client feedback for the latest release",
         status: Status.DONE,
-        start: new Date("2024-07-20T08:00:00.000Z"),
-        end: new Date("2024-07-30T08:00:00.000Z"),
+        startingDate: new Date("2024-07-20T08:00:00.000Z").toString(),
+        dueDate: new Date("2024-07-30T08:00:00.000Z").toString(),
         modifiedAt: "2024-07-25T08:00:00.000Z",
         isDeleted: false,
         isCancelled: false,
-        isCompleted: true,
-        createdAt: ""
-    }
-];
-const events: Event[] = [
-    {
-        isDeleted: false,
-        isCancelled: false,
-        isCompleted: false,
-        id: "event001",
-        title: "Team Standup",
-        description: "Daily team standup meeting",
-        status: Status.PENDING,
-        start: "2024-08-20T09:00:00.000Z",
-        end: "2024-08-21T09:00:00.000Z",
-        modifiedAt: "2024-08-20T09:00:00.000Z",
-        createdAt: ""
-    },
-    {
-        isDeleted: false,
-        isCancelled: true,
-        isCompleted: false,
-        id: "event002",
-        title: "Project Kickoff",
-        description: "Kickoff meeting for the new project",
-        status: Status.PENDING,
-        start: "2024-08-22T10:00:00.000Z",
-        end: "2024-08-23T10:00:00.000Z",
-        modifiedAt: "2024-08-22T10:00:00.000Z",
-        createdAt: ""
-    },
-    {
-        isDeleted: false,
-        isCancelled: false,
-        isCompleted: true,
-        id: "event003",
-        title: "Sprint Review",
-        description: "Review of the current sprint",
-        status: Status.DONE,
-        start: "2024-08-10T10:00:00.000Z",
-        end: "2024-08-12T10:00:00.000Z",
-        modifiedAt: "2024-08-11T10:00:00.000Z",
-        createdAt: ""
-    },
-    {
-        isDeleted: false,
-        isCancelled: false,
-        isCompleted: true,
-        id: "event004",
-        title: "Product Demo",
-        description: "Demo of the new product feature",
-        status: Status.DONE,
-        start: "2024-08-15T10:00:00.000Z",
-        end: "2024-08-16T10:00:00.000Z",
-        modifiedAt: "2024-08-15T10:00:00.000Z",
-        createdAt: ""
+        createdAt: "",
+        id:v4()
     }
 ];
 const feedbacks: Feedback[] = [
@@ -238,4 +185,4 @@ const services: { title: string; href: string; description: string;imageURL:stri
         imageURL:SVG6
     },
 ]
-export {users,tasks,events,feedbacks,services}
+export {users,tasks,feedbacks,services}

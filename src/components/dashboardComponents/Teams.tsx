@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
-import {users,feedbacks,tasks,events} from "../../../utils/constants"
+import {users,feedbacks,tasks} from "../../../utils/constants"
 import { Avatar, AvatarImage } from '../ui/avatar';
 import { AvatarFallback } from '@radix-ui/react-avatar';
 export default function Teams() {

@@ -14,6 +14,7 @@ import { AlertDialogDemo } from '../main/AlertDialog';
 import { Status, Task, User } from '../../../utils/types';
 import { tasks, users } from '../../../utils/constants';
 import TaskTemplates from './TaskTemplates';
+import {v4} from "uuid";
 import {Swiper,SwiperSlide} from "swiper/react";
 import { EffectCoverflow, Pagination } from 'swiper/modules';
 import 'swiper/css';
@@ -45,17 +46,17 @@ export default function CreateTask() {
                 setMessage(jwtDecode<any>(request.token).message);
                 setDescription(jwtDecode<any>(request.token).description);
                 let eventObject:Task = {
-                    start:new Date(Date.now()),
-                    end:new Date(Date.now() + 60 * 60 *24 *1000),
+                    startingDate:new Date(Date.now()).toString(),
+                    dueDate:new Date(Date.now() + 60 * 60 *24 *1000).toString(),
                     status:Status.PENDING,
                     title:taskName,
                     description:taskDescription,
                     content:"",
                     createdAt:new Date(Date.now()).toString(),
                     isCancelled:false,
-                    isCompleted:false,
                     isDeleted:false,
                     modifiedAt:"",
+                    id:v4()
                 }
                 setEvent(eventObject)
                 setEvents((prev)=>[...prev,eventObject])

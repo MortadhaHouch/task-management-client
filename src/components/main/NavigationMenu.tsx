@@ -74,7 +74,7 @@ export function NavigationMenuDemo() {
                 <NavigationMenuItem>
                     <NavigationMenuTrigger><h5>Getting started</h5></NavigationMenuTrigger>
                     <NavigationMenuContent>
-                        <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+                    <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                             <li className="row-span-3">
                                 <NavigationMenuLink asChild>
                                 <Link
@@ -103,42 +103,39 @@ export function NavigationMenuDemo() {
                     </NavigationMenuContent>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                <NavigationMenuTrigger>
-                    <Link href="/features">features</Link>
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                    <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                    {services.map((item) => (
-                        <ListItem
-                            key={item.title}
-                            href={item.href}
-                            title={item.title}
-                            description={item.description}
-                        >
-                        {item.description}
-                        </ListItem>
-                    ))}
-                    </ul>
-                </NavigationMenuContent>
+                    <NavigationMenuTrigger>
+                        <NavigationMenuLink href="/features">features</NavigationMenuLink>
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                            {services.map((item) => (
+                                <ListItem
+                                    key={item.title}
+                                    href={item.href}
+                                    title={item.title}
+                                    description={item.description}
+                                >
+                                {item.description}
+                                </ListItem>
+                            ))}
+                        </ul>
+                    </NavigationMenuContent>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                <Link href="/login">
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    <NavigationMenuLink href="/login" className={navigationMenuTriggerStyle()}>
                         <IoMdLogIn size={20}/> Login
                     </NavigationMenuLink>
-                </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <Link href="/feedbacks">
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            <FaComment size={20}/> feedbacks
-                        </NavigationMenuLink>
-                    </Link>
+                    <NavigationMenuLink href="/feedbacks" className={navigationMenuTriggerStyle()}>
+                        <FaComment size={20}/> feedbacks
+                    </NavigationMenuLink>
                 </NavigationMenuItem>
             </NavigationMenuList>
         </NavigationMenu>
     );
 }
+
 
 type ListItemProps = {
     className?: string;
@@ -152,24 +149,24 @@ const ListItem = React.forwardRef<HTMLAnchorElement, ListItemProps>(
         return(
             <li>
                 <NavigationMenuLink asChild>
-                <a
-                    ref={ref}
-                    className={cn(
-                    "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-                        className
-                    )}
-                        {...props}
-                >
-                    <div className="text-sm font-medium leading-none">
-                        {title}
-                    </div>
-                    <path
-                        className="line-clamp-2 text-sm leading-snug text-muted-foreground"
+                    <a
+                        ref={ref}
+                        className={cn(
+                        "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+                            className
+                        )}
+                            {...props}
                     >
-                        {description}
-                        {children}
-                    </path>
-                </a>
+                        <div className="text-sm font-medium leading-none">
+                            {title}
+                        </div>
+                        <path
+                            className="line-clamp-2 text-sm leading-snug text-muted-foreground"
+                        >
+                            {description}
+                            {children}
+                        </path>
+                    </a>
                 </NavigationMenuLink>
             </li>
         )

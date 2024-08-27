@@ -1,0 +1,87 @@
+"use client";
+import { Tabs } from "../ui/tabs-component";
+import { useEffect, useState } from "react";
+import { DataType, Task } from "../../../utils/types";
+import { useTheme } from "next-themes";
+import fetchData from "../../../utils/fetchData";
+import { jwtDecode } from "jwt-decode";
+import TasksContainer from "./TasksContainer";
+export function TabsDemo() {
+    let [tasks,setTasks] = useState<Task[]|[]>([]);
+    let [isLoading,setIsLoading] = useState<boolean>(false);
+    let [pagesCount,setPagesCount] = useState<number>(0);
+    let [dataType,setDataType] = useState<DataType>(DataType.DAY);
+    let {theme} = useTheme();
+    async function handleDataLoad(){
+        try {
+            let request = await fetchData("/task","GET",null,setIsLoading);
+            let response = jwtDecode<any>(request.token);
+            console.log(response);
+            setTasks(response.tasks);
+            setPagesCount(response.pagesCount);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    useEffect(()=>{
+        handleDataLoad()
+    },[])
+    const tabs = [
+        {
+            title: "by day",
+            value: "by day",
+            content: (
+                <TasksContainer dataType={DataType.DAY} tasks={tasks} setTasks={setTasks}/>
+            ),
+        },
+        {
+            title: "by month",
+            value: "by month",
+            content: (
+                <TasksContainer dataType={DataType.MONTH} tasks={tasks} setTasks={setTasks}/>
+            ),
+        },
+        {
+            title: "by year",
+            value: "by year",
+            content: (
+                <TasksContainer dataType={DataType.YEAR} tasks={tasks} setTasks={setTasks}/>
+            ),
+        },
+        {
+            title: "Overdue",
+            value: "Overdue tasks",
+            content: (
+                <TasksContainer dataType={DataType.OVERDUE} tasks={tasks} setTasks={setTasks}/>
+            ),
+        },
+        {
+            title: "cancelled",
+            value: "cancelled tasks",
+            content: (
+                <TasksContainer dataType={DataType.CANCELLED} tasks={tasks} setTasks={setTasks}/>
+            ),
+        },
+    ];
+
+    return (
+        <div
+            style={{
+                backgroundColor: theme === "dark"? "#19202C" : "#ffffff",
+                color: theme === "dark"? "#ffffff" : "#19202C",
+                fontFamily: "Poppins, sans-serif",
+                padding: "2rem",
+                borderRadius: "10px",
+                overflow: "hidden",
+                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)",
+                transition: "box-shadow 0.3s ease",
+                cursor: "pointer",
+                position: "relative",
+                transformStyle: "preserve-3d",
+                transform: "rotateY(0deg)",
+            }}
+            className="h-[20rem] md:h-[40rem] [perspective:1000px] relative b flex flex-col max-w-5xl mx-auto w-full  items-start justify-start my-40">
+            <Tabs tabs={tabs} setDataType={setDataType} dataType={dataType}/>
+        </div>
+    );
+}

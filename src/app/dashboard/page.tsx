@@ -17,14 +17,24 @@ import Trash from "../../components/dashboardComponents/Trash"
 import CreateTask from "@/components/dashboardComponents/CreateTask";
 import Image from "next/image";
 import { Task } from "../../../utils/types";
+import { MdKeyboardDoubleArrowRight,MdKeyboardDoubleArrowLeft } from "react-icons/md";
 export default function Dashboard() {
-    let [dashboardItem,setDashboardItem] = useState<string>("create");
+    let [dashboardItem,setDashboardItem] = useState<string>("");
     let [tasks,setTasks] = useState<Task[]|[]>([]);
+    let [isShown,setIsShown] = useState<boolean>(false);
     return (
         <div className="w-full min-h-[150vh] flex flex-col justify-center items-center">
-            <Sheet>
+            <Sheet open={isShown} onOpenChange={setIsShown}>
                 <SheetTrigger asChild>
-                    <Button>open sheet</Button>
+                    <Button className="fixed top-[100px] left-[15px] backdrop-blur-xl z-50" onClick={()=>setIsShown(val=>!val)}>
+                        {
+                            isShown?(
+                                <MdKeyboardDoubleArrowRight size={20}/>
+                            ):(
+                                <MdKeyboardDoubleArrowLeft size={20}/>
+                            )
+                        }
+                    </Button>
                 </SheetTrigger>
                 <SheetContent side="left">
                     <SheetHeader>

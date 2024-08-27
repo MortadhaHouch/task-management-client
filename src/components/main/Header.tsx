@@ -26,9 +26,7 @@ export default function Header() {
     const loginState = useContext(LoginContext)
     let [isLoading,setIsLoading] = useState<boolean>(false);
     return (
-        <header 
-            className={`w-full h-auto backdrop-blur-2xl flex flex-row justify-evenly items-center fixed top-0 left-0 shadow-slate-600 z-50 p-2 g-2`}
-            >
+        <header className={`w-full h-auto backdrop-blur-2xl flex flex-row justify-evenly items-center fixed top-0 left-0 shadow-slate-600 z-50 p-2 g-2`}>
             <div className="flex flex-row justify-center items-center">
                 <Logo/>
                 <motion.h1 
@@ -47,14 +45,13 @@ export default function Header() {
                     className={`${titillium_Web.className} sm:text-md md:text-lg lg:text-xl`} 
                     style={{
                 }}>
-                    <Link href={"/home"} className="flex flex-row justify-center items-center gap-1">Taskia</Link></motion.h1>
+                <Link href={"/home"} className="flex flex-row justify-center items-center gap-1">Taskia</Link></motion.h1>
             </div>
             <NavigationMenuDemo/>
-            <div 
-                className="flex flex-row justify-center items-center gap-2">
-                    {
-                        (loginState.isLoggedIn||(localStorage.getItem("isLoggedIn")!=null && JSON.parse(localStorage.getItem("isLoggedIn")??"false"))) ? (
-                            <>
+            <div className="flex flex-row justify-center items-center gap-2">
+                {
+                    (loginState.isLoggedIn||(localStorage.getItem("isLoggedIn")!=null && JSON.parse(localStorage.getItem("isLoggedIn")??"false"))) ? (
+                        <>
                             <Avatar/>
                             <Link href={"/dashboard"} className="flex flex-row justify-center items-center gap-1"><IconDashboard/> dashboard</Link>
                             <Link href={"/profile"} className="flex flex-row justify-center items-center gap-1"><FaUser/> profile</Link>
