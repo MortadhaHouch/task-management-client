@@ -6,7 +6,7 @@ import { FcTodoList } from "react-icons/fc";
 import { FaSearch,FaTrash,FaCalendarDay } from "react-icons/fa";
 import { IoIosNotifications } from "react-icons/io";
 import { MdAdd, MdGroups } from "react-icons/md";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Home from "../../components/dashboardComponents/Home"
 import Calendar from "../../components/dashboardComponents/Calendar"
 import Notifications from "../../components/dashboardComponents/Notifications"
@@ -16,11 +16,32 @@ import Search from "../../components/dashboardComponents/Search"
 import Trash from "../../components/dashboardComponents/Trash"
 import CreateTask from "@/components/dashboardComponents/CreateTask";
 import Image from "next/image";
-import { Task } from "../../../utils/types";
+import { DataType, Task } from "../../../utils/types";
 import { MdKeyboardDoubleArrowRight,MdKeyboardDoubleArrowLeft } from "react-icons/md";
+import fetchData from "../../../utils/fetchData";
+import { jwtDecode } from "jwt-decode";
+import { useTheme } from "next-themes";
 export default function Dashboard() {
-    let [dashboardItem,setDashboardItem] = useState<string>("");
+    let [dashboardItem,setDashboardItem] = useState<string>("home");
     let [tasks,setTasks] = useState<Task[]|[]>([]);
+    let [isLoading,setIsLoading] = useState<boolean>(false);
+    let [pagesCount,setPagesCount] = useState<number>(0);
+    let [dataType,setDataType] = useState<DataType>(DataType.DAY);
+    let {theme} = useTheme();
+    async function handleDataLoad(){
+    try {
+        let request = await fetchData("/task","GET",null,setIsLoading);
+        let response = jwtDecode<any>(request.token);
+        console.log(response);
+        setTasks(response.tasks);
+        setPagesCount(response.pagesCount);
+    } catch (error) {
+        console.log(error); 
+    }
+    }
+    useEffect(()=>{
+        handleDataLoad()
+    },[])
     let [isShown,setIsShown] = useState<boolean>(false);
     return (
         <div className="w-full min-h-[150vh] flex flex-col justify-center items-center">
@@ -63,7 +84,7 @@ export default function Dashboard() {
                         </div>
                         <div 
                             onClick={()=>setDashboardItem("Create")}
-                            className={`flex flex-row justify-start items-center w-[100%] gap-2 cursor-pointer active:bg-slate-400 p-1 rounded-md ${dashboardItem.toLowerCase() =="search" && "bg-slate-400"}`}>
+                            className={`flex flex-row justify-start items-center w-[100%] gap-2 cursor-pointer active:bg-slate-400 p-1 rounded-md ${dashboardItem.toLowerCase() =="create" && "bg-slate-400"}`}>
                             <MdAdd size={20}/> Create
                         </div>
                         <div 

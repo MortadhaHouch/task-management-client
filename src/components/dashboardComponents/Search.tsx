@@ -33,47 +33,49 @@ export default function Search() {
     },[])
     return (
         <div className='w-full h-full flex flex-row justify-center items-center flex-wrap gap-2'>
-            <div>
-                <Input type="search" id='search' placeholder='search task' onChange={(e)=>setSearchTerms(e.target.value)}/>
-            </div>
-            <div className='w-full h-full flex flex-row justify-center items-center flex-wrap gap-2'>
-                {
-                    tasks && tasks.length > 0?(
-                        tasks.map((item,index)=>{
-                            return(
-                                <motion.div
-                                    initial="initial"
-                                    animate="animate"
-                                    transition={{
-                                        duration:.25,
-                                        ease:"easeInOut",
-                                        staggerChildren:.1,
-                                        delay:0.2 * index
-                                    }}
-                                    variants={{
-                                        initial:{
-                                            opacity:1,
-                                            transform:"translateY(30px)"
-                                        },
-                                        animate:{
-                                            opacity:item.title.includes(searchTerms)?1:0,
-                                            transform:`${item.title.includes(searchTerms)?"translateY(0)":"translateY(30px)"}`,
-                                            scale:`${item.title.includes(searchTerms)?"1":"0"}`,
-                                            display:`${item.title.includes(searchTerms)?"flex":"none"}`
-                                        },
-                                    }}
-                                    key={index}>
-                                        <Suspense fallback={<Skeleton/>}>
-                                            <CardSpotlightDemo theme={true} item={item}/>
-                                        </Suspense>
-                                </motion.div>
-                            )
-                        })
-                    ):(
-                        <Image alt='' src={theme == "dark"?Error404Dark:Error404Light}/>
-                    )
-                }
-            </div>
+            {
+                tasks && tasks.length > 0?(
+                    <>
+                        <div>
+                            <Input type="search" id='search' placeholder='search task' onChange={(e)=>setSearchTerms(e.target.value)}/>
+                        </div>
+                        {
+                            tasks.map((item,index)=>{
+                                return(
+                                    <motion.div
+                                        initial="initial"
+                                        animate="animate"
+                                        transition={{
+                                            duration:.25,
+                                            ease:"easeInOut",
+                                            staggerChildren:.1,
+                                            delay:0.2 * index
+                                        }}
+                                        variants={{
+                                            initial:{
+                                                opacity:1,
+                                                transform:"translateY(30px)"
+                                            },
+                                            animate:{
+                                                opacity:item.title.includes(searchTerms)?1:0,
+                                                transform:`${item.title.includes(searchTerms)?"translateY(0)":"translateY(30px)"}`,
+                                                scale:`${item.title.includes(searchTerms)?"1":"0"}`,
+                                                display:`${item.title.includes(searchTerms)?"flex":"none"}`
+                                            },
+                                        }}
+                                        key={index}>
+                                            <Suspense fallback={<Skeleton/>}>
+                                                <CardSpotlightDemo theme={true} item={item}/>
+                                            </Suspense>
+                                    </motion.div>
+                                )
+                            })
+                        }
+                    </>
+                ):(
+                    <Image alt='' src={theme == "dark"?Error404Dark:Error404Light}/>
+                )
+            }
         </div>
     )
 }

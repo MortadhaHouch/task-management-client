@@ -15,14 +15,32 @@ import SkeletonComponent from "@/components/main/SkeletonComponent";
 import { Button } from "@/components/ui/button";
 import { services } from "../../../utils/constants";
 import Link from "next/link";
+import fetchData from "../../../utils/fetchData";
+import { jwtDecode } from "jwt-decode";
+import { useTheme } from "next-themes";
+import { DataType, Feedback } from "../../../utils/types";
 const Robot = dynamic(()=>import("../../../public/models/dom/Robot"),{ssr:false})
 export default function Home() {
     let [isLoading,setIsLoading] = useState<boolean>(true);
-    let animationControls = useAnimation();
     useEffect(()=>{
         setTimeout(()=>{
             setIsLoading(false);
         },4000)
+    },[])
+    let [feedbacks,setFeedbacks] = useState<Feedback[]|[]>([])
+    let {theme} = useTheme();
+    async function handleDataLoad(){
+        try {
+            let request = await fetchData("/feedback","GET",null,setIsLoading);
+            let response = jwtDecode<any>(request.token);
+            console.log(response);
+            setFeedbacks(response.tasks);
+        } catch (error) {
+            console.log(error); 
+        }
+    }
+    useEffect(()=>{
+        handleDataLoad()
     },[])
     return (
         <main 
@@ -74,7 +92,11 @@ export default function Home() {
                     }
                 </Suspense>
             </section>
-            <InfiniteMovingCardsDemo/>
+            {
+                feedbacks.length > 0 && (
+                    <InfiniteMovingCardsDemo feedbacks={feedbacks}/>
+                )
+            }
             <TypewriterEffectSmoothDemo/>
             {
                 isLoading && (

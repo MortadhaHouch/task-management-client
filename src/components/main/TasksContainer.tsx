@@ -16,7 +16,13 @@ export default function TasksContainer({
 }) {
     let {theme} = useTheme();
     return (
-        <div>
+        <div
+            className='flex flex-col justify-center items-center gap-2'
+            style={{
+                backgroundColor:theme == "light"?"#B3C8CF":"#021526",
+                borderRadius:15
+            }}
+        >
             {
                 tasks.length == 0 ?(
                     <Image 

@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import fetchData from "../../../utils/fetchData";
 import { jwtDecode } from "jwt-decode";
 import { DataType, Task } from "../../../utils/types";
+import { useTheme } from "next-themes";
 
 type Tab = {
   title: string;
@@ -45,6 +46,7 @@ export const Tabs = ({
   let [tasks,setTasks] = useState<Task[]>();
   let [pagesCount,setPagesCount] = useState<number>(0);
   let [requestKeyWord,setRequestKeyWord] = useState<string>("");
+  let {theme} = useTheme();
   async function handleDataLoad(){
     try {
       if(dataType.toLowerCase().includes("day")){

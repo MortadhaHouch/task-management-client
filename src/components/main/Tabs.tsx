@@ -68,9 +68,14 @@ export function TabsDemo() {
         <div
             style={{
                 backgroundColor: theme === "dark"? "#19202C" : "#ffffff",
-                color: theme === "dark"? "#ffffff" : "#19202C",
                 fontFamily: "Poppins, sans-serif",
-                padding: "2rem",
+                display: "flex",
+                flexDirection:"row",
+                justifyContent: "center",
+                alignItems: "flex-start",
+                flexWrap: "wrap",
+                gap: "10px",
+                padding: "10px",
                 borderRadius: "10px",
                 overflow: "hidden",
                 boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)",

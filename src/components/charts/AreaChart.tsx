@@ -96,7 +96,7 @@ export function AreaChartComponent({
                     </SelectContent>
                 </Select>
             </CardHeader>
-            <CardContent className="h-[500px] w-full px-2 pt-4 sm:px-6 sm:pt-6">
+            <CardContent className="h-[600px] w-[80vw] px-2 pt-4 sm:px-6 sm:pt-6">
                 <ChartContainer
                     config={chartConfig}
                     className="aspect-auto h-full w-full"

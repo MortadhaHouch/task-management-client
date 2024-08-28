@@ -7,7 +7,7 @@ import "react-big-calendar/lib/addons/dragAndDrop/styles.css"; // CSS for drag-a
 import withDragAndDrop, { withDragAndDropProps } from "react-big-calendar/lib/addons/dragAndDrop/withDragAndDrop";
 import { Task } from "../../../utils/types";
 interface MyEvent extends Event {
-    id: number;
+    id: string;
     title: string;
     start: Date;
     end: Date;
@@ -35,24 +35,24 @@ export function CalendarForm({
     const [currentDate, setCurrentDate] = useState<Date>(new Date());  // Track the current date
     const [view, setView] = useState<View>('month');  // Track the current view (month, week, day)
 
-    const onEventResize: withDragAndDropProps["onEventResize"] = (data:Event) => {
+    const onEventResize: withDragAndDropProps["onEventResize"] = (data:MyEvent) => {
         const { start, end } = data;
         console.log(data);
         setEvents((prevEvents) =>
-        prevEvents.map((event) =>
-            event.id === data.event.id
-            ? { ...event, start, end }
-            : event
-        )
+            prevEvents.map((event) =>
+                event.id === data.id
+                ? { ...event, start, end }
+                : event
+            )
         );
     };
 
-    const onEventDrop: withDragAndDropProps["onEventDrop"] = (data:Event) => {
+    const onEventDrop: withDragAndDropProps["onEventDrop"] = (data:MyEvent) => {
         const { start, end } = data;
         console.log(data);
         setEvents((prevEvents) =>
         prevEvents.map((event) =>
-                event.id === data.event.id
+                event.id === data.id
                 ? { ...event, start, end }
                 : event
             )

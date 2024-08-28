@@ -8,10 +8,8 @@ export default function TaskComponent({
     item:Task
 }) {
     return (
-        <div>
-            <Suspense fallback={<Skeleton/>}>
-                <CardSpotlightDemo theme={true} item={item}/>
-            </Suspense>
-        </div>
+        <Suspense fallback={<Skeleton/>}>
+            <CardSpotlightDemo theme={true} item={item}/>
+        </Suspense>
     )
 }

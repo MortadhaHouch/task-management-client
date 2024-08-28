@@ -58,13 +58,13 @@ enum DataType{
 }
 type Feedback = {
     content:string
-    publishedBy:User
-    reactions:Reaction
-}
-type Reaction = {
-    emittedBy:User
-    likes:number[]
-    dislikes:number[]
+    authorName:string
+    authorEmail:string
+    authorAvatar:string
+    likes:number
+    dislikes:number
+    isMine:boolean
+    id:string
 }
 type LoginRequest = {
     email:string
@@ -90,5 +90,5 @@ type ChartOverview={
         cancelled:number,
     }]
 }
-export type {User,Task,Bin,Feedback,Reaction,Event,LoginRequest,SignupRequest,Response,ChartOverview}
+export type {User,Task,Bin,Feedback,Event,LoginRequest,SignupRequest,Response,ChartOverview}
 export {Status,DataType}
