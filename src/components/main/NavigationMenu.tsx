@@ -122,11 +122,6 @@ export function NavigationMenuDemo() {
                     </NavigationMenuContent>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <NavigationMenuLink href="/login" className={navigationMenuTriggerStyle()}>
-                        <IoMdLogIn size={20}/> Login
-                    </NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
                     <NavigationMenuLink href="/feedbacks" className={navigationMenuTriggerStyle()}>
                         <FaComment size={20}/> feedbacks
                     </NavigationMenuLink>

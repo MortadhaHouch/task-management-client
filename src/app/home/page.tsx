@@ -19,6 +19,7 @@ import fetchData from "../../../utils/fetchData";
 import { jwtDecode } from "jwt-decode";
 import { useTheme } from "next-themes";
 import { DataType, Feedback } from "../../../utils/types";
+import { LinkPreviewDemo } from "@/components/main/LinkPreviewDemo";
 const Robot = dynamic(()=>import("../../../public/models/dom/Robot"),{ssr:false})
 export default function Home() {
     let [isLoading,setIsLoading] = useState<boolean>(true);
@@ -34,7 +35,7 @@ export default function Home() {
             let request = await fetchData("/feedback","GET",null,setIsLoading);
             let response = jwtDecode<any>(request.token);
             console.log(response);
-            setFeedbacks(response.tasks);
+            setFeedbacks(response.feedbacks);
         } catch (error) {
             console.log(error); 
         }
@@ -61,7 +62,7 @@ export default function Home() {
                             Stay Organized, Achieve More
                             Welcome to Taskia, the ultimate task management solution designed to help you stay on top of your work. Whether you&apos;re managing personal to-dos or collaborating with a team, our intuitive interface and powerful features make it easy to organize, prioritize, and track your tasks. Say goodbye to missed deadlines and hello to increased productivity!
                         </p>
-                        <Button><Link href={"/dashboard"}>Get started</Link></Button>
+                        <Button><LinkPreviewDemo href={"/dashboard"} title="Get started"/></Button>
                     </div>
                     <Canvas 
                         style={{

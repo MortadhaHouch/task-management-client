@@ -45,9 +45,10 @@ type Bin = {
     tasks:Task[]
 }
 enum Status{
-    DONE="DONE",
-    ACCOMPLISHED="ACCOMPLISHED",
+    OVERDUE="OVERDUE",
+    COMPLETED="COMPLETED",
     PENDING="PENDING",
+    CANCELLED="CANCELLED",
 }
 enum DataType{
     DAY="DAY",
@@ -82,13 +83,14 @@ type Response = {
     token:string
 }
 type ChartOverview={
-    date:string
-    items:[{
-        overdue:number,
-        completed:number,
-        pending:number,
-        cancelled:number,
-    }]
+    createdAt:string,
+    startingDate:string,
+    dueDate:string,
+    modifiedAt:string,
+    overdue:number,
+    completed:number,
+    pending:number,
+    cancelled:number,
 }
 export type {User,Task,Bin,Feedback,Event,LoginRequest,SignupRequest,Response,ChartOverview}
 export {Status,DataType}
