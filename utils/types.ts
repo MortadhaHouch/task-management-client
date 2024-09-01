@@ -12,15 +12,15 @@ type User = {
     bin:Bin
 }
 type Task = {
-    id:string
+    id?:string
     title:string
     description:string
     content?:string
     status:Status
-    createdAt:string 
-    startingDate:string
-    dueDate:string
-    modifiedAt:string
+    createdAt:Date 
+    startingDate:Date
+    dueDate:Date
+    modifiedAt?:Date
     isDeleted:boolean
     isCancelled:boolean
     thumbnail?:string
@@ -92,5 +92,24 @@ type ChartOverview={
     pending:number,
     cancelled:number,
 }
-export type {User,Task,Bin,Feedback,Event,LoginRequest,SignupRequest,Response,ChartOverview}
-export {Status,DataType}
+type Notification = {
+    id:string
+    title:string
+    content:string
+    createdAt:string
+    userId:string
+}
+enum TabName {
+    HOME="HOME",
+    TASKS="TASKS",
+    CREATE="CREATE",
+    SEARCH="SEARCH",
+    NOTIFICATIONS="NOTIFICATIONS",
+    CALENDAR="CALENDAR",
+    TRASH="TRASH",
+    CANCELLED="CANCELLED",
+    PENDING="PENDING",
+    DETAILS="DETAILS",
+}
+export type {User,Task,Bin,Feedback,Event,LoginRequest,SignupRequest,Response,ChartOverview,Notification}
+export {Status,DataType,TabName}

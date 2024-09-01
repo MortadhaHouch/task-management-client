@@ -7,9 +7,6 @@
   box-sizing: border-box;
   transition: .25s;
 }
-
-
-
 @layer base {
   :root {
     --background: 0 0% 100%;

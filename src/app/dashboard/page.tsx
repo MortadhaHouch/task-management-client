@@ -8,40 +8,44 @@ import { IoIosNotifications } from "react-icons/io";
 import { MdAdd, MdGroups } from "react-icons/md";
 import { useEffect, useState } from "react";
 import Home from "../../components/dashboardComponents/Home"
-import Calendar from "../../components/dashboardComponents/Calendar"
 import Notifications from "../../components/dashboardComponents/Notifications"
-import Teams from "../../components/dashboardComponents/Teams"
 import Tasks from "../../components/dashboardComponents/Tasks"
 import Search from "../../components/dashboardComponents/Search"
 import Trash from "../../components/dashboardComponents/Trash"
 import CreateTask from "@/components/dashboardComponents/CreateTask";
 import Image from "next/image";
-import { DataType, Task } from "../../../utils/types";
+import { DataType, TabName, Task } from "../../../utils/types";
 import { MdKeyboardDoubleArrowRight,MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import fetchData from "../../../utils/fetchData";
 import { jwtDecode } from "jwt-decode";
 import { useTheme } from "next-themes";
+import { MdCancel } from "react-icons/md";
+import Cancelled from "@/components/dashboardComponents/Cancelled";
+import { MdPendingActions } from "react-icons/md";
+import Pending from "@/components/dashboardComponents/Pending";
+import {tasks as events} from "../../../utils/constants"
+import MyCalendar from "@/components/dashboardComponents/Calendar";
 export default function Dashboard() {
-    let [dashboardItem,setDashboardItem] = useState<string>("home");
+    let [dashboardItem,setDashboardItem] = useState<TabName>(TabName.HOME);
     let [tasks,setTasks] = useState<Task[]|[]>([]);
     let [isLoading,setIsLoading] = useState<boolean>(false);
     let [pagesCount,setPagesCount] = useState<number>(0);
     let [dataType,setDataType] = useState<DataType>(DataType.DAY);
     let {theme} = useTheme();
-    async function handleDataLoad(){
-    try {
-        let request = await fetchData("/task","GET",null,setIsLoading);
-        let response = jwtDecode<any>(request.token);
-        console.log(response);
-        setTasks(response.tasks);
-        setPagesCount(response.pagesCount);
-    } catch (error) {
-        console.log(error); 
-    }
-    }
-    useEffect(()=>{
-        handleDataLoad()
-    },[])
+    // async function handleDataLoad(){
+    //     try {
+    //         let request = await fetchData("/task","GET",null,setIsLoading);
+    //         let response = jwtDecode<any>(request.token);
+    //         console.log(response);
+    //         setTasks(response.tasks);
+    //         setPagesCount(response.pagesCount);
+    //     } catch (error) {
+    //         console.log(error); 
+    //     }
+    //     }
+    // useEffect(()=>{
+    //     handleDataLoad()
+    // },[])
     let [isShown,setIsShown] = useState<boolean>(false);
     return (
         <div className="w-full min-h-[150vh] flex flex-col justify-center items-center">
@@ -64,7 +68,7 @@ export default function Dashboard() {
                         JSON.parse(localStorage.getItem("isLoggedIn")??"false") &&
                         (
                             <div className="w-full h-full flex flex-col justify-start items-center gap-3 pt-4 pb-4">
-                                <Image src={localStorage.getItem("avatar")??""} alt="avatar" width={150} height={150} style={{borderRadius:"50%"}}/>
+                                <Image src={localStorage.getItem("avatar")??""} width={150} height={150} loading="lazy" alt="avatar" style={{borderRadius:"50%",width:150,height:150}}/>
                                 <h2>{localStorage.getItem("firstName")??""} {localStorage.getItem("lastName")??""}</h2>
                                 <h2>{localStorage.getItem("email")??""}</h2>
                             </div>
@@ -73,51 +77,51 @@ export default function Dashboard() {
                     </SheetHeader>
                     <div className="flex flex-col justify-start items-center gap-2">
                         <div 
-                            onClick={()=>setDashboardItem("home")}
+                            onClick={()=>setDashboardItem(TabName.HOME)}
                             className={`flex flex-row justify-start items-center w-[100%] gap-2 cursor-pointer active:bg-slate-400 p-1 rounded-md ${dashboardItem.toLowerCase() =="home" && "bg-slate-400"}`}>
                             <FaHome size={20}/> Home
                         </div>
                         <div 
-                            onClick={()=>setDashboardItem("tasks")}
+                            onClick={()=>setDashboardItem(TabName.TASKS)}
                             className={`flex flex-row justify-start items-center w-[100%] gap-2 cursor-pointer active:bg-slate-400 p-1 rounded-md ${dashboardItem.toLowerCase() =="tasks" && "bg-slate-400"}`}>
                             <FcTodoList size={20}/> Tasks
                         </div>
                         <div 
-                            onClick={()=>setDashboardItem("Create")}
+                            onClick={()=>setDashboardItem(TabName.CREATE)}
                             className={`flex flex-row justify-start items-center w-[100%] gap-2 cursor-pointer active:bg-slate-400 p-1 rounded-md ${dashboardItem.toLowerCase() =="create" && "bg-slate-400"}`}>
                             <MdAdd size={20}/> Create
                         </div>
                         <div 
-                            onClick={()=>setDashboardItem("search")}
+                            onClick={()=>setDashboardItem(TabName.SEARCH)}
                             className={`flex flex-row justify-start items-center w-[100%] gap-2 cursor-pointer active:bg-slate-400 p-1 rounded-md ${dashboardItem.toLowerCase() =="search" && "bg-slate-400"}`}>
                             <FaSearch size={20}/> Search
                         </div>
                         <div 
-                            onClick={()=>setDashboardItem("notifications")}
+                            onClick={()=>setDashboardItem(TabName.CANCELLED)}
+                            className={`flex flex-row justify-start items-center w-[100%] gap-2 cursor-pointer active:bg-slate-400 p-1 rounded-md ${dashboardItem.toLowerCase() =="cancelled" && "bg-slate-400"}`}>
+                            <MdCancel size={20}/> cancelled
+                        </div>
+                        <div 
+                            onClick={()=>setDashboardItem(TabName.PENDING)}
+                            className={`flex flex-row justify-start items-center w-[100%] gap-2 cursor-pointer active:bg-slate-400 p-1 rounded-md ${dashboardItem.toLowerCase() =="pending" && "bg-slate-400"}`}>
+                            <MdPendingActions size={20}/> pending
+                        </div>
+                        <div 
+                            onClick={()=>setDashboardItem(TabName.NOTIFICATIONS)}
                             className={`flex flex-row justify-start items-center w-[100%] gap-2 cursor-pointer active:bg-slate-400 p-1 rounded-md ${dashboardItem.toLowerCase() =="notifications" && "bg-slate-400"}`}>
                             <IoIosNotifications size={20}/> Notifications
                         </div>
                         <div 
-                            onClick={()=>setDashboardItem("teams")}
-                            className={`flex flex-row justify-start items-center w-[100%] gap-2 cursor-pointer active:bg-slate-400 p-1 rounded-md ${dashboardItem.toLowerCase() =="teams" && "bg-slate-400"}`}>
-                            <MdGroups size={20}/> Teams
-                        </div>
-                        <div 
-                            onClick={()=>setDashboardItem("calendar")}
+                            onClick={()=>setDashboardItem(TabName.CALENDAR)}
                             className={`flex flex-row justify-start items-center w-[100%] gap-2 cursor-pointer active:bg-slate-400 p-1 rounded-md ${dashboardItem.toLowerCase() =="calendar" && "bg-slate-400"}`}>
                             <FaCalendarDay size={20}/> Calendar
                         </div>
-                        <div 
-                            onClick={()=>setDashboardItem("trash")}
+                        <div
+                            onClick={()=>setDashboardItem(TabName.TRASH)}
                             className={`flex flex-row justify-start items-center w-[100%] gap-2 cursor-pointer active:bg-slate-400 p-1 rounded-md ${dashboardItem.toLowerCase() =="trash" && "bg-slate-400"}`}>
                             <FaTrash size={20}/> Trash
                         </div>
                     </div>
-                    <SheetFooter>
-                        <SheetClose asChild>
-                            <Button type="submit">Save changes</Button>
-                        </SheetClose>
-                    </SheetFooter>
                 </SheetContent>
             </Sheet>
             {
@@ -146,18 +150,23 @@ export default function Dashboard() {
                 )
             }
             {
-                dashboardItem.toLowerCase() == "teams" && (
-                    <Teams/>
-                )
-            }
-            {
                 dashboardItem.toLowerCase() == "calendar" && (
-                    <Calendar events={tasks} setEvents={setTasks}/>
+                    <MyCalendar setTasks={setTasks} tasks={events}/>
                 )
             }
             {
                 dashboardItem.toLowerCase() == "trash" && (
                     <Trash/>
+                )
+            }
+            {
+                dashboardItem.toLowerCase() == "cancelled" && (
+                    <Cancelled/>
+                )
+            }
+            {
+                dashboardItem.toLowerCase() == "pending" && (
+                    <Pending/>
                 )
             }
     </div>

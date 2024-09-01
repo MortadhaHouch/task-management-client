@@ -1,6 +1,5 @@
 import React, { Suspense, useEffect, useState } from 'react'
 import { Input } from '../ui/input'
-import { tasks } from '../../../utils/constants'
 import { CardSpotlightDemo } from '../main/HoverCard'
 import { motion } from 'framer-motion'
 import { Skeleton } from '../ui/skeleton'

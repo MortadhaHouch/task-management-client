@@ -62,7 +62,7 @@ export default function Home() {
                             Stay Organized, Achieve More
                             Welcome to Taskia, the ultimate task management solution designed to help you stay on top of your work. Whether you&apos;re managing personal to-dos or collaborating with a team, our intuitive interface and powerful features make it easy to organize, prioritize, and track your tasks. Say goodbye to missed deadlines and hello to increased productivity!
                         </p>
-                        <Button><LinkPreviewDemo href={"/dashboard"} title="Get started"/></Button>
+                        <Button><Link href={"/get-started"}>Get started</Link></Button>
                     </div>
                     <Canvas 
                         style={{

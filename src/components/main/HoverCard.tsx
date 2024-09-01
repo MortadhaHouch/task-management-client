@@ -16,7 +16,7 @@ export function CardSpotlightDemo({
   let formattedDueDate = moment(item.dueDate).format("YYYY-MM-DD")
   let formattedModifiedAtDate = moment(item.modifiedAt).format("YYYY-MM-DD")
   return (
-    <CardSpotlight className="h-[350px] w-[350px] border-r-2 flex-col justify-center align-middle"
+    <CardSpotlight className="h-[300px] w-[300px] border-r-2 flex-col justify-center align-middle p-2"
       style={{
         backgroundColor:theme?"rgba(32, 30, 67, 0.75)":"rgba(235, 244, 246, 0.75)"
       }}

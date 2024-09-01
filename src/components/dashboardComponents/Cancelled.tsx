@@ -1,17 +1,17 @@
-import React, { Suspense, useEffect, useState } from 'react'
-import { Input } from '../ui/input'
-import { CardSpotlightDemo } from '../main/HoverCard'
-import { motion } from 'framer-motion'
-import { Skeleton } from '../ui/skeleton'
-import fetchData from '../../../utils/fetchData'
-import { jwtDecode } from 'jwt-decode'
-import { Task } from '../../../utils/types'
-import Image from 'next/image'
+import { jwtDecode } from "jwt-decode";
+import fetchData from "../../../utils/fetchData";
+import { Suspense, useEffect, useState } from "react";
+import { Task } from "../../../utils/types";
+import { TbRestore } from "react-icons/tb";
+import { Skeleton } from "../ui/skeleton";
+import { CardSpotlightDemo } from "../main/HoverCard";
+import {motion} from "framer-motion"
 import Error404Light from "../../app/assets/icons/error-404-light.svg"
 import Error404Dark from "../../app/assets/icons/error-404-dark.svg"
 import { useTheme } from 'next-themes'
-import { TbRestore } from "react-icons/tb";
-export default function Trash() {
+import Image from "next/image";
+import { Input } from "../ui/input";
+export default function Cancelled() {
     let [searchTerms,setSearchTerms] = useState<string>("");
     let [tasks,setTasks] = useState<Task[]>();
     let [isLoading,setIsLoading] = useState<boolean>(false);
@@ -19,7 +19,7 @@ export default function Trash() {
     let {theme} = useTheme();
     async function handleDataLoad(){
         try {
-            let request = await fetchData("/task/deleted","GET",null,setIsLoading);
+            let request = await fetchData("/task/cancelled","GET",null,setIsLoading);
             let response = jwtDecode<any>(request.token);
             console.log(response);
             setTasks(response.tasks);
@@ -32,7 +32,7 @@ export default function Trash() {
         handleDataLoad()
     },[])
     return (
-        <main className='w-full h-full flex flex-row justify-center items-center flex-wrap gap-2'>
+        <main className="flex flex-row justify-center items-center flex-wrap g-2">
             {
                 tasks && tasks.length > 0?(
                     <section className='w-full h-full flex flex-col justify-center items-center g-10'>

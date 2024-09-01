@@ -29,7 +29,7 @@ export const HoverEffect = ({
         setCurrent(api.selectedScrollSnap() + 1)
       })
     }, [api])
-    let items = []
+    let items:any[] = []
     return (
         <div
           className={cn(

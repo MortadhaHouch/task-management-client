@@ -5,7 +5,7 @@ export default function Tasks() {
         <div 
             className='w-full h-full flex flex-row justify-center items-start flex-wrap'
             style={{padding:"10px"}}
-            >
+        >
             <TabsDemo/>
         </div>
     )

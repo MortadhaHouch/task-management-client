@@ -41,8 +41,8 @@ export function CircularChart() {
         </CardHeader>
         <CardContent className="flex-1 pb-0">
             <ChartContainer
-            config={chartConfig}
-            className="mx-auto aspect-square max-h-[250px]"
+                config={chartConfig}
+                className="mx-auto aspect-square max-h-[250px]"
             >
             <RadialBarChart
                 data={chartData}
@@ -51,11 +51,11 @@ export function CircularChart() {
                 outerRadius={140}
             >
                 <PolarGrid
-                gridType="circle"
-                radialLines={false}
-                stroke="none"
-                className="first:fill-muted last:fill-background"
-                polarRadius={[86, 74]}
+                    gridType="circle"
+                    radialLines={false}
+                    stroke="none"
+                    className="first:fill-muted last:fill-background"
+                    polarRadius={[86, 74]}
                 />
                 <RadialBar dataKey="visitors" background />
                 <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
@@ -70,16 +70,16 @@ export function CircularChart() {
                             dominantBaseline="middle"
                         >
                             <tspan
-                            x={viewBox.cx}
-                            y={viewBox.cy}
-                            className="fill-foreground text-4xl font-bold"
+                                x={viewBox.cx}
+                                y={viewBox.cy}
+                                className="fill-foreground text-4xl font-bold"
                             >
                             {chartData[0].visitors.toLocaleString()}
                             </tspan>
                             <tspan
-                            x={viewBox.cx}
-                            y={(viewBox.cy || 0) + 24}
-                            className="fill-muted-foreground"
+                                x={viewBox.cx}
+                                y={(viewBox.cy || 0) + 24}
+                                className="fill-muted-foreground"
                             >
                             Visitors
                             </tspan>

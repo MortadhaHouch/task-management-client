@@ -31,35 +31,35 @@ export function TabsDemo() {
             title: "by day",
             value: "by day",
             content: (
-                <TasksContainer dataType={DataType.DAY} tasks={tasks} setTasks={setTasks}/>
+                <TasksContainer dataType={DataType.DAY} tasks={tasks}/>
             ),
         },
         {
             title: "by month",
             value: "by month",
             content: (
-                <TasksContainer dataType={DataType.MONTH} tasks={tasks} setTasks={setTasks}/>
+                <TasksContainer dataType={DataType.MONTH} tasks={tasks}/>
             ),
         },
         {
             title: "by year",
             value: "by year",
             content: (
-                <TasksContainer dataType={DataType.YEAR} tasks={tasks} setTasks={setTasks}/>
+                <TasksContainer dataType={DataType.YEAR} tasks={tasks}/>
             ),
         },
         {
             title: "Overdue",
             value: "Overdue tasks",
             content: (
-                <TasksContainer dataType={DataType.OVERDUE} tasks={tasks} setTasks={setTasks}/>
+                <TasksContainer dataType={DataType.OVERDUE} tasks={tasks}/>
             ),
         },
         {
             title: "cancelled",
             value: "cancelled tasks",
             content: (
-                <TasksContainer dataType={DataType.CANCELLED} tasks={tasks} setTasks={setTasks}/>
+                <TasksContainer dataType={DataType.CANCELLED} tasks={tasks}/>
             ),
         },
     ];
@@ -85,7 +85,7 @@ export function TabsDemo() {
                 transformStyle: "preserve-3d",
                 transform: "rotateY(0deg)",
             }}
-            className="h-[20rem] md:h-[40rem] [perspective:1000px] relative b flex flex-col max-w-5xl mx-auto w-full  items-start justify-start my-40">
+            className="h-full md:h-[40rem] w-full [perspective:1000px] relative flex flex-col max-w-5xl mx-auto items-start justify-start my-40">
             <Tabs tabs={tabs} setDataType={setDataType} dataType={dataType}/>
         </div>
     );

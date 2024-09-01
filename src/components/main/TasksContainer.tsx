@@ -12,12 +12,12 @@ export default function TasksContainer({
 }:{
     dataType:DataType
     tasks:Task[]
-    setTasks:React.Dispatch<React.SetStateAction<Task[]>>
+    setTasks?:React.Dispatch<React.SetStateAction<Task[]>>
 }) {
     let {theme} = useTheme();
     return (
         <div
-            className='flex flex-col justify-center items-center gap-2'
+            className='w-full h-full flex flex-row justify-center items-center flex-wrap overflow-y-scroll gap-2'
             style={{
                 backgroundColor:theme == "light"?"#B3C8CF":"#021526",
                 borderRadius:15

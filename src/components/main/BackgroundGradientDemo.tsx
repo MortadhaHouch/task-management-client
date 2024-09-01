@@ -8,13 +8,9 @@ export function BackgroundGradientDemo({
 }:{
     item:string
 }) {
-    let itemRef = useRef<HTMLDivElement|null>(null)
-    let isInView = useInView(itemRef);
-    useEffect(()=>{
-
-    },[isInView])
     return (
-        <motion.div 
+        <motion.div
+            className="relative w-[350px] h-[650px] bg-slate-500 dark:bg-zinc-900 rounded-2xl"
             variants={{
                 initial:{
                     opacity:0,
@@ -30,12 +26,9 @@ export function BackgroundGradientDemo({
                 ease:"easeInOut",
                 type:"tween"
             }}
-            style={{width:"300px",height:"500px"}} 
-            ref={itemRef}>
-            <BackgroundGradient className="relative rounded-[22px] max-w-sm p-1 sm:p-1 bg-slate-500 dark:bg-zinc-900 flex flex-col justify-center items-center overflow-hidden">
-                <DropDown path="" className="absolute top-1 right-1 w-[320px] h-[60px] bg-slate-500 dark:bg-zinc-900 flex flex-row justify-end items-center"/>
-                <iframe src={item} seamless frameBorder="0" style={{width:"300px",height:"600px",borderRadius:10,overflow:"hidden"}}></iframe>
-            </BackgroundGradient>
+            style={{width:"350px",height:"650px"}}>
+                <DropDown path={item} className="absolute top-0 right-0 w-full h-[60px] bg-slate-500 dark:bg-zinc-900 flex flex-row justify-end items-center"/>
+                <iframe src={item} frameBorder="0" style={{width:"350px",height:"650px",borderRadius:10,overflow:"hidden"}}></iframe>
         </motion.div>
     );
 }

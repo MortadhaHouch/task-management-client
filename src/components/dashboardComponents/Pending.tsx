@@ -1,17 +1,17 @@
 import React, { Suspense, useEffect, useState } from 'react'
-import { Input } from '../ui/input'
-import { CardSpotlightDemo } from '../main/HoverCard'
-import { motion } from 'framer-motion'
-import { Skeleton } from '../ui/skeleton'
-import fetchData from '../../../utils/fetchData'
-import { jwtDecode } from 'jwt-decode'
-import { Task } from '../../../utils/types'
-import Image from 'next/image'
+import { Task } from '../../../utils/types';
+import { useTheme } from 'next-themes';
+import fetchData from '../../../utils/fetchData';
+import { jwtDecode } from 'jwt-decode';
+import { Input } from '../ui/input';
+import {motion} from "framer-motion"
+import { TbRestore } from 'react-icons/tb';
+import { Skeleton } from '../ui/skeleton';
+import { CardSpotlightDemo } from '../main/HoverCard';
+import Image from 'next/image';
 import Error404Light from "../../app/assets/icons/error-404-light.svg"
 import Error404Dark from "../../app/assets/icons/error-404-dark.svg"
-import { useTheme } from 'next-themes'
-import { TbRestore } from "react-icons/tb";
-export default function Trash() {
+export default function Pending() {
     let [searchTerms,setSearchTerms] = useState<string>("");
     let [tasks,setTasks] = useState<Task[]>();
     let [isLoading,setIsLoading] = useState<boolean>(false);

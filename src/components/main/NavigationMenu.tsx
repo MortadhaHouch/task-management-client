@@ -14,10 +14,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import Lottie from "lottie-react";
 import AnimationData from "../../app/assets/animations/market-research.json";
-import {motion,useInView,useAnimate, useAnimation} from "framer-motion"
 import { FaComment } from "react-icons/fa";
-import { IoMdLogIn } from "react-icons/io";
-import { Button } from "../ui/button";
 const services: { title: string; href: string; description: string }[] = [
     {
         title: "Creating and editing tasks",
@@ -26,27 +23,27 @@ const services: { title: string; href: string; description: string }[] = [
     },
     {
         title: "Notifications",
-        href: "/features",
+        href: "/feature/#creates",
         description:"Never worry about forgetting or omitting task processing and be up-to-date with the latest information about daily chores",
     },
     {
         title: "Unlimited tasks management features",
-        href: "/features",
+        href: "/features/#unlimited-features",
         description:"Forget about the complexity and the diversity of your tasks and fall in love with the incredibly powerful and easy workflow of tasks management",
     },
     {
         title: "Unlimited number of tasks",
-        href: "/features",
+        href: "/features/#unlimited-number",
         description: "Never worry about limitations of tasks management and create as many tasks as you need",
     },
     {
         title: "Deleting and canceling tasks",
-        href: "/features",
+        href: "/features/#delete",
         description:"You can also cancel or delete tasks whenever you want",
     },
     {
         title: "Easy task recovery and deletion",
-        href: "/features",
+        href: "/features/#recover",
         description:"You can also recover deleted tasks whenever you want",
     },
 ]

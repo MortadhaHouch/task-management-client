@@ -74,79 +74,148 @@ const users: User[] = [
     }
 ];
 
-const tasks: Task[] = [
+let tasks: Task[] = [
     {
-        title: "Complete project report",
-        description: "Write and submit the final project report",
+        id: v4(),
+        title: "Design Homepage",
+        description: "Create the initial design for the homepage.",
         status: Status.PENDING,
-        startingDate: new Date("2024-08-10T08:00:00.000Z").toString(),
-        dueDate: new Date("2024-08-31T23:59:59.999Z").toString(),
-        modifiedAt: "2024-08-15T08:00:00.000Z",
+        createdAt: new Date("2024-01-15T10:00:00Z"),
+        startingDate: new Date("2024-02-01T09:00:00Z"),
+        dueDate: new Date("2024-02-15T17:00:00Z"),
         isDeleted: false,
         isCancelled: false,
-        createdAt: "",
-        id:v4()
+        content: "Initial design sketches and wireframes.",
+        thumbnail: "https://via.placeholder.com/150?text=Design",
+        coverImage: "https://via.placeholder.com/600x400?text=Homepage+Design"
     },
     {
-        title: "Review team meeting notes",
-        description: "Review the notes from last week’s team meeting",
-        status: Status.DONE,
-        startingDate: new Date("2024-07-22T09:00:00.000Z").toString(),
-        dueDate: new Date("2024-07-25T09:00:00.000Z").toString(),
-        modifiedAt: "2024-07-24T09:00:00.000Z",
-        isDeleted: false,
-        isCancelled: false,
-        createdAt: "",
-        id:v4()
-    },
-    {
-        title: "Plan marketing campaign",
-        description: "Create a marketing plan for the new product launch",
+        id: v4(),
+        title: "Develop Backend",
+        description: "Implement the backend services for user management.",
         status: Status.PENDING,
-        startingDate: new Date("2024-08-01T08:00:00.000Z").toString(),
-        dueDate: new Date("2024-09-01T12:00:00.000Z").toString(),
-        modifiedAt: "2024-08-15T08:00:00.000Z",
+        createdAt: new Date("2024-02-01T11:00:00Z"),
+        startingDate: new Date("2024-02-10T08:00:00Z"),
+        dueDate: new Date("2024-03-01T18:00:00Z"),
         isDeleted: false,
         isCancelled: false,
-        createdAt: "",
-        id:v4()
+        content: "Setup APIs and database schema.",
+        thumbnail: "https://via.placeholder.com/150?text=Backend",
+        coverImage: "https://via.placeholder.com/600x400?text=Backend+Development"
     },
     {
-        title: "Develop new feature",
-        description: "Develop and deploy the new feature in the app",
+        id: v4(),
+        title: "Write Documentation",
+        description: "Prepare user and developer documentation for the project.",
+        status: Status.COMPLETED,
+        createdAt: new Date("2024-03-01T12:00:00Z"),
+        startingDate: new Date("2024-03-05T10:00:00Z"),
+        dueDate: new Date("2024-03-20T15:00:00Z"),
+        isDeleted: false,
+        isCancelled: false,
+        content: "User guides, API documentation, and developer notes.",
+        thumbnail: "https://via.placeholder.com/150?text=Docs",
+        coverImage: "https://via.placeholder.com/600x400?text=Documentation"
+    },
+    {
+        id: v4(),
+        title: "Test Application",
+        description: "Perform comprehensive testing of the application.",
         status: Status.PENDING,
-        startingDate: new Date("2024-08-05T08:00:00.000Z").toString(),
-        dueDate: new Date("2024-08-30T08:00:00.000Z").toString(),
-        modifiedAt: "2024-08-16T08:00:00.000Z",
+        createdAt: new Date("2024-03-10T13:00:00Z"),
+        startingDate: new Date("2024-03-15T09:00:00Z"),
+        dueDate: new Date("2024-04-01T17:00:00Z"),
         isDeleted: false,
         isCancelled: false,
-        createdAt: "",
-        id:v4()
+        content: "Functional, integration, and regression testing.",
+        thumbnail: "https://via.placeholder.com/150?text=Testing",
+        coverImage: "https://via.placeholder.com/600x400?text=Testing"
     },
     {
-        title: "Client feedback analysis",
-        description: "Analyze client feedback for the latest release",
-        status: Status.DONE,
-        startingDate: new Date("2024-07-20T08:00:00.000Z").toString(),
-        dueDate: new Date("2024-07-30T08:00:00.000Z").toString(),
-        modifiedAt: "2024-07-25T08:00:00.000Z",
+        id: v4(),
+        title: "Marketing Campaign",
+        description: "Launch the marketing campaign for the product.",
+        status: Status.COMPLETED,
+        createdAt: new Date("2024-04-01T14:00:00Z"),
+        startingDate: new Date("2024-04-05T08:00:00Z"),
+        dueDate: new Date("2024-04-30T18:00:00Z"),
         isDeleted: false,
         isCancelled: false,
-        createdAt: "",
-        id:v4()
+        content: "Social media ads, email marketing, and content creation.",
+        thumbnail: "https://via.placeholder.com/150?text=Marketing",
+        coverImage: "https://via.placeholder.com/600x400?text=Marketing+Campaign"
+    },
+    {
+        id: v4(),
+        title: "User Training",
+        description: "Conduct training sessions for end-users.",
+        status: Status.PENDING,
+        createdAt: new Date("2024-04-15T15:00:00Z"),
+        startingDate: new Date("2024-05-01T10:00:00Z"),
+        dueDate: new Date("2024-05-15T16:00:00Z"),
+        isDeleted: false,
+        isCancelled: false,
+        content: "Prepare training materials and schedule sessions.",
+        thumbnail: "https://via.placeholder.com/150?text=Training",
+        coverImage: "https://via.placeholder.com/600x400?text=User+Training"
+    },
+    {
+        id: v4(),
+        title: "Prepare Deployment",
+        description: "Prepare the application for deployment to production.",
+        status: Status.PENDING,
+        createdAt: new Date("2024-05-01T16:00:00Z"),
+        startingDate: new Date("2024-05-10T11:00:00Z"),
+        dueDate: new Date("2024-06-01T17:00:00Z"),
+        isDeleted: false,
+        isCancelled: false,
+        content: "Setup servers, configure environments, and finalize deployment plan.",
+        thumbnail: "https://via.placeholder.com/150?text=Deployment",
+        coverImage: "https://via.placeholder.com/600x400?text=Deployment+Preparation"
+    },
+    {
+        id: v4(),
+        title: "User Feedback",
+        description: "Collect and analyze user feedback post-launch.",
+        status: Status.PENDING,
+        createdAt: new Date("2024-06-01T17:00:00Z"),
+        startingDate: new Date("2024-06-05T09:00:00Z"),
+        dueDate: new Date("2024-06-20T16:00:00Z"),
+        isDeleted: false,
+        isCancelled: false,
+        content: "Surveys, interviews, and feedback forms.",
+        thumbnail: "https://via.placeholder.com/150?text=Feedback",
+        coverImage: "https://via.placeholder.com/600x400?text=User+Feedback"
+    },
+    {
+        id: v4(),
+        title: "Bug Fixes",
+        description: "Address bugs and issues reported by users.",
+        status: Status.PENDING,
+        createdAt: new Date("2024-06-15T18:00:00Z"),
+        startingDate: new Date("2024-07-01T10:00:00Z"),
+        dueDate: new Date("2024-07-15T17:00:00Z"),
+        isDeleted: false,
+        isCancelled: false,
+        content: "Identify, fix, and verify bug resolutions.",
+        thumbnail: "https://via.placeholder.com/150?text=Bugs",
+        coverImage: "https://via.placeholder.com/600x400?text=Bug+Fixes"
+    },
+    {
+        id: v4(),
+        title: "Project Retrospective",
+        description: "Conduct a retrospective to evaluate project outcomes.",
+        status: Status.PENDING,
+        createdAt: new Date("2024-07-01T19:00:00Z"),
+        startingDate: new Date("2024-07-10T08:00:00Z"),
+        dueDate: new Date("2024-07-30T16:00:00Z"),
+        isDeleted: false,
+        isCancelled: false,
+        content: "Review project successes and areas for improvement.",
+        thumbnail: "https://via.placeholder.com/150?text=Retrospective",
+        coverImage: "https://via.placeholder.com/600x400?text=Project+Retrospective"
     }
 ];
-const feedbacks: Feedback[] = [
-    {
-        content: "Excellent task execution!",
-        publishedBy: users[0],
-        reactions: {
-        emittedBy: users[1],
-        likes: [1, 2, 3],
-        dislikes: []
-        }
-    }
-]
 const services: { title: string; href: string; description: string;imageURL:string }[] = [
     {
         title: "Creating and editing tasks",
@@ -185,4 +254,4 @@ const services: { title: string; href: string; description: string;imageURL:stri
         imageURL:SVG6
     },
 ]
-export {users,tasks,feedbacks,services}
+export {users,tasks,services}

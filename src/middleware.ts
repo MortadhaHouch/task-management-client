@@ -12,5 +12,5 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
 }
 export const config = {
-    matcher: ['/dashboard', '/profile'],
+    matcher: ['/dashboard', '/profile','/get-started'],
 };
