@@ -43,7 +43,7 @@ export const Tabs = ({
   };
   let [isLoading,setIsLoading] = useState<boolean>(false);
   const [hovering, setHovering] = useState(false);
-  let [tasks,setTasks] = useState<Task[]>();
+  let [tasks,setTasks] = useState<Task[]>([]);
   let [pagesCount,setPagesCount] = useState<number>(0);
   let [requestKeyWord,setRequestKeyWord] = useState<string>("");
   let {theme} = useTheme();
@@ -60,10 +60,10 @@ export const Tabs = ({
       }else if(dataType.toLowerCase().includes("overdue")){
         setRequestKeyWord("/overdue")
       }
-      let request = await fetchData(`/task/${requestKeyWord}`,"GET",null,setIsLoading);
+      let request = await fetchData(`/task${requestKeyWord}`,"GET",null,setIsLoading);
       let response = jwtDecode<any>(request.token);
-      console.log(response);
       setTasks(response.tasks);
+      console.log(tasks);
       setPagesCount(response.pagesCount);
     } catch (error) {
       console.log(error);

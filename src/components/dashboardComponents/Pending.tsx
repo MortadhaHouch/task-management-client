@@ -35,11 +35,11 @@ export default function Pending() {
         <main className='w-full h-full flex flex-row justify-center items-center flex-wrap gap-2'>
             {
                 tasks && tasks.length > 0?(
-                    <section className='w-full h-full flex flex-col justify-center items-center g-10'>
-                        <div>
+                    <section className='w-[90%] h-full flex flex-col justify-center items-center gap-3'>
+                        <div className='w-full max-w-[40%] h-auto flex flex-col justify-center items-center p-3'>
                             <Input type="search" id='search' placeholder='search task' onChange={(e)=>setSearchTerms(e.target.value)}/>
                         </div>
-                        <div className='w-[75%] h-full flex flex-row justify-center items-center flex-wrap gap-2'>
+                        <div className='w-full h-full flex flex-row justify-center items-center gap-3'>
                             {
                                 tasks.map((item,index)=>{
                                     return(

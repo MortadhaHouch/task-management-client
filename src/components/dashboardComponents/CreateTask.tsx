@@ -25,30 +25,16 @@ export default function CreateTask() {
     let [description,setDescription] = useState<string>("");
     let [events,setEvents] = useState<Task[]>([]);
     let [pagesCount,setPagesCount] = useState<number>(0);
-    let [selectedTemplate,setSelectedTemplate] = useState<string>("");
     let [componentName,setComponentName] = useState<TabName>(TabName.CREATE);
     let [isVerified,setIsVerified] = useState<boolean>(false);
     let [isConfirmed,setIsConfirmed] = useState<boolean>(false);
     let [isValidated,setIsValidated] = useState<boolean>(false);
-    let [task,setTask] = useState<Task>({
-        title:"",
-        description:"",
-        createdAt:new Date(),
-        status:Status.PENDING,
-        isCancelled:false,
-        isDeleted:false,
-        startingDate:new Date(Date.now() + 1),
-        dueDate:new Date(Date.now() + 2),
-    });
-    let [tasksToUpdate,setTasksToUpdate] = useState<Task[]>([]);
-    useEffect(()=>{
-        console.log(selectedTemplate);
-    },[selectedTemplate])
+    let [task,setTask] = useState<Task>();
+    let [tasksToUpdate,setTasksToUpdate] = useState<Task[]|[]>([]);
     async function handleDataLoad(){
         try {
             let request = await fetchData("/task","GET",null,setIsLoading);
             let response = jwtDecode<any>(request.token);
-            console.log(response);
             setEvents(response.tasks);
             if(response.pagesCount){
                 setPagesCount(response.pagesCount);
@@ -74,7 +60,7 @@ export default function CreateTask() {
                 setIsShown(true)
                 setMessage(jwtDecode<any>(request.token).message);
                 setDescription(jwtDecode<any>(request.token).description);
-                setTask({
+                let validatedTask:Task = {
                     title:taskName,
                     description:taskDescription,
                     createdAt:new Date(),
@@ -83,8 +69,9 @@ export default function CreateTask() {
                     isDeleted:false,
                     startingDate:new Date(Date.now() + 1),
                     dueDate:new Date(Date.now() + 2),
-                })
-                setEvents((prev) => [...prev,task]);
+                }
+                setTask(validatedTask);
+                setEvents((prev) => [...prev,validatedTask]);
                 setIsVerified(true);
             }
             if(jwtDecode<any>(request.token).task_exists){
@@ -110,7 +97,9 @@ export default function CreateTask() {
                     <span className={`${isVerified && "w-[50%]"} ${isVerified && (isConfirmed && "w-full")} h-[6px]`}></span>
                 </div>
                 <Button
-                    className={`bg-blue-500`}
+                    style={{
+                        backgroundColor:`rgba(0,255,0,1)`,
+                    }}
                     onClick={()=>{
                         setComponentName(TabName.CREATE)
                     }}
@@ -164,13 +153,14 @@ export default function CreateTask() {
             }
             {
                 componentName == TabName.DETAILS && (
-                    <Details task={task}/>
+                    <Details task={events[events.length - 1]}/>
                 )
             }
             {
                 isShown && (
                     <AlertDialogDemo 
-                        isShown={isShown} setIsShown={setIsShown}
+                        isShown={isShown} 
+                        setIsShown={setIsShown}
                         title={message||error}
                         setTitle={setMessage}
                         description={description}

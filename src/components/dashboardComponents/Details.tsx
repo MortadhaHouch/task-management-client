@@ -7,12 +7,22 @@ import PlaceHolder from "../../app/assets/images/placeholder-16-9.png";
 import fileReading from "../../../utils/fileReading";
 import { Task } from "../../../utils/types";
 import { useTheme } from "next-themes";
+import fetchData from "../../../utils/fetchData";
+import { jwtDecode } from "jwt-decode";
+import { useToast } from "../ui/use-toast";
+import { ToastAction } from "@radix-ui/react-toast";
+import { IoCloseOutline } from "react-icons/io5";
 export default function Details({ task }: { task: Task }) {
     const [imageURL, setImageURL] = useState<string>("");
     const [coverURL, setCoverURL] = useState<string>("");
     const coverContainerRef = useRef<HTMLDivElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
+    let [isLoading,setIsLoading] = useState<boolean>(false);
+    let [message,setMessage] = useState<string>("");
+    let [error,setError] = useState<string>("");
+    let [description,setDescription] = useState<string>("");
     let {theme} = useTheme()
+    const { toast } = useToast()
     return (
         <main className="w-full h-full flex flex-col justify-center items-center">
             <section className=" relative w-full h-[450px] flex flex-col justify-center items-center">
@@ -102,7 +112,6 @@ export default function Details({ task }: { task: Task }) {
                         }}
                         multiple={false}
                         onChange={async (e) => {
-                            console.log("File input clicked");
                             try {
                                 if (e.target.files) {
                                     const url = await fileReading(false, [...e.target.files]);
@@ -152,7 +161,35 @@ export default function Details({ task }: { task: Task }) {
             <Button
                 onClick={async () => {
                     try {
-                        console.log("Button clicked");
+                        let request = await fetchData("/task/create","POST",{
+                            ...task,
+                            thumbnail:imageURL,
+                            coverImage:coverURL
+                        },setIsLoading)
+                        let response = jwtDecode<any>(request.token);
+                        if(response.task){
+                            setMessage(response.message);
+                            setDescription(response.description);
+                            toast({
+                                title: message,
+                                description: description,
+                                variant:"default",
+                                action: (
+                                    <ToastAction altText=""><IoCloseOutline size={20} color='red'/></ToastAction>
+                                ),
+                            })
+                        }else if(response.error){
+                            setError(response.error);
+                            setDescription(response.description);
+                            toast({
+                                title: error,
+                                description: description,
+                                variant:"destructive",
+                                action: (
+                                    <ToastAction altText=""><IoCloseOutline size={20} color='red'/></ToastAction>
+                                ),
+                            })
+                        }
                     } catch (error) {
                         console.log(error);
                     }

@@ -1,35 +1,41 @@
 "use client"
-import { CardSpotlightDemo } from "../../components/main/HoverCard";
 import { InfiniteMovingCardsDemo } from "../../components/main/InfiniteMovingCardsDemo";
-import GoogleGeminiEffectDemo from "../../components/main/PathAnimation";
 import { TypewriterEffectSmoothDemo } from "../../components/main/TypewriterEffectSmoothDemo";
-import { Suspense, useContext, useEffect, useRef, useState } from "react";
-import { GlobeDemo } from "@/components/main/Globe";
-import { useAnimation, useInView,motion } from "framer-motion";
+import { Suspense, useEffect, useRef, useState } from "react";
+import { motion, useAnimationControls } from "framer-motion";
 import Loader from "@/components/main/Loader";
 import ThreeDCardDemo from "@/components/main/ThreeDCard";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, ScrollControls } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 import dynamic from "next/dynamic";
 import SkeletonComponent from "@/components/main/SkeletonComponent";
-import { Button } from "@/components/ui/button";
 import { services } from "../../../utils/constants";
 import Link from "next/link";
 import fetchData from "../../../utils/fetchData";
 import { jwtDecode } from "jwt-decode";
 import { useTheme } from "next-themes";
 import { DataType, Feedback } from "../../../utils/types";
-import { LinkPreviewDemo } from "@/components/main/LinkPreviewDemo";
+import { MovingBorderDemo } from "@/components/main/MovingBorderDemo";
+const text = "Welcome to Taskia, the ultimate task management solution designed to help you stay on top of your work. Whether you are managing personal to-dos or collaborating with a team, our intuitive interface and powerful features make it easy to organize, prioritize, and track your tasks. Say goodbye to missed deadlines and hello to increased productivity!"
 const Robot = dynamic(()=>import("../../../public/models/dom/Robot"),{ssr:false})
 export default function Home() {
     let [isLoading,setIsLoading] = useState<boolean>(true);
+    let animationControls = useAnimationControls();
     useEffect(()=>{
+        handleDataLoad();
         setTimeout(()=>{
             setIsLoading(false);
+            headingRef.current?.classList.add("animate");
+        },4000)
+    },[])
+    useEffect(()=>{
+        setTimeout(()=>{
+            animationControls.start("animateState")
         },4000)
     },[])
     let [feedbacks,setFeedbacks] = useState<Feedback[]|[]>([])
     let {theme} = useTheme();
+    const headingRef = useRef<HTMLHeadingElement>(null);
     async function handleDataLoad(){
         try {
             let request = await fetchData("/feedback","GET",null,setIsLoading);
@@ -40,12 +46,9 @@ export default function Home() {
             console.log(error); 
         }
     }
-    useEffect(()=>{
-        handleDataLoad()
-    },[])
     return (
         <main 
-            className="w-[100vw] h-full flex-col justify-start align-top pt-14">
+            className="relative w-[100vw] h-full flex-col justify-start align-top pt-14">
                 <section className="w-[100vw] min-h-[100vh] flex flex-row justify-center items-center flex-wrap">
                     <div 
                         className="flex flex-col justify-center items-center p-3" 
@@ -57,12 +60,31 @@ export default function Home() {
                             border: "1px solid rgba(255, 255, 255, 0.48)",
                             width:"clamp(300px, 60%, 500px)",
                         }}>
-                        <p 
-                            className="w-[80%] h-[100%] p-3">
-                            Stay Organized, Achieve More
-                            Welcome to Taskia, the ultimate task management solution designed to help you stay on top of your work. Whether you&apos;re managing personal to-dos or collaborating with a team, our intuitive interface and powerful features make it easy to organize, prioritize, and track your tasks. Say goodbye to missed deadlines and hello to increased productivity!
-                        </p>
-                        <Button><Link href={"/get-started"}>Get started</Link></Button>
+                            <h2 ref={headingRef} className="text-2xl text-primary heading">Stay organized , achieve more</h2>
+                        <motion.p 
+                            initial="initialState"
+                            animate="animateState"
+                            transition={{
+                                duration: 1,
+                                ease: "easeInOut",
+                                type:"spring"
+                            }}
+                            variants={{
+                                initialState:{
+                                    x:-100,
+                                    opacity:0,
+                                    skewX:20
+                                },
+                                animateState:{
+                                    x:0,
+                                    opacity:1,
+                                    skewX:0
+                                }
+                            }}
+                            className="w-[80%] h-[100%] p-3 text-lg flex flex-row justify-start items-center flex-wrap gap-1">
+                            {text}
+                        </motion.p>
+                        <MovingBorderDemo><Link href={"/get-started"} className="text-xl">Get started</Link></MovingBorderDemo>
                     </div>
                     <Canvas 
                         style={{

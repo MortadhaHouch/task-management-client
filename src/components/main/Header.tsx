@@ -17,6 +17,7 @@ import { jwtDecode } from "jwt-decode";
 import { toast } from "../ui/use-toast";
 import { redirect } from "next/navigation";
 import Loader from "./Loader";
+import {useCookies} from "react-cookie"
 const titillium_Web = Titillium_Web({
     weight: "400",
     subsets: ['latin'],
@@ -25,6 +26,7 @@ const titillium_Web = Titillium_Web({
 export default function Header() {
     const loginState = useContext(LoginContext)
     let [isLoading,setIsLoading] = useState<boolean>(false);
+    let [cookie,setCookie,removeCookie] = useCookies(["jwt_token"]);
     return (
         <header className={`w-full h-auto backdrop-blur-2xl flex flex-row justify-evenly items-center fixed top-0 left-0 shadow-slate-600 z-50 p-2 g-2`}>
             <div className="flex flex-row justify-center items-center">
@@ -66,6 +68,9 @@ export default function Header() {
                                             description: jwtDecode<any>(request.token).description,
                                         })
                                         localStorage.clear();
+                                        removeCookie("jwt_token",{
+                                            path:"/"
+                                        })
                                         redirect("/home")
                                     }
                                     if(jwtDecode<any>(request.token).error){

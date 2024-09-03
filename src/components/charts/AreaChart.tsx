@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 
 import {
     Card,
@@ -50,7 +50,7 @@ export function AreaChartComponent({
             color: "hsl(var(--chart-5))",
         },
     } satisfies ChartConfig
-    let {theme} = useTheme()
+    let {theme} = useTheme();
     return (
         <Card>
             <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
@@ -66,7 +66,7 @@ export function AreaChartComponent({
                     config={chartConfig}
                     className="aspect-auto h-full w-full"
                 >
-                    <AreaChart data={dataSets} style={{width:"100%",height:"100%"}}>
+                    <AreaChart accessibilityLayer data={dataSets} style={{width:"100%",height:"100%"}}>
                         <defs>
                             <linearGradient id="completed" x1="0" y1="0" x2="0" y2="1">
                                 <stop

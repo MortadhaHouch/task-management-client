@@ -23,7 +23,6 @@ import { MdCancel } from "react-icons/md";
 import Cancelled from "@/components/dashboardComponents/Cancelled";
 import { MdPendingActions } from "react-icons/md";
 import Pending from "@/components/dashboardComponents/Pending";
-import {tasks as events} from "../../../utils/constants"
 import MyCalendar from "@/components/dashboardComponents/Calendar";
 export default function Dashboard() {
     let [dashboardItem,setDashboardItem] = useState<TabName>(TabName.HOME);
@@ -32,20 +31,20 @@ export default function Dashboard() {
     let [pagesCount,setPagesCount] = useState<number>(0);
     let [dataType,setDataType] = useState<DataType>(DataType.DAY);
     let {theme} = useTheme();
-    // async function handleDataLoad(){
-    //     try {
-    //         let request = await fetchData("/task","GET",null,setIsLoading);
-    //         let response = jwtDecode<any>(request.token);
-    //         console.log(response);
-    //         setTasks(response.tasks);
-    //         setPagesCount(response.pagesCount);
-    //     } catch (error) {
-    //         console.log(error); 
-    //     }
-    //     }
-    // useEffect(()=>{
-    //     handleDataLoad()
-    // },[])
+    async function handleDataLoad(){
+        try {
+            let request = await fetchData("/task","GET",null,setIsLoading);
+            let response = jwtDecode<any>(request.token);
+            console.log(response);
+            setTasks(response.tasks);
+            setPagesCount(response.pagesCount);
+        } catch (error) {
+            console.log(error); 
+        }
+    }
+    useEffect(()=>{
+        handleDataLoad()
+    },[])
     let [isShown,setIsShown] = useState<boolean>(false);
     return (
         <div className="w-full min-h-[150vh] flex flex-col justify-center items-center">
@@ -151,7 +150,7 @@ export default function Dashboard() {
             }
             {
                 dashboardItem.toLowerCase() == "calendar" && (
-                    <MyCalendar setTasks={setTasks} tasks={events}/>
+                    <MyCalendar setTasks={setTasks} tasks={tasks}/>
                 )
             }
             {

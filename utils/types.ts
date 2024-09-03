@@ -2,7 +2,8 @@ type User = {
     avatar:string
     birthday:string
     id:string
-    name:string
+    firstName:string
+    lastName:string
     email:string
     tasks:Task[]
     deletedTask:Task[]
@@ -10,6 +11,7 @@ type User = {
     age:number
     password:string
     bin:Bin
+    isLoggedIn:boolean
 }
 type Task = {
     id?:string
@@ -59,9 +61,7 @@ enum DataType{
 }
 type Feedback = {
     content:string
-    authorName:string
-    authorEmail:string
-    authorAvatar:string
+    author:User
     likes:number
     dislikes:number
     isMine:boolean

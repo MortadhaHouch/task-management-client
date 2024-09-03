@@ -39,6 +39,67 @@ export default function Home() {
         }
         return tasks.filter((item) => new Date(item.dueDate) >= new Date(Date.now() - daysToSubtract * 24 * 60 * 60 * 1000));
     }, [timeRange, tasks]);
+    async function handleDataLoad(){
+        try {
+            let request = await fetchData("/task/overview","GET",null,setIsLoading);
+            let {completedTasks,cancelledTasks,overdueTasks,pendingTasks} = jwtDecode<any>(request.token);
+            let mappedCompetedTasks = completedTasks.map((task:Task)=>{
+                return {
+                    startingDate:task.startingDate,
+                    dueDate:task.dueDate,
+                    createdAt:task.createdAt,
+                    modifiedAt:task.modifiedAt,
+                    completed:completedTasks.length,
+                    overdue:0,
+                    pending:0,
+                    cancelled:0
+                }
+            })
+            let mappedCancelledTasks = cancelledTasks.map((task:Task)=>{
+                return {
+                    startingDate:task.startingDate,
+                    dueDate:task.dueDate,
+                    createdAt:task.createdAt,
+                    modifiedAt:task.modifiedAt,
+                    cancelled:cancelledTasks.length,
+                    pending:cancelledTasks.filter((item:Task)=>item.status == Status.PENDING && item.dueDate > new Date()).length,
+                    overdue:cancelledTasks.filter((item:Task)=>item.status == Status.PENDING && item.dueDate < new Date()).length,
+                    completed:0,
+                }
+            })
+            let mappedOverdueTasks = overdueTasks.map((task:Task)=>{
+                return {
+                    startingDate:task.startingDate,
+                    dueDate:task.dueDate,
+                    createdAt:task.createdAt,
+                    modifiedAt:task.modifiedAt,
+                    overdue:overdueTasks.length,
+                    pending:overdueTasks.filter((item:Task)=>item.status == Status.PENDING && item.dueDate > new Date()).length,
+                    cancelled:overdueTasks.filter((item:Task)=>item.isCancelled && item.dueDate < new Date()).length,
+                    completed:0,
+                }
+            })
+            let mappedPendingTasks = pendingTasks.map((task:Task)=>{
+                return {
+                    startingDate:task.startingDate,
+                    dueDate:task.dueDate,
+                    createdAt:task.createdAt,
+                    modifiedAt:task.modifiedAt,
+                    pending:pendingTasks.length,
+                    overdue:pendingTasks.filter((item:Task)=>item.status == Status.PENDING && item.dueDate > new Date()).length,
+                    cancelled:pendingTasks.filter((item:Task)=>item.isCancelled && item.dueDate < new Date()).length,
+                    completed:0,
+                }
+            })
+            let sortedDataSets:ChartOverview[] = [...mappedCompetedTasks,...mappedCancelledTasks,...mappedOverdueTasks,...mappedPendingTasks].sort((a,b)=>new Date(a.startingDate).getTime()-new Date(b.startingDate).getTime());
+            setTasks(sortedDataSets);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    useEffect(()=>{
+        handleDataLoad()
+    },[])
     const calculateProgress = useCallback(() => {
         const filteredData = filterDataByTimeRange();
         const completedTasks = filteredData.map(task => task.completed).reduce((item,acc)=>acc+=item,0);
