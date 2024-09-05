@@ -239,7 +239,15 @@ export function CardSpotlightDemo({
               (updatedTitle.trim() !== item.title && updatedDescription.trim() !== item.description) && (
                 <Button onClick={async()=>{
                   try {
-                    let request = await fetchData("/task/update","PUT",{},setIsLoading)
+                    let request = await fetchData("/task/update","PUT",[{title:updatedTitle,description:updatedDescription}],setIsLoading);
+                    let response = jwtDecode<any>(request.token);
+                    if(response.message && setTasks){
+                      setTasks((tasks)=>[...tasks,{...item,title:updatedTitle,description:updatedDescription}]);
+                      setIsContentEditable(false);
+                      setIsOpen(false);
+                      setUpdatedTitle("");
+                      setUpdatedDescription("");
+                    }
                   }catch (error) {
                     console.log(error);
                   }
