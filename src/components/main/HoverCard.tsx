@@ -14,27 +14,39 @@ import { useSpring } from "framer-motion";
 import { GiCancel } from "react-icons/gi";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { SwitchDemo } from "./SwitchDemo";
+import { RiDeviceRecoverLine } from "react-icons/ri";
+import fetchData from "../../../utils/fetchData";
+import { jwtDecode } from "jwt-decode";
 export function CardSpotlightDemo({
   theme,
+  setTasks,
   item
 }:{
   theme:boolean,
+  setTasks?:React.Dispatch<React.SetStateAction<Task[]>>,
   item:Task,
 }) {
   let formattedDate = moment(item.createdAt).format("YYYY-MM-DD")
   let formattedDueDate = moment(item.dueDate).format("YYYY-MM-DD")
   let formattedModifiedAtDate = moment(item.modifiedAt).format("YYYY-MM-DD");
   let [isChecked,setIsChecked] = useState<boolean>(false);
+  let [isLoading,setIsLoading] = useState<boolean>(false);
   let headerRef = useRef<HTMLElement|null>(null);
+  let [isOpen,setIsOpen] = useState<boolean>(false);
+  let [isContentEditable,setIsContentEditable] = useState<boolean>(false);
+  let [updatedTitle,setUpdatedTitle] = useState<string>("");
+  let [updatedDescription,setUpdatedDescription] = useState<string>("");
+  let titleRef = useRef<HTMLHeadingElement|null>(null);
+  let descriptionRef = useRef<HTMLHeadingElement|null>(null);
   return (
     <CardSpotlight className="relative h-[310px] w-[310px] border-r-2 flex-col justify-center align-middle p-2 overflow-hidden"
       style={{
         backgroundColor:theme?"rgba(32, 30, 67, 0.75)":"rgba(235, 244, 246, 0.75)"
       }}
     >
-      <Drawer>
+      <Drawer open={isOpen}>
         <DrawerTrigger>
-          <Button className="absolute top-2 right-2"><TbEyeEdit size={20}/></Button>
+          <Button className="absolute top-2 right-2" onClick={()=>setIsOpen(true)}><TbEyeEdit size={20}/></Button>
         </DrawerTrigger>
         <DrawerContent className="w-full h-full max-h-[80vh] flex flex-col justify-center items-center flex-wrap">
           <DrawerHeader>
@@ -94,10 +106,19 @@ export function CardSpotlightDemo({
                   />
                 )
               }
-              <h2 className="text-xl pl-20">{item.title}</h2>
+              <h2 
+                className="text-xl pl-20" 
+                contentEditable={isContentEditable}
+                ref={titleRef}
+                onKeyDown={()=>setUpdatedTitle(titleRef.current?.textContent||"")}
+              >{item.title}</h2>
             </motion.header>
           </DrawerHeader>
-          <DrawerDescription>
+          <DrawerDescription 
+            ref={descriptionRef} 
+            contentEditable={isContentEditable}
+            onKeyDown={()=>setUpdatedDescription(descriptionRef.current?.textContent||"")}
+          >
             {
               item.description.split(" ").map((el,id)=>{
                 return (
@@ -161,17 +182,71 @@ export function CardSpotlightDemo({
                   <Step index={2} theme={theme} title={`due date ${formattedDueDate}`} component={<MdTimer color={item.dueDate.toString()<Date.now().toString()?"red":"green"} size={20}/>}/>
                   <Step index={3} theme={theme} title={`modified at ${formattedModifiedAtDate}`} component={<MdEdit size={20}/>}/>
                 </motion.ul>
-                <div className="w-100 flex flex-row justify-between items-center z-50">
-                  <>
-                    <SwitchDemo text="" isChecked={item.isCancelled} setIsChecked={setIsChecked} id={item.id}/>
-                    <p className="text-primary">{item.isCancelled?"click to undo cancel":"click to cancel"}</p>
-                  </>
-                  <>
-                    <RiDeleteBin5Line size={20} color="red"/>
-                    <p className="text-primary">{item.isCancelled?"click to undo cancel":"click to cancel"}</p>
-                  </>
-                </div>
+                {
+                  item.isDeleted?(
+                    <Button 
+                      className="w-100 bg-green-600"
+                      onClick={async()=>{
+                        try {
+                          let request = await fetchData("/task/recover","PUT",{id:item.id},setIsLoading);
+                          let response = jwtDecode<any>(request.token);
+                          if(response.message && setTasks){
+                            setIsOpen(false);
+                            setTasks((tasks)=>tasks.filter((task)=>task.id !== item.id));
+                          }
+                          console.log(response);
+                        } catch (error) {
+                          console.log(error);
+                        }
+                      }}
+                    ><RiDeviceRecoverLine size={20} color="green"/>click to recover</Button>
+                  ):(
+                    <div className="w-100 flex flex-col justify-center items-center z-50">
+                      <div className="w-full h-auto flex flex-row justify-center items-center">
+                        <SwitchDemo text="" 
+                          isChecked={item.isCancelled||isChecked} 
+                          setIsChecked={setIsChecked}
+                          setTasks={setTasks}
+                          id={item.id}
+                        />
+                        <p className="text-primary text-start">{item.isCancelled?"click to undo cancel":"click to cancel"}</p>
+                      </div>
+                      <div className="w-full h-auto flex flex-row justify-center items-center">
+                        <RiDeleteBin5Line 
+                          size={20} 
+                          color="red"
+                          className="cursor-pointer"
+                          onClick={async()=>{
+                            try {
+                              let request = await fetchData("/task/delete/"+item.id,"DELETE",null,setIsLoading);
+                              let response = jwtDecode<any>(request.token);
+                              if(response.message && setTasks){
+                                setIsOpen(false);
+                                setTasks((tasks)=>tasks.filter((task)=>task.id !== item.id));
+                              }
+                              console.log(response);
+                            } catch (error) {
+                              console.log(error);
+                            }
+                        }}/>
+                        <p className="text-primary text-start">{item.isDeleted?"click to recover":"click to delete"}</p>
+                      </div>
+                    </div>
+                  )
+                }
             </motion.div>
+            {
+              (updatedTitle.trim() !== item.title && updatedDescription.trim() !== item.description) && (
+                <Button onClick={async()=>{
+                  try {
+                    let request = await fetchData("/task/update","PUT",{},setIsLoading)
+                  }catch (error) {
+                    console.log(error);
+                  }
+                }}>update changes</Button>
+              )
+            }
+            <Button></Button>
           </DrawerDescription>
           <DrawerFooter className="w-[40%] h-[60px]">
             <DrawerClose><Button className="w-full bg-primary"><MdOutlineClose size={20}/>{" "}close</Button></DrawerClose>
