@@ -1,22 +1,22 @@
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import fetchData from "../../../utils/fetchData";
-import { useState } from "react";
+import React, { useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { Task } from "../../../utils/types";
 
 export function SwitchDemo({
-                               text,
-                               isChecked,
-                               setIsChecked,
-                               setTasks,
-                               id
-                           }:{
+    text,
+    isChecked,
+    setIsChecked,
+    setTasks,
+    id
+}:{
     text:string,
     isChecked:boolean,
     setIsChecked:React.Dispatch<React.SetStateAction<boolean>>,
-    setTasks?:React.Dispatch<React.SetStateAction<Task[]>>,
-    id?:string
+    setTasks:React.Dispatch<React.SetStateAction<Task[]>>,
+    id:string
 }) {
     let [isLoading,setIsLoading] = useState<boolean>(false);
     return (

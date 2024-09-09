@@ -34,9 +34,36 @@ export function Feedback({
     let containerRef = useRef<HTMLDivElement|null>(null);
     let [isShown,setIsShown] = useState<boolean>(false);
     let [comments,setComments] = useState<Comment[]>([]);
+    let animationControls = useAnimationControls();
+    let isInView = useInView(likesContainerRef, {once:true});
+    useEffect(()=>{
+        if(isInView) {
+            animationControls.start("")
+        }else {
+            animationControls.stop();
+        }
+    },[isInView,animationControls])
     return (
         <Suspense fallback={<Skeleton/>}>
-            <div
+            <motion.div
+                initial="initial"
+                animate="animate"
+                variants={{
+                    initial:{
+                        opacity:0,
+                        y:50,
+                    },
+                    animate:{
+                        opacity:1,
+                        y:0,
+                    },
+                }}
+                transition={{
+                    duration:0.3,
+                    ease:"easeInOut",
+                    type:"spring",
+                    delay:index*0.3
+                }}
                 ref={containerRef}
             >
                 <Card className={cn("w-[380px]", className)} key={index}>
@@ -127,7 +154,8 @@ export function Feedback({
                         />
                     )
                 }
-            </div>
+                <span ref={dislikesContainerRef} className="text-white">{feedback.dislikes}</span>
+            </motion.div>
         </Suspense>
     )
 }
