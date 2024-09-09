@@ -115,7 +115,7 @@ export default function HomeLayout({ children }: React.PropsWithChildren) {
                         }
                         <Header />
                         {children}
-                        <Footer />
+                        {/* <Footer /> */}
                     </LoginContextProvider>
                 </CookiesProvider>
             </ThemeProvider>

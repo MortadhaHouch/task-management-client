@@ -66,6 +66,7 @@ type Feedback = {
     dislikes:number
     isMine:boolean
     id:string
+    commentsCount:number
 }
 type LoginRequest = {
     email:string
@@ -99,6 +100,11 @@ type Notification = {
     createdAt:string
     userId:string
 }
+type Comment = {
+    content:string
+    id:string,
+    user:User
+}
 enum TabName {
     HOME="HOME",
     TASKS="TASKS",
@@ -111,5 +117,5 @@ enum TabName {
     PENDING="PENDING",
     DETAILS="DETAILS",
 }
-export type {User,Task,Bin,Feedback,Event,LoginRequest,SignupRequest,Response,ChartOverview,Notification}
+export type {User,Task,Bin,Feedback,Event,LoginRequest,SignupRequest,Response,ChartOverview,Notification,Comment}
 export {Status,DataType,TabName}

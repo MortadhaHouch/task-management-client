@@ -90,7 +90,7 @@ export const InfiniteMovingCards = ({
             key={idx}
           >
             <Suspense fallback={<SkeletonComponent/>}>
-              <FeedbackComponent feedback={item}/>
+              <FeedbackComponent key={idx} index={idx} feedback={item}/>
             </Suspense>
           </li>
         ))}

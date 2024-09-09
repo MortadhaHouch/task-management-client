@@ -44,7 +44,6 @@ const MyCalendar = ({
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [mappedEvents, setMappedEvents] = useState<CalendarEvent[]>([]);
   let [isLoading,setIsLoading] = useState<boolean>(false);
-  let [shouldUpdate,setShouldUpdate] = useState<boolean>(false);
   let [message,setMessage] = useState<string>("");
   let [error,setError] = useState<string>("");
   let [description,setDescription] = useState<string>("");
@@ -164,14 +163,18 @@ const MyCalendar = ({
         }}
       />
       <div>
-      <Button 
-        onClick={()=>{
-          if(isConfirmed!=undefined && setIsConfirmed !=undefined && setComponentName!=undefined){
-            setIsConfirmed(true);
-            setComponentName(TabName.DETAILS);
-          }
-        }}
-      >move on</Button>
+        {
+          isConfirmed &&(
+            <Button 
+              onClick={()=>{
+                if(setIsConfirmed !=undefined && setComponentName!=undefined){
+                  setIsConfirmed(true);
+                  setComponentName(TabName.DETAILS);
+                }
+              }}
+              >move on</Button>
+          )
+        }
       {
         tasksToUpdate && tasksToUpdate.length > 0 && (
           <>
