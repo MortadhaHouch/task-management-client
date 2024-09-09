@@ -19,6 +19,7 @@ import { toast } from "../ui/use-toast";
 import { redirect } from "next/navigation";
 import Loader from "./Loader";
 import { useCookies } from "react-cookie";
+import { IconDashboard, IconDoorExit } from "@tabler/icons-react";
 
 const titillium_Web = Titillium_Web({
     weight: "400",
