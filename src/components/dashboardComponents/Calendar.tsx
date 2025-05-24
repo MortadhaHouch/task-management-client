@@ -7,10 +7,10 @@ import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import { Status, TabName, Task } from '../../../utils/types'; // Assuming Task and Status are exported from this file
 import { Button } from '../ui/button';
 import fetchData from '../../../utils/fetchData';
-import { jwtDecode } from 'jwt-decode';
 import { useToast } from '../ui/use-toast';
 import { ToastAction } from '../ui/toast';
 import { IoCloseOutline } from "react-icons/io5";
+import { useCookies } from 'react-cookie';
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
@@ -46,6 +46,7 @@ const MyCalendar = ({
   let [isLoading,setIsLoading] = useState<boolean>(false);
   let [message,setMessage] = useState<string>("");
   let [error,setError] = useState<string>("");
+  let [cookie,,] = useCookies(["jwt_token"])
   let [description,setDescription] = useState<string>("");
   useEffect(() => {
     setMappedEvents(
@@ -93,7 +94,8 @@ const MyCalendar = ({
           dueDate: event.end,
           status: event.status,
           isCancelled:false,
-          isDeleted:false
+          isDeleted:false,
+          id:task.id
         }
         let similarTasks = tasksToUpdate.filter((task) => task.title === taskObject.title);
         if(similarTasks.length == 0){
@@ -182,11 +184,10 @@ const MyCalendar = ({
               try {
                 let request = await fetchData("/task/update","PUT",{
                   tasks:tasksToUpdate
-                },setIsLoading);
-                let response = jwtDecode<any>(request.token);
-                if(response.message){
-                  setMessage(response.message);
-                  setDescription(response.description);
+                },cookie.jwt_token,setIsLoading);
+                if(request.message){
+                  setMessage(request.message);
+                  setDescription(request.description);
                   toast({
                     title: message,
                     description: description,
@@ -196,8 +197,8 @@ const MyCalendar = ({
                     ),
                   })
                 }else{
-                  setError(response.error);
-                  setDescription(response.description);
+                  setError(request.error);
+                  setDescription(request.description);
                   toast({
                     title: error,
                     description: description,

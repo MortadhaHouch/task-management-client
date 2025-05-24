@@ -8,10 +8,10 @@ import fileReading from "../../../utils/fileReading";
 import { Task } from "../../../utils/types";
 import { useTheme } from "next-themes";
 import fetchData from "../../../utils/fetchData";
-import { jwtDecode } from "jwt-decode";
 import { useToast } from "../ui/use-toast";
 import { ToastAction } from "@radix-ui/react-toast";
 import { IoCloseOutline } from "react-icons/io5";
+import { useCookies } from "react-cookie";
 export default function Details({ task }: { task: Task }) {
     const [imageURL, setImageURL] = useState<string>("");
     const [coverURL, setCoverURL] = useState<string>("");
@@ -23,6 +23,7 @@ export default function Details({ task }: { task: Task }) {
     let [description,setDescription] = useState<string>("");
     let {theme} = useTheme()
     const { toast } = useToast()
+    let [cookie,,] = useCookies(["jwt_token"])
     return (
         <main className="w-full h-full flex flex-col justify-center items-center">
             <section className=" relative w-full h-[450px] flex flex-col justify-center items-center">
@@ -165,11 +166,10 @@ export default function Details({ task }: { task: Task }) {
                             ...task,
                             thumbnail:imageURL,
                             coverImage:coverURL
-                        },setIsLoading)
-                        let response = jwtDecode<any>(request.token);
-                        if(response.task){
-                            setMessage(response.message);
-                            setDescription(response.description);
+                        },cookie.jwt_token,setIsLoading);
+                        if(request.task){
+                            setMessage(request.message);
+                            setDescription(request.description);
                             toast({
                                 title: message,
                                 description: description,
@@ -178,9 +178,9 @@ export default function Details({ task }: { task: Task }) {
                                     <ToastAction altText=""><IoCloseOutline size={20} color='red'/></ToastAction>
                                 ),
                             })
-                        }else if(response.error){
-                            setError(response.error);
-                            setDescription(response.description);
+                        }else if(request.error){
+                            setError(request.error);
+                            setDescription(request.description);
                             toast({
                                 title: error,
                                 description: description,

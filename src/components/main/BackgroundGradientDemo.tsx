@@ -1,6 +1,4 @@
 "use client";
-import React, { useEffect, useRef } from "react";
-import { BackgroundGradient } from "../ui/background-gradient";
 import DropDown from "./DropDown";
 import {motion, useInView} from "framer-motion"
 export function BackgroundGradientDemo({

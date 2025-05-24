@@ -1,6 +1,3 @@
-"use client"
-
-import * as React from "react"
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 
 import {
@@ -19,9 +16,6 @@ import {
     ChartTooltipContent,
 } from "@/components/ui/chart"
 import { ChartOverview } from "../../../utils/types";
-import Error404Light from "../../app/assets/icons/error-404-light.svg"
-import Error404Dark from "../../app/assets/icons/error-404-dark.svg"
-import Image from "next/image"
 import { useTheme } from "next-themes"
 export function AreaChartComponent({
     dataSets

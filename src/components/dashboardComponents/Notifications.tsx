@@ -1,23 +1,24 @@
-import { jwtDecode } from "jwt-decode";
+"use client"
 import fetchData from "../../../utils/fetchData";
 import { Notification } from "../../../utils/types";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import Error404Light from "../../app/assets/icons/error-404-light.svg"
 import Error404Dark from "../../app/assets/icons/error-404-dark.svg"
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useTheme } from "next-themes";
+import { useCookies } from "react-cookie";
 export default function Notifications() {
     let [notifications,setNotifications] = useState<Notification[]|[]>([])
     let [isLoading,setIsLoading] = useState<boolean>(false);
     let [pagesCount,setPagesCount] = useState<number>(0);
+    let [cookie,,] = useCookies(["jwt_token"])
     async function handleDataLoad(){
         try {
-            let request = await fetchData("/notifications","GET",null,setIsLoading);
-            let response = jwtDecode<any>(request.token);
-            console.log(response);
-            setNotifications(response.notifications);
-            setPagesCount(response.pagesCount);
+            let request = await fetchData("/notifications","GET",null,cookie.jwt_token,setIsLoading);
+            console.log(request);
+            setNotifications(request.notifications);
+            setPagesCount(request.pagesCount);
         } catch (error) {
             console.log(error);
         }

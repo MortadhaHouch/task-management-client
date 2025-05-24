@@ -25,6 +25,7 @@ import { AiFillDislike, AiFillLike } from "react-icons/ai";
 import { jwtDecode } from "jwt-decode";
 import fetchData from "../../../utils/fetchData";
 import { IoCloseSharp } from "react-icons/io5";
+import { useCookies } from "react-cookie";
 export function AlertDialogDemo({
     isShown,
     setIsShown,
@@ -52,6 +53,7 @@ export function AlertDialogDemo({
     let [isLoading,setIsLoading] = useState<boolean>(true);
     let [isTextareaShown,setIsTextareaShown] = useState<boolean>(false);
     let [feedbackComment,setFeedbackComment] = useState<string>("");
+    let [cookie,,] = useCookies(["jwt_token"])
     return (
         <AlertDialog open={isShown}>
             <AlertDialogContent>
@@ -113,12 +115,11 @@ export function AlertDialogDemo({
                                             disabled={!JSON.parse(localStorage.getItem("isLoggedIn") ?? "false")}
                                             onClick={async()=>{
                                                 try {
-                                                    let request = await fetchData("/feedback/like","PUT",{id:feedback.id},setIsLoading);
-                                                    let response = jwtDecode<any>(request.token);
+                                                    let request = await fetchData("/feedback/like","PUT",{id:feedback.id},cookie.jwt_token,setIsLoading);
                                                     console.log(request,request.token);
                                                     if(dislikesContainerRef.current && likesContainerRef.current){
-                                                        likesContainerRef.current.textContent = response.data.likes;
-                                                        dislikesContainerRef.current.textContent = response.data.dislikes;
+                                                        likesContainerRef.current.textContent = request.data.likes;
+                                                        dislikesContainerRef.current.textContent = request.data.dislikes;
                                                     }
                                                 } catch (error) {
                                                     console.log(error);
@@ -130,11 +131,10 @@ export function AlertDialogDemo({
                                         </Button>
                                         <Button className="w-full bg-gray-500" disabled={!JSON.parse(localStorage.getItem("isLoggedIn") ?? "false")} onClick={async()=>{
                                             try {
-                                                let request = await fetchData("/feedback/dislike","PUT",{id:feedback.id},setIsLoading);
-                                                let response = jwtDecode<any>(request.token);
+                                                let request = await fetchData("/feedback/dislike","PUT",{id:feedback.id},cookie.jwt_token,setIsLoading);
                                                 if(dislikesContainerRef.current && likesContainerRef.current){
-                                                    likesContainerRef.current.textContent = response.data.likes;
-                                                    dislikesContainerRef.current.textContent = response.data.dislikes;
+                                                    likesContainerRef.current.textContent = request.data.likes;
+                                                    dislikesContainerRef.current.textContent = request.data.dislikes;
                                                 }
                                             } catch (error) {
                                                 console.log(error);
@@ -159,10 +159,9 @@ export function AlertDialogDemo({
                                             disabled={feedbackComment.length == 0}
                                             onClick={async()=>{
                                                 try {
-                                                    let request = await fetchData("/comment/create","POST",{feedbackId:feedback.id,content:feedbackComment},setIsLoading);
-                                                    let response = jwtDecode<any>(request.token);
-                                                    if(response.comment && setComments){
-                                                        setComments([...comments,response.comment]);
+                                                    let request = await fetchData("/comment/create","POST",{feedbackId:feedback.id,content:feedbackComment},cookie.jwt_token,setIsLoading);
+                                                    if(request.comment && setComments){
+                                                        setComments([...comments,request.comment]);
                                                     }
                                                 } catch (error) {
                                                     console.log(error);

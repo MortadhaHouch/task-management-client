@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import fetchData from "../../../utils/fetchData";
-import { jwtDecode } from "jwt-decode";
 import { DataType, Task } from "../../../utils/types";
 import { useTheme } from "next-themes";
+import { useCookies } from "react-cookie";
 
 type Tab = {
   title: string;
@@ -45,26 +45,31 @@ export const Tabs = ({
   const [hovering, setHovering] = useState(false);
   let [tasks,setTasks] = useState<Task[]>([]);
   let [pagesCount,setPagesCount] = useState<number>(0);
-  let [requestKeyWord,setRequestKeyWord] = useState<string>("");
+  let [requestKeyWord,setRequestKeyWord] = useState<"day" | "week" | "month"|"year"|"overdue"|"cancelled">("day");
+  let [cookie,,] = useCookies(["jwt_token"])
   let {theme} = useTheme();
   async function handleDataLoad(){
     try {
-      if(dataType.toLowerCase().includes("day")){
-        setRequestKeyWord("/by-day")
-      }else if(dataType.toLowerCase().includes("month")){
-        setRequestKeyWord("/by-month")
-      }else if(dataType.toLowerCase().includes("year")){
-        setRequestKeyWord("/by-year")
-      }else if(dataType.toLowerCase().includes("cancel")){
-        setRequestKeyWord("/cancelled")
-      }else if(dataType.toLowerCase().includes("overdue")){
-        setRequestKeyWord("/overdue")
+      switch(dataType){
+        case DataType.DAY:
+          setRequestKeyWord("day");
+          break;
+        case DataType.MONTH:
+          setRequestKeyWord("month");
+          break;
+        case DataType.YEAR:
+          setRequestKeyWord("year");
+          break;
+        case DataType.OVERDUE:
+          setRequestKeyWord("overdue");
+          break;
+        case DataType.CANCELLED:
+          setRequestKeyWord("cancelled");
+          break;
       }
-      let request = await fetchData(`/task${requestKeyWord}`,"GET",null,setIsLoading);
-      let response = jwtDecode<any>(request.token);
-      setTasks(response.tasks);
-      console.log(tasks);
-      setPagesCount(response.pagesCount);
+      let {tasks,pagesCount} = await fetchData(`/task/by-date/${requestKeyWord}`,"GET",null,cookie.jwt_token,setIsLoading);
+      setTasks(tasks);
+      setPagesCount(pagesCount);
     } catch (error) {
       console.log(error);
     }

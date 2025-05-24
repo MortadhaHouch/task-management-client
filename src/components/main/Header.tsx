@@ -9,8 +9,6 @@ import { Button } from "../ui/button";
 import { IoMdLogIn } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { BiSolidDashboard } from "react-icons/bi";
-import { IoMdLogOut } from "react-icons/io";
 import Logo from "./Logo";
 import { ModeToggle } from "./ModeToggle";
 import fetchData from "../../../utils/fetchData";
@@ -29,7 +27,7 @@ const titillium_Web = Titillium_Web({
 export default function Header() {
     const loginState = useContext(LoginContext);
     const [isLoading, setIsLoading] = useState(false);
-    const [cookie, setCookie, removeCookie] = useCookies(["jwt_token"]);
+    const [cookie,, removeCookie] = useCookies(["jwt_token"]);
     const [isOpen, setIsOpen] = useState(false);
     return (
         <header className={`w-full h-auto backdrop-blur-2xl flex flex-row justify-evenly items-center fixed top-0 left-0 shadow-slate-600 z-50 p-2 g-2`}>
@@ -65,11 +63,11 @@ export default function Header() {
                                 try {
                                     let request = await fetchData("/user/logout","PUT",{
                                         email:localStorage.getItem("email")??"",
-                                    },setIsLoading)
-                                    if(jwtDecode<any>(request.token).message){
+                                    },cookie.jwt_token,setIsLoading);
+                                    if(request.token){
                                         toast({
-                                            title: jwtDecode<any>(request.token).message,
-                                            description: jwtDecode<any>(request.token).description,
+                                            title: request.message,
+                                            description: request.description,
                                         })
                                         localStorage.clear();
                                         removeCookie("jwt_token",{
@@ -77,10 +75,10 @@ export default function Header() {
                                         })
                                         redirect("/home")
                                     }
-                                    if(jwtDecode<any>(request.token).error){
+                                    if(request.error){
                                         toast({
-                                            title: jwtDecode<any>(request.token).error,
-                                            description: jwtDecode<any>(request.token).description,
+                                            title: request.error,
+                                            description: request.description,
                                         })
                                     }
                                 } catch (error) {

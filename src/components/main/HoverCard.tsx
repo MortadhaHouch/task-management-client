@@ -11,12 +11,11 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import {motion, useMotionValue} from "framer-motion";
 import { useSpring } from "framer-motion";
-import { GiCancel } from "react-icons/gi";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { SwitchDemo } from "./SwitchDemo";
 import { RiDeviceRecoverLine } from "react-icons/ri";
 import fetchData from "../../../utils/fetchData";
-import { jwtDecode } from "jwt-decode";
+import { useCookies } from "react-cookie";
 export function CardSpotlightDemo({
   theme,
   setTasks,
@@ -38,6 +37,8 @@ export function CardSpotlightDemo({
   let [updatedDescription,setUpdatedDescription] = useState<string>("");
   let titleRef = useRef<HTMLHeadingElement|null>(null);
   let descriptionRef = useRef<HTMLHeadingElement|null>(null);
+  let [cookie,,] = useCookies(["jwt_token"])
+
   return (
     <CardSpotlight className="relative h-[310px] w-[310px] border-r-2 flex-col justify-center align-middle p-2 overflow-hidden"
       style={{
@@ -188,13 +189,12 @@ export function CardSpotlightDemo({
                       className="w-100 bg-green-600"
                       onClick={async()=>{
                         try {
-                          let request = await fetchData("/task/recover","PUT",{id:item.id},setIsLoading);
-                          let response = jwtDecode<any>(request.token);
-                          if(response.message && setTasks){
+                          let request = await fetchData("/task/recover","PUT",{id:item.id},cookie.jwt_token,setIsLoading);;
+                          if(request.message && setTasks){
                             setIsOpen(false);
                             setTasks((tasks)=>tasks.filter((task)=>task.id !== item.id));
                           }
-                          console.log(response);
+                          console.log(request);
                         } catch (error) {
                           console.log(error);
                         }
@@ -203,12 +203,16 @@ export function CardSpotlightDemo({
                   ):(
                     <div className="w-100 flex flex-col justify-center items-center z-50">
                       <div className="w-full h-auto flex flex-row justify-center items-center">
-                        <SwitchDemo text="" 
-                          isChecked={item.isCancelled||isChecked} 
-                          setIsChecked={setIsChecked}
-                          setTasks={setTasks}
-                          id={item.id}
-                        />
+                        {
+                          (setTasks && item.id) && (
+                            <SwitchDemo text="" 
+                              isChecked={item.isCancelled||isChecked} 
+                              setIsChecked={setIsChecked}
+                              setTasks={setTasks}
+                              id={item.id}
+                            />
+                          )
+                        }
                         <p className="text-primary text-start">{item.isCancelled?"click to undo cancel":"click to cancel"}</p>
                       </div>
                       <div className="w-full h-auto flex flex-row justify-center items-center">
@@ -218,13 +222,12 @@ export function CardSpotlightDemo({
                           className="cursor-pointer"
                           onClick={async()=>{
                             try {
-                              let request = await fetchData("/task/delete/"+item.id,"DELETE",null,setIsLoading);
-                              let response = jwtDecode<any>(request.token);
-                              if(response.message && setTasks){
+                              let request = await fetchData("/task/delete/"+item.id,"DELETE",null,cookie.jwt_token,setIsLoading);;
+                              if(request.message && setTasks){
                                 setIsOpen(false);
                                 setTasks((tasks)=>tasks.filter((task)=>task.id !== item.id));
                               }
-                              console.log(response);
+                              console.log(request);
                             } catch (error) {
                               console.log(error);
                             }
@@ -239,9 +242,8 @@ export function CardSpotlightDemo({
               (updatedTitle.trim() !== item.title && updatedDescription.trim() !== item.description) && (
                 <Button onClick={async()=>{
                   try {
-                    let request = await fetchData("/task/update","PUT",[{title:updatedTitle,description:updatedDescription}],setIsLoading);
-                    let response = jwtDecode<any>(request.token);
-                    if(response.message && setTasks){
+                    let request = await fetchData("/task/update","PUT",[{title:updatedTitle,description:updatedDescription}],cookie.jwt_token,setIsLoading);;
+                    if(request.message && setTasks){
                       setTasks((tasks)=>[...tasks,{...item,title:updatedTitle,description:updatedDescription}]);
                       setIsContentEditable(false);
                       setIsOpen(false);
@@ -254,7 +256,6 @@ export function CardSpotlightDemo({
                 }}>update changes</Button>
               )
             }
-            <Button></Button>
           </DrawerDescription>
           <DrawerFooter className="w-[40%] h-[60px]">
             <DrawerClose><Button className="w-full bg-primary"><MdOutlineClose size={20}/>{" "}close</Button></DrawerClose>

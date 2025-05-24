@@ -1,4 +1,3 @@
-"use client"
 import { BackgroundBeamsDemo } from "@/components/main/Beam";
 export default function GetStarted(){
     return(

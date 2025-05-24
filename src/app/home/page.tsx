@@ -12,10 +12,10 @@ import SkeletonComponent from "@/components/main/SkeletonComponent";
 import { services } from "../../../utils/constants";
 import Link from "next/link";
 import fetchData from "../../../utils/fetchData";
-import { jwtDecode } from "jwt-decode";
 import { useTheme } from "next-themes";
-import { DataType, Feedback } from "../../../utils/types";
+import { Feedback } from "../../../utils/types";
 import { MovingBorderDemo } from "@/components/main/MovingBorderDemo";
+import { useCookies } from "react-cookie";
 const text = "Welcome to Taskia, the ultimate task management solution designed to help you stay on top of your work. Whether you are managing personal to-dos or collaborating with a team, our intuitive interface and powerful features make it easy to organize, prioritize, and track your tasks. Say goodbye to missed deadlines and hello to increased productivity!"
 const Robot = dynamic(()=>import("../../../public/models/dom/Robot"),{ssr:false})
 export default function Home() {
@@ -35,13 +35,13 @@ export default function Home() {
     },[])
     let [feedbacks,setFeedbacks] = useState<Feedback[]|[]>([])
     let {theme} = useTheme();
+    let [cookie,,] = useCookies(["jwt_token"])
     const headingRef = useRef<HTMLHeadingElement>(null);
     async function handleDataLoad(){
         try {
-            let request = await fetchData("/feedback","GET",null,setIsLoading);
-            let response = jwtDecode<any>(request.token);
-            console.log(response);
-            setFeedbacks(response.feedbacks);
+            let request = await fetchData("/feedback","GET",null,cookie.jwt_token,setIsLoading);
+            console.log(request);
+            setFeedbacks(request.feedbacks);
         } catch (error) {
             console.log(error); 
         }

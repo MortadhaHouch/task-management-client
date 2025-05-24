@@ -1,29 +1,30 @@
+"use client"
 import React, { Suspense, useEffect, useState } from 'react'
 import { Input } from '../ui/input'
 import { CardSpotlightDemo } from '../main/HoverCard'
 import { motion } from 'framer-motion'
 import { Skeleton } from '../ui/skeleton'
 import fetchData from '../../../utils/fetchData'
-import { jwtDecode } from 'jwt-decode'
 import { Task } from '../../../utils/types'
 import Image from 'next/image'
 import Error404Light from "../../app/assets/icons/error-404-light.svg"
 import Error404Dark from "../../app/assets/icons/error-404-dark.svg"
 import { useTheme } from 'next-themes'
 import { TbRestore } from "react-icons/tb";
+import { useCookies } from 'react-cookie'
 export default function Trash() {
     let [searchTerms,setSearchTerms] = useState<string>("");
     let [tasks,setTasks] = useState<Task[]>();
     let [isLoading,setIsLoading] = useState<boolean>(false);
     let [pagesCount,setPagesCount] = useState<number>(0);
     let {theme} = useTheme();
+    let [cookie,,] = useCookies(["jwt_token"])
     async function handleDataLoad(){
         try {
-            let request = await fetchData("/task/deleted","GET",null,setIsLoading);
-            let response = jwtDecode<any>(request.token);
-            console.log(response);
-            setTasks(response.tasks);
-            setPagesCount(response.pagesCount);
+            let {tasks,pagesCount} = await fetchData("/task/deleted","GET",null,cookie.jwt_token,setIsLoading);
+            console.log({tasks});
+            setTasks(tasks);
+            setPagesCount(pagesCount);
         } catch (error) {
             console.log(error);
         }

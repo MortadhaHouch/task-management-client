@@ -6,7 +6,7 @@ import ErrorImageDark from "../../app/assets/icons/error-404-dark.svg"
 import ErrorImageLight from "../../app/assets/icons/error-404-light.svg"
 import { useTheme } from 'next-themes';
 import fetchData from '../../../utils/fetchData';
-import { jwtDecode } from 'jwt-decode';
+import { useCookies } from 'react-cookie';
 export default function TasksContainer({
     dataType,
 }:{
@@ -16,11 +16,11 @@ export default function TasksContainer({
     let [isLoading,setIsLoading] = useState<boolean>(false);
     let [pagesCount,setPagesCount] = useState<number>(0);
     let {theme} = useTheme();
+    let [cookie,,] = useCookies(["jwt_token"])
     async function handleDataLoad(){
         try {
-            let request = await fetchData("/task","GET",null,setIsLoading);
-            let response = jwtDecode<any>(request.token);
-            setTasks(response.tasks.filter((item:Task)=>{
+            let {tasks,pagesCount} = await fetchData("/task","GET",null,cookie.jwt_token,setIsLoading);
+            setTasks(tasks.filter((item:Task)=>{
                 switch (dataType) {
                     case DataType.DAY:
                         return new Date(item.startingDate).getDate() === new Date().getDate();
@@ -36,7 +36,7 @@ export default function TasksContainer({
                         return item;
                 }
             }));
-            setPagesCount(response.pagesCount);
+            setPagesCount(pagesCount);
         } catch (error) {
             console.log(error);
         }

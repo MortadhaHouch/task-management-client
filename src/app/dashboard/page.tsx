@@ -17,27 +17,25 @@ import Image from "next/image";
 import { DataType, TabName, Task } from "../../../utils/types";
 import { MdKeyboardDoubleArrowRight,MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import fetchData from "../../../utils/fetchData";
-import { jwtDecode } from "jwt-decode";
 import { useTheme } from "next-themes";
 import { MdCancel } from "react-icons/md";
 import Cancelled from "@/components/dashboardComponents/Cancelled";
 import { MdPendingActions } from "react-icons/md";
 import Pending from "@/components/dashboardComponents/Pending";
 import MyCalendar from "@/components/dashboardComponents/Calendar";
+import { useCookies } from "react-cookie";
 export default function Dashboard() {
     let [dashboardItem,setDashboardItem] = useState<TabName>(TabName.HOME);
     let [tasks,setTasks] = useState<Task[]|[]>([]);
     let [isLoading,setIsLoading] = useState<boolean>(false);
     let [pagesCount,setPagesCount] = useState<number>(0);
     let [dataType,setDataType] = useState<DataType>(DataType.DAY);
-    let {theme} = useTheme();
+    let [cookie,,] = useCookies(["jwt_token"])
     async function handleDataLoad(){
         try {
-            let request = await fetchData("/task","GET",null,setIsLoading);
-            let response = jwtDecode<any>(request.token);
-            console.log(response);
-            setTasks(response.tasks);
-            setPagesCount(response.pagesCount);
+            let request = await fetchData("/task","GET",{},cookie.jwt_token,setIsLoading);
+            setTasks(request.tasks);
+            setPagesCount(request.pagesCount);
         } catch (error) {
             console.log(error); 
         }

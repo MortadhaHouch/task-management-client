@@ -4,7 +4,6 @@ import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import Calendar from './Calendar';
 import fetchData from '../../../utils/fetchData';
-import { jwtDecode } from 'jwt-decode';
 import { Button } from '../ui/button';
 import { AlertDialogDemo } from '../main/AlertDialog';
 import { Status, TabName, Task } from '../../../utils/types';
@@ -14,7 +13,7 @@ import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import Details from './Details';
-import { tasks } from '../../../utils/constants';
+import { useCookies } from 'react-cookie';
 export default function CreateTask() {
     let [isLoading,setIsLoading] = useState<boolean>(false);
     let [taskName,setTaskName] = useState<string>("");
@@ -31,16 +30,16 @@ export default function CreateTask() {
     let [isValidated,setIsValidated] = useState<boolean>(false);
     let [task,setTask] = useState<Task>();
     let [tasksToUpdate,setTasksToUpdate] = useState<Task[]|[]>([]);
+    let [cookie,,] = useCookies(["jwt_token"])
     async function handleDataLoad(){
         try {
-            let request = await fetchData("/task","GET",null,setIsLoading);
-            let response = jwtDecode<any>(request.token);
-            setEvents(response.tasks);
-            if(response.pagesCount){
-                setPagesCount(response.pagesCount);
+            let request = await fetchData("/task","GET",null,cookie.jwt_token,setIsLoading);
+            setEvents(request.tasks);
+            if(request.pagesCount){
+                setPagesCount(request.pagesCount);
             }
-            if(response.error){
-                setError(response.error);
+            if(request.error){
+                setError(request.error);
             }
         } catch (error) {
             console.log(error);
@@ -55,11 +54,11 @@ export default function CreateTask() {
             let request = await fetchData("/task/validate","POST",{
                 name:taskName,
                 description:taskDescription
-            },setIsLoading)
-            if(jwtDecode<any>(request.token).message){
+            },cookie.jwt_token,setIsLoading)
+            if(request.message){
                 setIsShown(true)
-                setMessage(jwtDecode<any>(request.token).message);
-                setDescription(jwtDecode<any>(request.token).description);
+                setMessage(request.message);
+                setDescription(request.description);
                 let validatedTask:Task = {
                     title:taskName,
                     description:taskDescription,
@@ -74,15 +73,15 @@ export default function CreateTask() {
                 setEvents((prev) => [...prev,validatedTask]);
                 setIsVerified(true);
             }
-            if(jwtDecode<any>(request.token).task_exists){
+            if(request.task_exists){
                 setIsShown(true)
-                setError(jwtDecode<any>(request.token).task_exists);
-                setDescription(jwtDecode<any>(request.token).description);
+                setError(request.task_exists);
+                setDescription(request.description);
             }
-            if(jwtDecode<any>(request.token).error){
+            if(request.error){
                 setIsShown(true)
-                setError(jwtDecode<any>(request.token).error);
-                setDescription(jwtDecode<any>(request.token).description);
+                setError(request.error);
+                setDescription(request.description);
             }
         } catch (error) {
             console.log(error);
@@ -111,6 +110,7 @@ export default function CreateTask() {
                     disabled={!isVerified}
                     onClick={()=>{
                         setComponentName(TabName.CALENDAR)
+                        setIsConfirmed(true);
                     }}
                 >2</Button>
                 <Button 

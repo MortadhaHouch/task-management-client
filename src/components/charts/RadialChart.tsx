@@ -1,3 +1,4 @@
+"use client"
 import {
     Label,
     PolarGrid,
@@ -16,7 +17,6 @@ import { Status } from "../../../utils/types";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useTheme } from "next-themes";
-import { useEffect } from "react";
 
 export function RadialChart({
     dataSets,

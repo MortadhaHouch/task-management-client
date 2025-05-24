@@ -1,4 +1,3 @@
-import React from 'react'
 import { TabsDemo } from '../main/Tabs';
 export default function Tasks() {
     return (

@@ -1,6 +1,6 @@
+"use client"
 import { RadialChart } from "../charts/RadialChart";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { jwtDecode } from "jwt-decode";
 import fetchData from "../../../utils/fetchData";
 import { AreaChartComponent } from "../charts/AreaChart";
 import { ChartOverview, Status, Task } from "../../../utils/types";
@@ -8,11 +8,13 @@ import Error404Light from "../../app/assets/icons/error-404-light.svg";
 import Error404Dark from "../../app/assets/icons/error-404-dark.svg";
 import Image from "next/image";
 import { useTheme } from "next-themes";
+import { useCookies } from "react-cookie";
 
 export default function Home() {
     let [isLoading, setIsLoading] = useState<boolean>(false);
     let [tasks, setTasks] = useState<ChartOverview[] | []>([]);
     const [timeRange, setTimeRange] = useState<string>("");
+    let [cookie,,] = useCookies(["jwt_token"])
     const [progressValues, setProgressValues] = useState<{ [key: string]: number }>({
         completed: 0,
         overdue: 0,
@@ -41,8 +43,8 @@ export default function Home() {
     }, [timeRange, tasks]);
     async function handleDataLoad(){
         try {
-            let request = await fetchData("/task/overview","GET",null,setIsLoading);
-            let {completedTasks,cancelledTasks,overdueTasks,pendingTasks} = jwtDecode<any>(request.token);
+            let request = await fetchData("/task/overview","GET",null,cookie.jwt_token,setIsLoading);
+            let {completedTasks,cancelledTasks,overdueTasks,pendingTasks} = request
             let mappedCompetedTasks = completedTasks.map((task:Task)=>{
                 return {
                     startingDate:task.startingDate,

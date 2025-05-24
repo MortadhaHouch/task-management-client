@@ -1,4 +1,4 @@
-import { jwtDecode } from "jwt-decode";
+"use client"
 import fetchData from "../../../utils/fetchData";
 import { Suspense, useEffect, useState } from "react";
 import { Task } from "../../../utils/types";
@@ -11,19 +11,20 @@ import Error404Dark from "../../app/assets/icons/error-404-dark.svg"
 import { useTheme } from 'next-themes'
 import Image from "next/image";
 import { Input } from "../ui/input";
+import { useCookies } from "react-cookie";
 export default function Cancelled() {
     let [searchTerms,setSearchTerms] = useState<string>("");
     let [tasks,setTasks] = useState<Task[]>();
     let [isLoading,setIsLoading] = useState<boolean>(false);
     let [pagesCount,setPagesCount] = useState<number>(0);
     let {theme} = useTheme();
+    let [cookie,,] = useCookies(["jwt_token"])
     async function handleDataLoad(){
         try {
-            let request = await fetchData("/task/cancelled","GET",null,setIsLoading);
-            let response = jwtDecode<any>(request.token);
-            console.log(response);
-            setTasks(response.tasks);
-            setPagesCount(response.pagesCount);
+            let request = await fetchData("/task/cancelled","GET",null,cookie.jwt_token,setIsLoading);
+            console.log(request);
+            setTasks(request.tasks);
+            setPagesCount(request.pagesCount);
         } catch (error) {
             console.log(error);
         }

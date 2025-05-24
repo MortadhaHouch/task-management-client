@@ -1,5 +1,4 @@
 "use client";
-import {jwtDecode} from "jwt-decode";
 import { useEffect, useState } from "react";
 import fetchData from "../../../utils/fetchData";
 import { useTheme } from "next-themes";
@@ -14,6 +13,7 @@ import { MdPageview } from "react-icons/md";
 import { useToast } from "@/components/ui/use-toast";
 import { motion } from "framer-motion";
 import Loader from "@/components/main/Loader";
+import { useCookies } from "react-cookie";
 
 export default function Feedbacks() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -23,12 +23,12 @@ export default function Feedbacks() {
   const [text, setText] = useState<string>("");
   const { theme } = useTheme();
   const { toast } = useToast();
+    let [cookie,,] = useCookies(["jwt_token"])
 
   async function handleDataLoad() {
     try {
-      const request = await fetchData("/feedback", "GET", null, setIsLoading);
-      const response = jwtDecode<any>(request.token);
-      setFeedbacks(response.feedbacks);
+      const request = await fetchData("/feedback", "GET", {},cookie.jwt_token, setIsLoading);
+      setFeedbacks(request.feedbacks);
     } catch (error) {
       console.log(error);
     }
@@ -81,10 +81,10 @@ export default function Feedbacks() {
                 "/feedback/mine",
                 "GET",
                 null,
+                cookie.jwt_token,
                 setIsLoading
               );
-              const response = jwtDecode<any>(request.token);
-              setFeedbacks(response.feedbacks);
+              setFeedbacks(request.feedbacks);
             } catch (error) {
               console.log(error);
             }
@@ -140,21 +140,21 @@ export default function Feedbacks() {
                     "/feedback/create",
                     "POST",
                     { content: text },
+                    cookie.jwt_token,
                     setIsLoading
                   );
-                  const response = jwtDecode<any>(request.token);
-                  if (response.feedback) {
-                    setFeedbacks([...feedbacks, response.feedback]);
+                  if (request.feedback) {
+                    setFeedbacks([...feedbacks, request.feedback]);
                     setText("");
                     toast({
                       title: "Feedback created",
                       description: "Feedback has been created successfully",
                     });
-                  } else if (response.error) {
-                    setError(response.error);
+                  } else if (request.error) {
+                    setError(request.error);
                     toast({
                       title: "Error",
-                      description: response.error,
+                      description: request.error,
                     });
                   }
                 } catch (error) {

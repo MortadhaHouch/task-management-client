@@ -40,28 +40,26 @@ export default function Tab() {
     let [loginEmail,setLoginEmail] = useState<string>("")
     let [password,setPassword] = useState<string>("")
     let [isLoading,setIsLoading] = useState<boolean>(false);
-    let [cookies,setCookie,removeCookie] = useCookies(["jwt_token"])
+    let [cookie,setCookie,removeCookie] = useCookies(["jwt_token"])
     async function handleLogin(url:string,body:{email:string,password:string}){
         try {
-            let request = await fetchData(url,"POST",body,setIsLoading)
-            console.log(jwtDecode<any>(request.token))
-            if(jwtDecode<any>(request.token).isVerified){
+            let {isVerified,token,data} = await fetchData(url,"POST",body,"",setIsLoading);
+            if(isVerified){
+                let {email,firstName,lastName,birthday,avatar} = data;
                 localStorage.setItem("isLoggedIn",JSON.stringify(true));
-                localStorage.setItem("email",jwtDecode<any>(request.token).email);
-                localStorage.setItem("firstName",jwtDecode<any>(request.token).firstName);
-                localStorage.setItem("lastName",jwtDecode<any>(request.token).lastName);
-                localStorage.setItem("birthday",jwtDecode<any>(request.token).birthday);
-                localStorage.setItem("avatar",jwtDecode<any>(request.token).avatar);
-                setCookie("jwt_token",sign({
-                    email:localStorage.getItem("email"),
-                    password:localStorage.getItem("password"),
-                    firstName:localStorage.getItem("firstName"),
-                    lastName:localStorage.getItem("lastName"),
-                },process.env.NEXT_PUBLIC_SECRET_KEY??""),{
-                    path:"/",
-                    maxAge:60 * 60 * 24 * 3,
-                }
-            )
+                localStorage.setItem("email",email);
+                localStorage.setItem("firstName",firstName);
+                localStorage.setItem("lastName",lastName);
+                localStorage.setItem("birthday",birthday);
+                localStorage.setItem("avatar",avatar);
+                setCookie("jwt_token",
+                    token,
+                    {
+                        path:"/",
+                        expires:new Date(Date.now() + 7 * 60 * 60 * 1000),
+                        maxAge:7 * 60 * 60 * 1000
+                    }
+                )
                 redirect("/home")
             }else{
                 toast({
@@ -76,23 +74,21 @@ export default function Tab() {
     const { toast } = useToast()
     async function handleSignup(url:string,body:{email:string,password:string,firstName:string,lastName:string,avatar:string,birthday:string}){
         try {
-            let request = await fetchData(url,"POST",body,setIsLoading);
-            if(jwtDecode<any>(request.token).isVerified){
+            let {isVerified,token,data} = await fetchData(url,"POST",body,"",setIsLoading);
+            if(isVerified){
+                let {email,firstName,lastName,birthday,avatar} = data;
                 localStorage.setItem("isLoggedIn",JSON.stringify(true));
-                localStorage.setItem("email",jwtDecode<any>(request.token).email);
-                localStorage.setItem("firstName",jwtDecode<any>(request.token).firstName);
-                localStorage.setItem("lastName",jwtDecode<any>(request.token).lastName);
-                localStorage.setItem("birthday",jwtDecode<any>(request.token).birthday);
-                localStorage.setItem("avatar",jwtDecode<any>(request.token).avatar);
-                localStorage.setItem("password",jwtDecode<any>(request.token).password);
-                setCookie("jwt_token",sign({
-                        email:localStorage.getItem("email"),
-                        password:localStorage.getItem("password"),
-                        firstName:localStorage.getItem("firstName"),
-                        lastName:localStorage.getItem("lastName"),
-                    },process.env.NEXT_PUBLIC_SECRET_KEY??""),{
+                localStorage.setItem("email",email);
+                localStorage.setItem("firstName",firstName);
+                localStorage.setItem("lastName",lastName);
+                localStorage.setItem("birthday",birthday);
+                localStorage.setItem("avatar",avatar);
+                setCookie("jwt_token",
+                    token,
+                    {
                         path:"/",
-                        maxAge:60 * 60 * 24 * 3,
+                        expires:new Date(Date.now() + 7 * 60 * 60 * 1000),
+                        maxAge:7 * 60 * 60 * 1000
                     }
                 )
                 redirect("/home")

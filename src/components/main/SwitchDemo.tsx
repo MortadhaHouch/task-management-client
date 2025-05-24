@@ -1,9 +1,11 @@
+"use client"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import fetchData from "../../../utils/fetchData";
 import React, { useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { Task } from "../../../utils/types";
+import { useCookies } from "react-cookie";
 
 export function SwitchDemo({
     text,
@@ -19,6 +21,7 @@ export function SwitchDemo({
     id:string
 }) {
     let [isLoading,setIsLoading] = useState<boolean>(false);
+    let [cookie,,] = useCookies(["jwt_token"])
     return (
         <div className="flex items-center space-x-2">
             <Switch
@@ -27,14 +30,12 @@ export function SwitchDemo({
                 onCheckedChange={async(val)=>{
                     setIsChecked(!val);
                     try {
-                        let request = await fetchData("/task/cancel","PUT",{
+                        let {task,message} = await fetchData("/task/cancel","PUT",{
                             isCancelled:val,
                             id
-                        },setIsLoading);
-                        let response = jwtDecode<any>(request.token);
-                        setIsChecked(response.task.isCancelled);
-                        console.log(response);
-                        if(response.message && setTasks){
+                        },cookie.jwt_token,setIsLoading);;
+                        setIsChecked(task.isCancelled);
+                        if(message.message && setTasks){
                             setTasks((tasks)=>tasks.filter((task)=>task.id !== id));
                         }
                     } catch (error) {

@@ -1,5 +1,3 @@
-"use client"
-import { useContext } from "react";
 import Tab from "../../components/main/Tab";
 
 export default function Login() {
